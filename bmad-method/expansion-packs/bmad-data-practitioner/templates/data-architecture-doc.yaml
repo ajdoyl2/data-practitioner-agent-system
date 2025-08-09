@@ -1,0 +1,437 @@
+template:
+  id: data-architecture-doc-v1
+  name: Data Architecture Document
+  version: 1.0
+  output:
+    format: markdown
+    filename: docs/data-architecture.md
+    title: "{{project_name}} Data Architecture"
+
+workflow:
+  mode: interactive
+  elicitation: advanced-elicitation
+
+sections:
+  - id: executive-summary
+    title: Executive Summary
+    instruction: |
+      Provide a high-level overview of the data architecture, key decisions, and business alignment.
+      This section should be understandable by non-technical stakeholders.
+    sections:
+      - id: architecture-overview
+        title: Architecture Overview
+        type: paragraphs
+        instruction: 2-3 paragraphs summarizing the overall data architecture approach and key components
+      - id: key-decisions
+        title: Key Architectural Decisions
+        type: bullet-list
+        instruction: List the most important architectural decisions with brief rationale
+      - id: business-alignment
+        title: Business Alignment
+        type: paragraphs
+        instruction: 1-2 paragraphs explaining how this architecture supports business objectives
+      - id: changelog
+        title: Change Log
+        type: table
+        columns: [Date, Version, Description, Author]
+        instruction: Track document versions and changes
+
+  - id: data-landscape
+    title: Data Landscape
+    instruction: Define the complete data ecosystem including sources, flows, and destinations
+    elicit: true
+    sections:
+      - id: data-sources
+        title: Data Sources
+        instruction: Comprehensive catalog of all data sources with technical details
+        sections:
+          - id: internal-sources
+            title: Internal Data Sources
+            type: table
+            columns: [Source, Type, Volume, Frequency, Format, Access Method]
+            instruction: Document all internal data sources with technical specifications
+          - id: external-sources
+            title: External Data Sources
+            type: table
+            columns: [Source, Provider, API/Format, SLA, Cost, Access Method]
+            instruction: Document all external data sources and third-party integrations
+      - id: data-flows
+        title: Data Flow Architecture
+        instruction: Define how data moves through the system from sources to destinations
+        sections:
+          - id: ingestion-flows
+            title: Data Ingestion Flows
+            type: numbered-list
+            instruction: Document each major data ingestion pattern with source, method, and destination
+          - id: transformation-flows
+            title: Data Transformation Flows  
+            type: numbered-list
+            instruction: Document data transformation workflows and processing stages
+          - id: delivery-flows
+            title: Data Delivery Flows
+            type: numbered-list
+            instruction: Document how processed data is delivered to consumers and applications
+      - id: data-destinations
+        title: Data Destinations
+        instruction: Catalog all systems and applications that consume processed data
+        type: table
+        columns: [Destination, Type, Consumer, Format, Frequency, SLA]
+
+  - id: technology-stack
+    title: Technology Stack
+    instruction: Define the complete technology architecture for the data platform
+    elicit: true
+    choices:
+      data_processing: [Batch, Stream, Hybrid]
+      deployment_model: [Cloud, On-Premise, Hybrid]
+      scalability_approach: [Vertical, Horizontal, Auto-scaling]
+    sections:
+      - id: modern-data-stack
+        title: Modern Data Stack Components
+        instruction: Document the core modern data stack technologies selected
+        sections:
+          - id: ingestion-layer
+            title: Data Ingestion Layer
+            instruction: PyAirbyte and data ingestion technologies
+            type: table
+            columns: [Component, Technology, Version, Purpose, Configuration]
+          - id: storage-layer
+            title: Data Storage Layer
+            instruction: DuckDB and data storage technologies
+            type: table
+            columns: [Component, Technology, Version, Purpose, Configuration]
+          - id: transformation-layer
+            title: Data Transformation Layer
+            instruction: dbt-core and transformation technologies
+            type: table
+            columns: [Component, Technology, Version, Purpose, Configuration]
+          - id: orchestration-layer
+            title: Orchestration Layer
+            instruction: Dagster and workflow orchestration technologies
+            type: table
+            columns: [Component, Technology, Version, Purpose, Configuration]
+          - id: analytics-layer
+            title: Analytics Layer
+            instruction: Analysis and ML technologies
+            type: table
+            columns: [Component, Technology, Version, Purpose, Configuration]
+          - id: presentation-layer
+            title: Presentation Layer
+            instruction: Evidence.dev and data presentation technologies
+            type: table
+            columns: [Component, Technology, Version, Purpose, Configuration]
+      - id: architecture-patterns
+        title: Architecture Patterns
+        sections:
+          - id: data_processing
+            title: "Data Processing: {Batch|Stream|Hybrid}"
+          - id: deployment_model
+            title: "Deployment Model: {Cloud|On-Premise|Hybrid}"
+          - id: scalability_approach
+            title: "Scalability Approach: {Vertical|Horizontal|Auto-scaling}"
+      - id: integration-patterns
+        title: Integration Patterns
+        type: numbered-list
+        instruction: Document key integration patterns and architectural decisions
+        examples:
+          - "Event-driven architecture for real-time data processing with Kafka integration"
+          - "API-first design for all data services with OpenAPI specification"
+
+  - id: component-architecture
+    title: Component Architecture
+    instruction: Detailed architecture for each major component in the data platform
+    elicit: true
+    sections:
+      - id: data-ingestion-service
+        title: DataIngestionService Architecture
+        instruction: PyAirbyte-based data ingestion component architecture
+        sections:
+          - id: responsibilities
+            title: Responsibilities
+            type: bullet-list
+            instruction: List the key responsibilities of this component
+          - id: interfaces
+            title: Key Interfaces
+            type: bullet-list
+            instruction: Define the major interfaces and APIs this component provides
+          - id: dependencies
+            title: Dependencies
+            type: bullet-list
+            instruction: List dependencies on other components and external systems
+          - id: scalability
+            title: Scalability Considerations
+            type: paragraphs
+            instruction: Describe how this component scales and handles load
+      - id: analytical-engine
+        title: AnalyticalEngine Architecture
+        instruction: DuckDB-based analytical processing component architecture
+        sections:
+          - id: responsibilities
+            title: Responsibilities
+            type: bullet-list
+          - id: interfaces
+            title: Key Interfaces
+            type: bullet-list
+          - id: dependencies
+            title: Dependencies
+            type: bullet-list
+          - id: scalability
+            title: Scalability Considerations
+            type: paragraphs
+      - id: transformation-engine
+        title: TransformationEngine Architecture
+        instruction: dbt-core-based transformation component architecture
+        sections:
+          - id: responsibilities
+            title: Responsibilities
+            type: bullet-list
+          - id: interfaces
+            title: Key Interfaces
+            type: bullet-list
+          - id: dependencies
+            title: Dependencies
+            type: bullet-list
+          - id: scalability
+            title: Scalability Considerations
+            type: paragraphs
+      - id: workflow-orchestrator
+        title: WorkflowOrchestrator Architecture
+        instruction: Dagster-based orchestration component architecture
+        sections:
+          - id: responsibilities
+            title: Responsibilities
+            type: bullet-list
+          - id: interfaces
+            title: Key Interfaces
+            type: bullet-list
+          - id: dependencies
+            title: Dependencies
+            type: bullet-list
+          - id: scalability
+            title: Scalability Considerations
+            type: paragraphs
+      - id: publication-engine
+        title: PublicationEngine Architecture
+        instruction: Evidence.dev-based publication component architecture
+        sections:
+          - id: responsibilities
+            title: Responsibilities
+            type: bullet-list
+          - id: interfaces
+            title: Key Interfaces
+            type: bullet-list
+          - id: dependencies
+            title: Dependencies
+            type: bullet-list
+          - id: scalability
+            title: Scalability Considerations
+            type: paragraphs
+
+  - id: data-governance
+    title: Data Governance Architecture
+    instruction: Define the data governance framework, policies, and implementation
+    elicit: true
+    sections:
+      - id: governance-framework
+        title: Governance Framework
+        type: bullet-list
+        instruction: Define the overall data governance approach and principles
+      - id: data-quality
+        title: Data Quality Architecture
+        sections:
+          - id: quality-standards
+            title: Data Quality Standards
+            type: table
+            columns: [Domain, Metric, Threshold, Measurement Method, Remediation]
+          - id: validation-framework
+            title: Data Validation Framework
+            type: bullet-list
+            instruction: Describe automated validation approaches and tools
+      - id: security-privacy
+        title: Security and Privacy Architecture
+        sections:
+          - id: access-control
+            title: Access Control Model
+            type: bullet-list
+            instruction: Define user access patterns and authorization model
+          - id: data-encryption
+            title: Data Encryption Strategy
+            type: bullet-list
+            instruction: Specify encryption at rest and in transit requirements
+          - id: privacy-compliance
+            title: Privacy Compliance Framework
+            type: bullet-list
+            instruction: Address GDPR, CCPA, and other privacy requirements
+      - id: lineage-metadata
+        title: Data Lineage and Metadata Management
+        sections:
+          - id: lineage-tracking
+            title: Data Lineage Tracking
+            type: bullet-list
+            instruction: Describe how data lineage is captured and maintained
+          - id: metadata-catalog
+            title: Metadata Catalog
+            type: bullet-list
+            instruction: Define metadata management and data catalog approach
+
+  - id: performance-scalability
+    title: Performance and Scalability
+    instruction: Define performance requirements and scalability architecture
+    elicit: true
+    sections:
+      - id: performance-requirements
+        title: Performance Requirements
+        type: table
+        columns: [Component, Metric, Target, Measurement Method, Optimization Strategy]
+        instruction: Document specific performance targets for each major component
+      - id: scalability-architecture
+        title: Scalability Architecture
+        sections:
+          - id: horizontal-scaling
+            title: Horizontal Scaling Strategy
+            type: bullet-list
+            instruction: Describe how components scale out to handle increased load
+          - id: vertical-scaling
+            title: Vertical Scaling Strategy
+            type: bullet-list
+            instruction: Describe resource scaling approaches for components
+          - id: auto-scaling
+            title: Auto-scaling Policies
+            type: bullet-list
+            instruction: Define automated scaling triggers and policies
+      - id: capacity-planning
+        title: Capacity Planning
+        sections:
+          - id: resource-estimation
+            title: Resource Estimation
+            type: table
+            columns: [Component, CPU, Memory, Storage, Network, Projected Growth]
+          - id: bottleneck-analysis
+            title: Potential Bottlenecks
+            type: bullet-list
+            instruction: Identify potential performance bottlenecks and mitigation strategies
+
+  - id: deployment-operations
+    title: Deployment and Operations
+    instruction: Define deployment architecture and operational procedures
+    elicit: true
+    sections:
+      - id: deployment-architecture
+        title: Deployment Architecture
+        sections:
+          - id: environment-strategy
+            title: Environment Strategy
+            type: bullet-list
+            instruction: Define development, staging, and production environments
+          - id: deployment-pipeline
+            title: Deployment Pipeline
+            type: numbered-list
+            instruction: Document the automated deployment process and CI/CD pipeline
+          - id: infrastructure-code
+            title: Infrastructure as Code
+            type: bullet-list
+            instruction: Describe infrastructure automation and configuration management
+      - id: monitoring-observability
+        title: Monitoring and Observability
+        sections:
+          - id: monitoring-strategy
+            title: Monitoring Strategy
+            type: bullet-list
+            instruction: Define comprehensive monitoring approach for all components
+          - id: logging-framework
+            title: Logging Framework
+            type: bullet-list
+            instruction: Specify logging standards, aggregation, and retention policies
+          - id: alerting-policies
+            title: Alerting Policies
+            type: table
+            columns: [Alert, Condition, Severity, Notification, Response]
+      - id: disaster-recovery
+        title: Disaster Recovery and Business Continuity
+        sections:
+          - id: backup-strategy
+            title: Backup Strategy
+            type: bullet-list
+            instruction: Define backup procedures for data and system configurations
+          - id: recovery-procedures
+            title: Recovery Procedures
+            type: numbered-list
+            instruction: Document step-by-step disaster recovery procedures
+
+  - id: integration-apis
+    title: Integration and APIs
+    instruction: Define how the data platform integrates with external systems and provides APIs
+    elicit: true
+    sections:
+      - id: api-architecture
+        title: API Architecture
+        sections:
+          - id: data-apis
+            title: Data Access APIs
+            type: table
+            columns: [API, Purpose, Authentication, Format, Rate Limits, Documentation]
+          - id: webhook-integrations
+            title: Webhook Integrations
+            type: table
+            columns: [Integration, Trigger, Payload, Security, Retry Policy]
+      - id: external-integrations
+        title: External System Integrations
+        type: table
+        columns: [System, Integration Type, Protocol, Frequency, Error Handling]
+        instruction: Document all external system integrations and communication patterns
+
+  - id: risk-mitigation
+    title: Risk Assessment and Mitigation
+    instruction: Identify architectural risks and mitigation strategies
+    elicit: true
+    sections:
+      - id: technical-risks
+        title: Technical Risks
+        type: table
+        columns: [Risk, Probability, Impact, Mitigation Strategy, Owner]
+        instruction: Document technical risks and their mitigation approaches
+      - id: operational-risks
+        title: Operational Risks
+        type: table
+        columns: [Risk, Probability, Impact, Mitigation Strategy, Owner]
+        instruction: Document operational risks and business continuity measures
+      - id: compliance-risks
+        title: Compliance and Regulatory Risks
+        type: table
+        columns: [Risk, Regulation, Impact, Mitigation Strategy, Owner]
+        instruction: Document compliance risks and regulatory requirements
+
+  - id: implementation-roadmap
+    title: Implementation Roadmap
+    instruction: Define the phased approach to implementing this data architecture
+    elicit: true
+    sections:
+      - id: phase-breakdown
+        title: Implementation Phases
+        type: numbered-list
+        instruction: Break down implementation into logical phases with deliverables
+      - id: migration-strategy
+        title: Migration Strategy
+        type: bullet-list
+        instruction: Define how to migrate from current state to target architecture
+      - id: success-criteria
+        title: Success Criteria
+        type: table
+        columns: [Phase, Success Metric, Target Value, Measurement Method]
+
+  - id: appendices
+    title: Appendices
+    sections:
+      - id: glossary
+        title: Glossary
+        type: table
+        columns: [Term, Definition]
+        instruction: Define technical terms and acronyms used in this document
+      - id: references
+        title: References
+        type: bullet-list
+        instruction: List external references, standards, and documentation sources
+      - id: assumptions
+        title: Assumptions and Constraints
+        type: bullet-list
+        instruction: Document key assumptions and constraints that influenced architectural decisions

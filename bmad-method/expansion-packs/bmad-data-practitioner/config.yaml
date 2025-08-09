@@ -1,0 +1,10 @@
+name: bmad-data-practitioner
+version: 1.0.0
+short-title: Data Practitioner Agent System
+description: >-
+  Data Practitioner expansion pack for BMad Method - comprehensive data analysis
+  workflows with modern data stack integration (PyAirbyte, DuckDB, dbt-core, 
+  Dagster, Evidence.dev). Includes 6 specialized data agents for complete 
+  data lifecycle management.
+author: Data Practitioner Agent System
+slashPrefix: bmadData
