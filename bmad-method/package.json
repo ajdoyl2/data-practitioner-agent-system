@@ -13,6 +13,7 @@
     "build:teams": "node tools/cli.js build --teams-only",
     "list:agents": "node tools/cli.js list:agents",
     "validate": "node tools/cli.js validate",
+    "test": "npx jest",
     "flatten": "node tools/flattener/main.js",
     "install:bmad": "node tools/installer/bin/bmad.js install",
     "format": "prettier --write \"**/*.md\"",
