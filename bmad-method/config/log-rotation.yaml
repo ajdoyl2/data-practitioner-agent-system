@@ -1,0 +1,83 @@
+# Log Rotation Configuration
+# Defines rotation and retention policies for security and audit logs
+
+rotation:
+  # Security log configuration
+  security_log:
+    file: "logs/security.log"
+    max_size_mb: 10
+    max_files: 5
+    compress: true
+    retention_days: 90
+    
+  # Audit log configuration  
+  audit_log:
+    file: "logs/audit.log"
+    max_size_mb: 10
+    max_files: 10
+    compress: true
+    retention_days: 365  # Keep audit logs for 1 year
+    
+  # Service-specific logs
+  service_logs:
+    pattern: "logs/*/*.log"
+    max_size_mb: 50
+    max_files: 3
+    compress: true
+    retention_days: 30
+
+# Archival settings
+archive:
+  enabled: true
+  destination: "logs/archive"
+  format: "{name}.{date}.{ext}.gz"
+  
+  # Archive to S3 (optional)
+  s3:
+    enabled: false
+    bucket: "bmad-logs-archive"
+    prefix: "security-logs/"
+    storage_class: "GLACIER"
+    
+# Retention policies by log type
+retention_policies:
+  security_events:
+    auth_success: 30
+    auth_failure: 90
+    permission_denied: 90
+    rate_limit_exceeded: 30
+    
+  audit_events:
+    api_key_created: 365
+    api_key_revoked: 365
+    feature_flag_changed: 365
+    rollback_initiated: 365
+    security_violation: 730  # 2 years
+    
+  compliance:
+    gdpr_data_access: 1095  # 3 years
+    gdpr_data_deletion: 2190  # 6 years
+    financial_transactions: 2555  # 7 years
+
+# Monitoring thresholds
+monitoring:
+  disk_usage_warning: 80  # Percentage
+  disk_usage_critical: 90
+  
+  # Alert when logs grow too fast
+  growth_rate_warning: 100  # MB per hour
+  growth_rate_critical: 500
+  
+# Cleanup settings
+cleanup:
+  # Run cleanup daily at 2 AM
+  schedule: "0 2 * * *"
+  
+  # Remove empty log files
+  remove_empty: true
+  
+  # Remove logs older than retention policy
+  enforce_retention: true
+  
+  # Dry run mode for testing
+  dry_run: false

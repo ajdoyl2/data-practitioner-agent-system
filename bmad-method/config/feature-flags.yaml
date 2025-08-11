@@ -1,0 +1,47 @@
+features:
+  pyairbyte_integration:
+    enabled: true
+    description: Enable PyAirbyte connectors for data ingestion
+    dependencies: []
+  duckdb_analytics:
+    enabled: true
+    description: Enable DuckDB for local analytics and data exploration
+    dependencies: []
+  dbt_transformations:
+    enabled: false
+    description: Enable dbt Core for data transformation workflows
+    dependencies:
+      - duckdb_analytics
+  dagster_orchestration:
+    enabled: false
+    description: Enable Dagster for workflow orchestration
+    dependencies:
+      - pyairbyte_integration
+      - dbt_transformations
+  eda_automation:
+    enabled: false
+    description: Enable automated exploratory data analysis
+    dependencies:
+      - duckdb_analytics
+  evidence_publishing:
+    enabled: false
+    description: Enable Evidence.dev for data publication
+    dependencies:
+      - duckdb_analytics
+      - dbt_transformations
+  qa_framework:
+    enabled: false
+    description: Enable comprehensive QA and documentation framework
+    dependencies: []
+metadata:
+  version: 1.0.0
+  last_modified: '2025-08-10T23:51:06.342Z'
+  environment: development
+safety:
+  require_explicit_enable: true
+  disable_on_error: true
+  log_all_changes: true
+rollback_triggers:
+  - error_rate_threshold: 0.1
+  - memory_usage_threshold: 0.9
+  - response_time_threshold: 5000

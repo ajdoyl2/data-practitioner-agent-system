@@ -1,0 +1,193 @@
+# External Services Registry
+# Defines all external services used by the data practitioner expansion pack
+# Credentials are stored in environment variables, not in this file
+
+services:
+  # Story 1.2 - PyAirbyte Integration
+  pypi:
+    name: "Python Package Index"
+    type: "package_registry"
+    required_for: ["pyairbyte_integration"]
+    credentials:
+      - name: "PYPI_INDEX_URL"
+        description: "Custom PyPI index URL (optional)"
+        required: false
+        default: "https://pypi.org/simple"
+      - name: "PYPI_USERNAME"
+        description: "PyPI username for private packages"
+        required: false
+      - name: "PYPI_PASSWORD"
+        description: "PyPI password for private packages"
+        required: false
+        sensitive: true
+      - name: "PYPI_API_TOKEN"
+        description: "PyPI API token for package uploads"
+        required: false
+        sensitive: true
+    
+  # Story 1.2, 1.3 - Database Connections
+  databases:
+    name: "Database Connections"
+    type: "data_source"
+    required_for: ["pyairbyte_integration", "duckdb_analytics"]
+    credentials:
+      - name: "DATABASE_URL"
+        description: "Primary database connection string"
+        required: false
+        sensitive: true
+        example: "postgresql://user:pass@host:5432/dbname"
+      - name: "ANALYTICS_DATABASE_URL"
+        description: "Analytics database connection string"
+        required: false
+        sensitive: true
+      - name: "WAREHOUSE_DATABASE_URL"
+        description: "Data warehouse connection string"
+        required: false
+        sensitive: true
+    
+  # Cloud Services
+  aws:
+    name: "Amazon Web Services"
+    type: "cloud_provider"
+    required_for: ["pyairbyte_integration", "dagster_orchestration", "evidence_publishing"]
+    credentials:
+      - name: "AWS_ACCESS_KEY_ID"
+        description: "AWS access key ID"
+        required: false
+      - name: "AWS_SECRET_ACCESS_KEY"
+        description: "AWS secret access key"
+        required: false
+        sensitive: true
+      - name: "AWS_REGION"
+        description: "AWS region"
+        required: false
+        default: "us-east-1"
+    
+  gcp:
+    name: "Google Cloud Platform"
+    type: "cloud_provider"
+    required_for: ["pyairbyte_integration", "dagster_orchestration"]
+    credentials:
+      - name: "GCP_PROJECT_ID"
+        description: "Google Cloud project ID"
+        required: false
+      - name: "GOOGLE_APPLICATION_CREDENTIALS"
+        description: "Path to GCP service account key file"
+        required: false
+        sensitive: true
+    
+  azure:
+    name: "Microsoft Azure"
+    type: "cloud_provider"
+    required_for: ["pyairbyte_integration", "dagster_orchestration"]
+    credentials:
+      - name: "AZURE_TENANT_ID"
+        description: "Azure Active Directory tenant ID"
+        required: false
+      - name: "AZURE_CLIENT_ID"
+        description: "Azure application client ID"
+        required: false
+      - name: "AZURE_CLIENT_SECRET"
+        description: "Azure application client secret"
+        required: false
+        sensitive: true
+    
+  # Story 1.4 - dbt Cloud (Optional)
+  dbt_cloud:
+    name: "dbt Cloud"
+    type: "transformation_platform"
+    required_for: ["dbt_transformations"]
+    optional: true
+    credentials:
+      - name: "DBT_CLOUD_API_TOKEN"
+        description: "dbt Cloud API token"
+        required: false
+        sensitive: true
+      - name: "DBT_CLOUD_ACCOUNT_ID"
+        description: "dbt Cloud account ID"
+        required: false
+      - name: "DBT_CLOUD_PROJECT_ID"
+        description: "dbt Cloud project ID"
+        required: false
+    
+  # Story 1.5 - Dagster Cloud (Optional)
+  dagster_cloud:
+    name: "Dagster Cloud"
+    type: "orchestration_platform"
+    required_for: ["dagster_orchestration"]
+    optional: true
+    credentials:
+      - name: "DAGSTER_CLOUD_API_TOKEN"
+        description: "Dagster Cloud API token"
+        required: false
+        sensitive: true
+      - name: "DAGSTER_CLOUD_ORG"
+        description: "Dagster Cloud organization"
+        required: false
+      - name: "DAGSTER_CLOUD_DEPLOYMENT"
+        description: "Dagster Cloud deployment name"
+        required: false
+    
+  # Story 1.7 - Evidence.dev
+  evidence:
+    name: "Evidence.dev"
+    type: "publishing_platform"
+    required_for: ["evidence_publishing"]
+    credentials:
+      - name: "EVIDENCE_DEPLOYMENT_TOKEN"
+        description: "Evidence.dev deployment token"
+        required: false
+        sensitive: true
+      - name: "EVIDENCE_SITE_URL"
+        description: "Published Evidence site URL"
+        required: false
+        example: "https://my-reports.evidence.app"
+
+# Service categories for documentation
+categories:
+  package_registry:
+    description: "Package repositories and artifact storage"
+    setup_priority: 1
+    
+  data_source:
+    description: "Databases and data warehouses"
+    setup_priority: 2
+    
+  cloud_provider:
+    description: "Cloud infrastructure providers"
+    setup_priority: 3
+    
+  transformation_platform:
+    description: "Data transformation services"
+    setup_priority: 4
+    
+  orchestration_platform:
+    description: "Workflow orchestration services"
+    setup_priority: 5
+    
+  publishing_platform:
+    description: "Data publishing and visualization"
+    setup_priority: 6
+
+# Health check endpoints
+health_checks:
+  pypi:
+    endpoint: "https://pypi.org/simple/"
+    method: "GET"
+    expected_status: 200
+    
+  dbt_cloud:
+    endpoint: "https://cloud.getdbt.com/api/v2/accounts/{DBT_CLOUD_ACCOUNT_ID}/"
+    method: "GET"
+    headers:
+      Authorization: "Token {DBT_CLOUD_API_TOKEN}"
+    expected_status: 200
+    
+  dagster_cloud:
+    endpoint: "https://api.dagster.cloud/graphql"
+    method: "POST"
+    headers:
+      Dagster-Cloud-Api-Token: "{DAGSTER_CLOUD_API_TOKEN}"
+    body:
+      query: "{ __typename }"
+    expected_status: 200
