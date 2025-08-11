@@ -32,18 +32,24 @@
     "version:expansion:all:patch": "node tools/bump-all-versions.js patch",
     "release": "semantic-release",
     "release:test": "semantic-release --dry-run --no-ci || echo 'Config test complete - authentication errors are expected locally'",
-    "prepare": "husky"
+    "prepare": "husky",
+    "setup:python": "node tools/cli.js setup-python",
+    "data:service": "node tools/cli.js start-data-service",
+    "data:connectors": "node tools/cli.js data-connectors",
+    "postinstall": "npm run setup:python --silent || echo 'Python setup failed - run: npm run setup:python'"
   },
   "dependencies": {
     "@kayvan/markdown-tree-parser": "^1.5.0",
     "bmad-method": "^4.30.3",
     "chalk": "^4.1.2",
     "commander": "^14.0.0",
+    "express": "^4.18.2",
     "fs-extra": "^11.3.0",
     "glob": "^11.0.3",
     "inquirer": "^8.2.6",
     "js-yaml": "^4.1.0",
     "minimatch": "^10.0.3",
+    "multer": "^1.4.5-lts.1",
     "ora": "^5.4.1"
   },
   "keywords": [
@@ -72,6 +78,7 @@
     "lint-staged": "^16.1.1",
     "prettier": "^3.5.3",
     "semantic-release": "^22.0.0",
+    "supertest": "^6.3.4",
     "yaml-lint": "^1.7.0"
   },
   "lint-staged": {
