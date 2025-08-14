@@ -1,0 +1,46 @@
+{
+  "timestamp": "2025-08-14T05:00:13.517Z",
+  "environment": {
+    "nodeVersion": "v24.3.0",
+    "platform": "darwin",
+    "arch": "arm64",
+    "cpus": 8
+  },
+  "metrics": {
+    "agent_file_discovery": 1,
+    "read_agent_analyst.md": 1,
+    "read_agent_architect.md": 1,
+    "read_agent_bmad-master.md": 1,
+    "read_agent_bmad-orchestrator.md": 0,
+    "read_agent_dev.md": 0,
+    "avg_agent_read_time": 1,
+    "yaml_parsing_bulk": 3,
+    "core_config_load": 1,
+    "template_scan": 0,
+    "task_scan": 0,
+    "directory_traversal": 3,
+    "file_stats": 1,
+    "agent_processing_memory": 2,
+    "agent_processing_memory_mb": 0,
+    "memory_test_iteration_0": 1,
+    "memory_test_iteration_1": 1,
+    "memory_test_iteration_2": 1,
+    "memory_test_iteration_3": 0,
+    "memory_test_iteration_4": 0,
+    "max_iteration_memory_mb": 0
+  },
+  "benchmarks": {
+    "agent_file_operations": {
+      "target": "<100ms",
+      "critical_threshold": "500ms"
+    },
+    "memory_usage": {
+      "target": "<50MB for agent processing",
+      "critical_threshold": "200MB"
+    },
+    "directory_operations": {
+      "target": "<1000ms for full traversal",
+      "critical_threshold": "5000ms"
+    }
+  }
+}
