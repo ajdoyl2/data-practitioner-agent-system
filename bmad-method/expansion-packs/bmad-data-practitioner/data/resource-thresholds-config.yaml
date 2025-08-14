@@ -1,0 +1,349 @@
+# DuckDB Resource Usage Thresholds and Alerting Configuration
+# Defines monitoring thresholds, alerting rules, and scaling triggers
+
+# Memory Usage Thresholds
+memory_thresholds:
+  # DuckDB-specific memory thresholds (percentage of configured memory limit)
+  duckdb_memory:
+    info: 50          # Informational threshold - normal operation
+    warning: 75       # Warning threshold - monitor closely
+    critical: 90      # Critical threshold - automated cleanup triggered
+    emergency: 95     # Emergency threshold - aggressive intervention
+    
+  # System memory thresholds (percentage of total system memory)
+  system_memory:
+    warning: 80       # System memory usage warning
+    critical: 90      # System memory usage critical
+    emergency: 95     # System memory usage emergency
+    
+  # Memory growth rate thresholds (MB per minute)
+  memory_growth_rate:
+    warning: 100      # 100MB/minute growth rate warning
+    critical: 500     # 500MB/minute growth rate critical
+    
+  # Spill activity thresholds
+  spill_activity:
+    normal: 0         # No spilling expected
+    warning: 100      # 100MB spilled data warning
+    critical: 1000    # 1GB spilled data critical
+
+# Performance Thresholds
+performance_thresholds:
+  # Query execution time thresholds (milliseconds)
+  query_execution:
+    simple_query_warning: 5000      # 5 seconds for simple queries
+    simple_query_critical: 15000    # 15 seconds for simple queries
+    complex_query_warning: 30000    # 30 seconds for complex queries
+    complex_query_critical: 120000  # 2 minutes for complex queries
+    timeout_threshold: 300000       # 5 minutes absolute timeout
+    
+  # Connection and concurrency thresholds
+  connections:
+    warning_percent: 80    # 80% of max connections warning
+    critical_percent: 95   # 95% of max connections critical
+    idle_timeout: 300000   # 5 minutes idle connection timeout
+    
+  # Query throughput thresholds (queries per minute)
+  throughput:
+    min_queries_per_minute: 10     # Minimum expected throughput
+    warning_degradation: 50        # 50% throughput degradation warning
+    critical_degradation: 75       # 75% throughput degradation critical
+
+# System Resource Thresholds
+system_thresholds:
+  # CPU usage thresholds (percentage)
+  cpu_usage:
+    warning: 70       # 70% CPU usage warning
+    critical: 85      # 85% CPU usage critical
+    sustained_duration: 300000  # 5 minutes sustained high CPU
+    
+  # Disk I/O thresholds
+  disk_io:
+    read_warning_mb_per_sec: 100   # 100MB/s read warning
+    write_warning_mb_per_sec: 50   # 50MB/s write warning
+    queue_depth_warning: 10        # I/O queue depth warning
+    
+  # Network thresholds (for distributed scenarios)
+  network:
+    latency_warning_ms: 100        # 100ms network latency warning
+    packet_loss_warning: 0.01      # 0.01% packet loss warning
+
+# Alerting Rules Configuration
+alerting_rules:
+  # Alert severity levels
+  severity_levels:
+    info:
+      description: "Informational alerts for monitoring"
+      notification_channels: ["log"]
+      cooldown_minutes: 60
+      auto_resolve: true
+      
+    warning:
+      description: "Warning level alerts requiring attention"
+      notification_channels: ["log", "console"]
+      cooldown_minutes: 30
+      auto_resolve: true
+      escalation_delay_minutes: 60
+      
+    critical:
+      description: "Critical alerts requiring immediate action"
+      notification_channels: ["log", "console", "webhook"]
+      cooldown_minutes: 15
+      auto_resolve: false
+      escalation_delay_minutes: 30
+      auto_remediation: true
+      
+    emergency:
+      description: "Emergency alerts requiring immediate intervention"
+      notification_channels: ["log", "console", "webhook", "sms"]
+      cooldown_minutes: 5
+      auto_resolve: false
+      escalation_delay_minutes: 10
+      auto_remediation: true
+      force_cleanup: true
+
+  # Specific alert configurations
+  alert_configs:
+    duckdb_memory_warning:
+      severity: warning
+      message_template: "DuckDB memory usage at {memory_percent}% of limit ({memory_usage_mb}MB)"
+      remediation_actions: ["monitor", "prepare_cleanup"]
+      
+    duckdb_memory_critical:
+      severity: critical
+      message_template: "DuckDB memory usage critical at {memory_percent}% ({memory_usage_mb}MB)"
+      remediation_actions: ["automatic_cleanup", "reduce_connections"]
+      
+    duckdb_memory_emergency:
+      severity: emergency
+      message_template: "DuckDB memory usage emergency at {memory_percent}% ({memory_usage_mb}MB)"
+      remediation_actions: ["emergency_cleanup", "reduce_memory_limit", "kill_queries"]
+      
+    query_timeout_warning:
+      severity: warning
+      message_template: "Query execution time exceeded {threshold}ms: {query_hash}"
+      remediation_actions: ["monitor", "analyze_query"]
+      
+    system_memory_low:
+      severity: critical
+      message_template: "System memory low: {free_memory_gb}GB free ({system_memory_percent}% used)"
+      remediation_actions: ["system_cleanup", "process_optimization"]
+      
+    high_cpu_usage:
+      severity: warning
+      message_template: "High CPU usage detected: {cpu_percent}% for {duration_minutes} minutes"
+      remediation_actions: ["monitor", "throttle_queries"]
+
+# Scaling Triggers and Rules
+scaling_triggers:
+  # Memory-based scaling triggers
+  memory_scaling:
+    scale_up_triggers:
+      - condition: "memory_percent > 80 AND sustained_duration > 300"
+        action: "increase_memory_limit"
+        scale_factor: 1.5
+        max_memory: "32GB"
+        
+      - condition: "spill_activity > 500MB AND performance_degradation > 25%"
+        action: "increase_memory_limit"
+        scale_factor: 1.25
+        max_memory: "32GB"
+        
+    scale_down_triggers:
+      - condition: "memory_percent < 30 AND sustained_duration > 1800"
+        action: "decrease_memory_limit"
+        scale_factor: 0.8
+        min_memory: "1GB"
+        
+  # Connection-based scaling
+  connection_scaling:
+    scale_up_triggers:
+      - condition: "connection_usage > 80% AND queue_wait_time > 1000ms"
+        action: "increase_max_connections"
+        scale_factor: 1.2
+        max_connections: 50
+        
+    scale_down_triggers:
+      - condition: "connection_usage < 40% AND sustained_duration > 1800"
+        action: "decrease_max_connections"
+        scale_factor: 0.9
+        min_connections: 5
+        
+  # Performance-based scaling
+  performance_scaling:
+    optimization_triggers:
+      - condition: "query_time_avg > 5000ms AND memory_percent < 60%"
+        action: "optimize_queries"
+        strategies: ["add_indices", "query_rewrite", "partitioning"]
+        
+      - condition: "throughput_degradation > 50%"
+        action: "performance_analysis"
+        strategies: ["profiling", "bottleneck_analysis", "resource_allocation"]
+
+# Graceful Degradation Procedures
+degradation_procedures:
+  # Memory pressure degradation
+  memory_pressure:
+    stage_1_75_percent:
+      actions:
+        - "enable_query_result_caching"
+        - "reduce_connection_pool_size"
+        - "increase_cleanup_frequency"
+      message: "Entering memory conservation mode"
+      
+    stage_2_85_percent:
+      actions:
+        - "limit_concurrent_queries"
+        - "reduce_result_set_sizes"
+        - "enable_aggressive_caching"
+        - "postpone_non_critical_operations"
+      message: "Entering memory pressure mode"
+      
+    stage_3_95_percent:
+      actions:
+        - "reject_new_connections"
+        - "kill_long_running_queries"
+        - "emergency_memory_cleanup"
+        - "reduce_memory_limit"
+      message: "Entering emergency memory mode"
+      
+  # Performance degradation
+  performance_degradation:
+    query_timeout_increase:
+      trigger: "average_query_time > 2x baseline"
+      actions:
+        - "increase_query_timeout_limits"
+        - "enable_query_prioritization"
+        - "reduce_concurrent_operations"
+        
+    connection_throttling:
+      trigger: "cpu_usage > 85% AND sustained_duration > 300"
+      actions:
+        - "throttle_new_connections"
+        - "implement_connection_queuing"
+        - "prioritize_critical_queries"
+        
+    resource_limitation:
+      trigger: "system_memory < 15% OR disk_space < 10%"
+      actions:
+        - "limit_result_set_sizes"
+        - "disable_non_essential_features"
+        - "enable_streaming_results"
+
+# BMad Integration Configuration
+bmad_integration:
+  # Feature flag integration
+  feature_flags:
+    monitoring_enabled: "duckdb_monitoring"
+    alerting_enabled: "duckdb_alerting"
+    auto_scaling_enabled: "duckdb_auto_scaling"
+    performance_optimization: "duckdb_performance_optimization"
+    
+  # Security logger integration
+  security_logging:
+    log_all_alerts: true
+    log_remediation_actions: true
+    log_threshold_changes: true
+    log_performance_metrics: false  # Too verbose for security log
+    
+  # Error handling integration
+  error_handling:
+    use_bmad_error_patterns: true
+    chalk_styling: true
+    graceful_degradation: true
+    user_friendly_messages: true
+    
+  # Existing tool integration
+  tool_integration:
+    memory_manager: "bmad-method/tools/lib/memory-manager.js"
+    security_logger: "bmad-method/tools/lib/security-logger.js"
+    feature_flags: "bmad-method/tools/lib/feature-flag-manager.js"
+
+# Monitoring Configuration
+monitoring_config:
+  # Monitoring intervals
+  intervals:
+    health_check: 30000        # 30 seconds
+    performance_check: 60000   # 1 minute
+    resource_check: 30000      # 30 seconds
+    cleanup_check: 600000      # 10 minutes
+    
+  # Metric retention
+  retention:
+    memory_metrics: 100        # Keep last 100 measurements
+    query_metrics: 200         # Keep last 200 measurements
+    system_metrics: 100        # Keep last 100 measurements
+    alert_history: 1000        # Keep last 1000 alerts
+    
+  # Data collection
+  collection:
+    enable_detailed_metrics: false   # Detailed metrics can be resource intensive
+    sample_query_performance: true   # Sample query performance data
+    track_memory_patterns: true      # Track memory usage patterns
+    monitor_spill_activity: true     # Monitor disk spilling activity
+
+# Notification Channels
+notification_channels:
+  console:
+    enabled: true
+    format: "colored"
+    timestamp: true
+    
+  log:
+    enabled: true
+    log_file: "./logs/duckdb-alerts.log"
+    rotation: "daily"
+    max_size: "100MB"
+    
+  webhook:
+    enabled: false
+    url: "${DUCKDB_WEBHOOK_URL}"
+    timeout: 5000
+    retry_attempts: 3
+    
+  email:
+    enabled: false
+    smtp_host: "${SMTP_HOST}"
+    smtp_port: "${SMTP_PORT}"
+    recipients: ["${ALERT_EMAIL}"]
+    
+  sms:
+    enabled: false
+    service: "${SMS_SERVICE}"
+    recipients: ["${ALERT_PHONE}"]
+
+# Environment-Specific Overrides
+environment_overrides:
+  development:
+    memory_thresholds:
+      duckdb_memory:
+        warning: 60  # Lower threshold for development
+        critical: 80
+        emergency: 90
+    alerting_rules:
+      alert_configs:
+        duckdb_memory_warning:
+          severity: info  # Less noisy in development
+          
+  testing:
+    memory_thresholds:
+      duckdb_memory:
+        warning: 50
+        critical: 70
+        emergency: 85
+    monitoring_config:
+      intervals:
+        health_check: 10000  # More frequent checks in testing
+        
+  production:
+    memory_thresholds:
+      duckdb_memory:
+        warning: 75
+        critical: 90
+        emergency: 95
+    alerting_rules:
+      severity_levels:
+        critical:
+          notification_channels: ["log", "console", "webhook", "email"]
+        emergency:
+          notification_channels: ["log", "console", "webhook", "email", "sms"]

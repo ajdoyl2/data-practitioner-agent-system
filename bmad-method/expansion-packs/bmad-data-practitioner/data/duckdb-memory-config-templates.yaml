@@ -1,0 +1,255 @@
+# DuckDB Memory Management Configuration Templates
+# Templates for different deployment scenarios and system specifications
+
+# Development Environment Configuration
+development:
+  description: "Configuration for local development with 8-16GB RAM"
+  system_requirements:
+    min_ram: "8GB"
+    recommended_ram: "16GB"
+    cpu_cores: 4
+  duckdb_config:
+    memory_limit: "2GB"
+    max_connections: 5
+    database_path: ":memory:"
+    temp_directory: "./tmp/duckdb_spill"
+    checkpoint_threshold: "512MB"
+    wal_autocheckpoint: 1000
+    cache_size: 65536  # 64MB in pages (4KB each)
+    enable_object_cache: true
+    enable_profiling: true
+  spilling_config:
+    enabled: true
+    spill_directory: "./tmp/duckdb_spill"
+    max_spill_size: "8GB"
+    cleanup_interval: 300000  # 5 minutes
+  monitoring:
+    memory_threshold_warning: 70
+    memory_threshold_critical: 85
+    log_level: "debug"
+    performance_logging: true
+
+# Testing Environment Configuration  
+testing:
+  description: "Configuration for automated testing with constrained resources"
+  system_requirements:
+    min_ram: "4GB"
+    recommended_ram: "8GB"
+    cpu_cores: 2
+  duckdb_config:
+    memory_limit: "1GB"
+    max_connections: 3
+    database_path: ":memory:"
+    temp_directory: "/tmp/duckdb_test_spill"
+    checkpoint_threshold: "256MB"
+    wal_autocheckpoint: 500
+    cache_size: 32768  # 32MB in pages
+    enable_object_cache: true
+    enable_profiling: false
+  spilling_config:
+    enabled: true
+    spill_directory: "/tmp/duckdb_test_spill"
+    max_spill_size: "4GB"
+    cleanup_interval: 60000  # 1 minute
+  monitoring:
+    memory_threshold_warning: 60
+    memory_threshold_critical: 75
+    log_level: "warn"
+    performance_logging: false
+
+# Production Small Environment Configuration
+production_small:
+  description: "Configuration for small production deployment with 16-32GB RAM"
+  system_requirements:
+    min_ram: "16GB"
+    recommended_ram: "32GB"
+    cpu_cores: 8
+  duckdb_config:
+    memory_limit: "8GB"
+    max_connections: 10
+    database_path: "/var/lib/duckdb/analytics.duckdb"
+    temp_directory: "/var/tmp/duckdb_spill"
+    checkpoint_threshold: "2GB"
+    wal_autocheckpoint: 5000
+    cache_size: 131072  # 128MB in pages
+    enable_object_cache: true
+    enable_profiling: false
+  spilling_config:
+    enabled: true
+    spill_directory: "/var/tmp/duckdb_spill"
+    max_spill_size: "32GB"
+    cleanup_interval: 600000  # 10 minutes
+  monitoring:
+    memory_threshold_warning: 75
+    memory_threshold_critical: 90
+    log_level: "info"
+    performance_logging: true
+
+# Production Large Environment Configuration
+production_large:
+  description: "Configuration for large production deployment with 64GB+ RAM"
+  system_requirements:
+    min_ram: "64GB"
+    recommended_ram: "128GB"
+    cpu_cores: 16
+  duckdb_config:
+    memory_limit: "32GB"
+    max_connections: 20
+    database_path: "/var/lib/duckdb/analytics.duckdb"
+    temp_directory: "/var/tmp/duckdb_spill"
+    checkpoint_threshold: "8GB"
+    wal_autocheckpoint: 10000
+    cache_size: 524288  # 512MB in pages
+    enable_object_cache: true
+    enable_profiling: false
+  spilling_config:
+    enabled: true
+    spill_directory: "/var/tmp/duckdb_spill"
+    max_spill_size: "128GB"
+    cleanup_interval: 900000  # 15 minutes
+  monitoring:
+    memory_threshold_warning: 80
+    memory_threshold_critical: 95
+    log_level: "warn"
+    performance_logging: true
+
+# Cloud Environment Configuration (Auto-scaling)
+cloud_auto:
+  description: "Configuration for cloud deployment with auto-scaling capabilities"
+  system_requirements:
+    min_ram: "variable"
+    recommended_ram: "variable"
+    cpu_cores: "variable"
+  duckdb_config:
+    memory_limit: "${DUCKDB_MEMORY_LIMIT:-8GB}"
+    max_connections: "${DUCKDB_MAX_CONNECTIONS:-15}"
+    database_path: "${DUCKDB_DATABASE_PATH:-:memory:}"
+    temp_directory: "${DUCKDB_TEMP_DIR:-/tmp/duckdb_spill}"
+    checkpoint_threshold: "${DUCKDB_CHECKPOINT_THRESHOLD:-2GB}"
+    wal_autocheckpoint: "${DUCKDB_WAL_AUTOCHECKPOINT:-5000}"
+    cache_size: "${DUCKDB_CACHE_SIZE:-131072}"
+    enable_object_cache: true
+    enable_profiling: "${DUCKDB_ENABLE_PROFILING:-false}"
+  spilling_config:
+    enabled: true
+    spill_directory: "${DUCKDB_SPILL_DIR:-/tmp/duckdb_spill}"
+    max_spill_size: "${DUCKDB_MAX_SPILL_SIZE:-64GB}"
+    cleanup_interval: "${DUCKDB_CLEANUP_INTERVAL:-600000}"
+  monitoring:
+    memory_threshold_warning: "${DUCKDB_WARNING_THRESHOLD:-75}"
+    memory_threshold_critical: "${DUCKDB_CRITICAL_THRESHOLD:-90}"
+    log_level: "${DUCKDB_LOG_LEVEL:-info}"
+    performance_logging: "${DUCKDB_PERFORMANCE_LOGGING:-true}"
+  auto_scaling:
+    enabled: true
+    scale_up_threshold: 85
+    scale_down_threshold: 30
+    min_memory: "2GB"
+    max_memory: "64GB"
+    step_size: "4GB"
+
+# Edge Computing Configuration
+edge:
+  description: "Configuration for edge computing with limited resources"
+  system_requirements:
+    min_ram: "2GB"
+    recommended_ram: "4GB"
+    cpu_cores: 2
+  duckdb_config:
+    memory_limit: "512MB"
+    max_connections: 2
+    database_path: ":memory:"
+    temp_directory: "/tmp/duckdb_spill"
+    checkpoint_threshold: "128MB"
+    wal_autocheckpoint: 100
+    cache_size: 16384  # 16MB in pages
+    enable_object_cache: false
+    enable_profiling: false
+  spilling_config:
+    enabled: true
+    spill_directory: "/tmp/duckdb_spill"
+    max_spill_size: "1GB"
+    cleanup_interval: 30000  # 30 seconds
+  monitoring:
+    memory_threshold_warning: 50
+    memory_threshold_critical: 70
+    log_level: "error"
+    performance_logging: false
+
+# Container Environment Configuration
+container:
+  description: "Configuration for containerized deployment with resource limits"
+  system_requirements:
+    min_ram: "container_limit"
+    recommended_ram: "container_limit"
+    cpu_cores: "container_limit"
+  duckdb_config:
+    memory_limit: "${CONTAINER_MEMORY_LIMIT_PCT:-60}%"  # 60% of container memory
+    max_connections: "${DUCKDB_MAX_CONNECTIONS:-8}"
+    database_path: "${DUCKDB_DATABASE_PATH:-/data/analytics.duckdb}"
+    temp_directory: "${DUCKDB_TEMP_DIR:-/tmp/duckdb_spill}"
+    checkpoint_threshold: "${DUCKDB_CHECKPOINT_THRESHOLD:-1GB}"
+    wal_autocheckpoint: "${DUCKDB_WAL_AUTOCHECKPOINT:-2000}"
+    cache_size: "${DUCKDB_CACHE_SIZE:-65536}"
+    enable_object_cache: true
+    enable_profiling: "${DUCKDB_ENABLE_PROFILING:-false}"
+  spilling_config:
+    enabled: true
+    spill_directory: "${DUCKDB_SPILL_DIR:-/tmp/duckdb_spill}"
+    max_spill_size: "${DUCKDB_MAX_SPILL_SIZE:-16GB}"
+    cleanup_interval: "${DUCKDB_CLEANUP_INTERVAL:-300000}"
+  monitoring:
+    memory_threshold_warning: "${DUCKDB_WARNING_THRESHOLD:-70}"
+    memory_threshold_critical: "${DUCKDB_CRITICAL_THRESHOLD:-85}"
+    log_level: "${DUCKDB_LOG_LEVEL:-info}"
+    performance_logging: "${DUCKDB_PERFORMANCE_LOGGING:-false}"
+  container_specific:
+    respect_cgroup_limits: true
+    graceful_shutdown_timeout: 30
+    health_check_interval: 60
+
+# Configuration Selection Guidelines
+configuration_selection:
+  guidelines:
+    - name: "Memory-to-DuckDB Ratio"
+      description: "DuckDB memory limit should be 25-50% of total system memory"
+      recommendation: "Leave sufficient memory for OS and other processes"
+    
+    - name: "Connection Scaling"
+      description: "Max connections should scale with CPU cores"
+      recommendation: "1-3 connections per CPU core, depending on workload"
+    
+    - name: "Spill Directory"
+      description: "Spill directory should be on fast storage with sufficient space"
+      recommendation: "SSD preferred, 2-4x memory limit in available space"
+    
+    - name: "Checkpoint Frequency"
+      description: "More frequent checkpoints reduce memory pressure but increase I/O"
+      recommendation: "Balance based on workload pattern and storage speed"
+    
+    - name: "Environment Variables"
+      description: "Use environment variables for cloud and container deployments"
+      recommendation: "Enable runtime configuration without code changes"
+
+# Validation Rules
+validation_rules:
+  memory_limit:
+    min: "256MB"
+    max: "1TB"
+    format: "regex: ^\\d+(\\.\\d+)?(B|KB|MB|GB|TB)$"
+  
+  max_connections:
+    min: 1
+    max: 100
+    type: "integer"
+  
+  checkpoint_threshold:
+    min: "64MB"
+    max: "32GB"
+    format: "regex: ^\\d+(\\.\\d+)?(B|KB|MB|GB|TB)$"
+  
+  cache_size:
+    min: 1024    # 1024 pages = 4MB
+    max: 2097152 # 2M pages = 8GB
+    type: "integer"
+    description: "Cache size in 4KB pages"

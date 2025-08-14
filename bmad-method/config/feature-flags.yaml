@@ -4,7 +4,7 @@ features:
     description: Enable PyAirbyte connectors for data ingestion
     dependencies: []
   duckdb_analytics:
-    enabled: true
+    enabled: false
     description: Enable DuckDB for local analytics and data exploration
     dependencies: []
   dbt_transformations:
@@ -17,7 +17,7 @@ features:
     description: Enable Dagster for workflow orchestration
     dependencies:
       - pyairbyte_integration
-      - dbt_transformations
+      - duckdb_analytics
   eda_automation:
     enabled: false
     description: Enable automated exploratory data analysis
@@ -35,7 +35,7 @@ features:
     dependencies: []
 metadata:
   version: 1.0.0
-  last_modified: '2025-08-10T23:51:06.342Z'
+  last_modified: '2025-08-14T06:42:55.560Z'
   environment: development
 safety:
   require_explicit_enable: true

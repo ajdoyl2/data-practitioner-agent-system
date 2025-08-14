@@ -1,0 +1,178 @@
+# DuckDB CLI Integration Configuration
+# Configuration for integrating DuckDB operations with existing BMad CLI tools
+
+cli_integration:
+  # Command registration with existing BMad CLI
+  commands:
+    data:
+      enabled: true
+      description: "Data processing and analytics commands"
+      subcommands:
+        analyze:
+          enabled: true
+          description: "Analyze dataset using DuckDB"
+          options:
+            - name: "memory-limit"
+              short: "m"
+              description: "Memory limit for DuckDB"
+              default: "4GB"
+            - name: "output"
+              short: "o" 
+              description: "Output format (table, json, csv)"
+              default: "table"
+            - name: "monitor"
+              description: "Enable monitoring during analysis"
+              type: "boolean"
+        
+        monitor:
+          enabled: true
+          description: "Monitor DuckDB resource usage"
+          options:
+            - name: "interval"
+              short: "i"
+              description: "Update interval in seconds"
+              default: "30"
+            - name: "web"
+              short: "w"
+              description: "Enable web dashboard"
+              type: "boolean"
+            - name: "port"
+              short: "p"
+              description: "Web dashboard port"
+              default: "3001"
+        
+        cleanup:
+          enabled: true
+          description: "Perform DuckDB memory cleanup"
+          options:
+            - name: "force"
+              short: "f"
+              description: "Force aggressive cleanup"
+              type: "boolean"
+        
+        benchmark:
+          enabled: true
+          description: "Run DuckDB performance benchmarks"
+          options:
+            - name: "test-type"
+              short: "t"
+              description: "Benchmark type (load, query, memory, all)"
+              default: "all"
+            - name: "output"
+              short: "o"
+              description: "Save results to file"
+
+  # Integration with existing BMad CLI patterns
+  patterns:
+    error_handling:
+      use_chalk_styling: true
+      follow_bmad_error_format: true
+      integrate_with_security_logger: true
+    
+    progress_tracking:
+      use_bmad_progress_bars: true
+      integrate_with_todo_system: false  # CLI operations don't use todos
+      show_detailed_progress: true
+    
+    configuration:
+      use_bmad_config_loader: true
+      support_environment_overrides: true
+      validate_feature_flags: true
+    
+    output_formatting:
+      support_json_output: true
+      support_table_output: true
+      support_csv_output: true
+      use_bmad_color_scheme: true
+
+  # Feature flag dependencies
+  feature_dependencies:
+    duckdb_cli_integration:
+      enabled: true
+      description: "Enable DuckDB CLI command integration"
+      dependencies: ["duckdb_analytics"]
+    
+    duckdb_cli_monitoring:
+      enabled: true
+      description: "Enable DuckDB CLI monitoring commands"
+      dependencies: ["duckdb_cli_integration", "duckdb_monitoring"]
+    
+    duckdb_cli_web_dashboard:
+      enabled: false  # Optional, security consideration
+      description: "Enable web dashboard from CLI"
+      dependencies: ["duckdb_cli_monitoring", "duckdb_web_dashboard"]
+
+# Integration with existing tools
+tool_integration:
+  bmad_scripts:
+    - name: "data-setup.js"
+      integration: "Add DuckDB initialization"
+      location: "bmad-method/scripts/"
+    
+    - name: "health-check.js"
+      integration: "Add DuckDB health monitoring"
+      location: "bmad-method/scripts/"
+    
+    - name: "cleanup.js"
+      integration: "Add DuckDB cleanup procedures"
+      location: "bmad-method/scripts/"
+
+  bmad_tools:
+    - name: "progress-tracker.js"
+      integration: "DuckDB operation progress tracking"
+      location: "bmad-method/tools/lib/"
+    
+    - name: "error-handler.js"
+      integration: "DuckDB error handling patterns"
+      location: "bmad-method/tools/lib/"
+    
+    - name: "config-validator.js"
+      integration: "DuckDB configuration validation"
+      location: "bmad-method/tools/lib/"
+
+# CLI workflow patterns
+workflows:
+  data_analysis:
+    description: "Complete data analysis workflow"
+    steps:
+      - command: "bmad data analyze dataset.csv --memory-limit 2GB --monitor"
+        description: "Analyze dataset with monitoring"
+      - command: "bmad data monitor --interval 15 --web"
+        description: "Start continuous monitoring with web dashboard"
+      - command: "bmad data cleanup --force"
+        description: "Clean up resources after analysis"
+  
+  performance_testing:
+    description: "Performance testing and benchmarking"
+    steps:
+      - command: "bmad data benchmark --test-type memory"
+        description: "Run memory stress tests"
+      - command: "bmad data benchmark --test-type query --output benchmark-results.json"
+        description: "Run query performance tests and save results"
+      - command: "bmad data monitor --interval 10"
+        description: "Monitor system during performance tests"
+  
+  production_monitoring:
+    description: "Production monitoring setup"
+    steps:
+      - command: "bmad data monitor --interval 60"
+        description: "Start production monitoring (no web dashboard)"
+      - command: "bmad data cleanup"
+        description: "Scheduled cleanup (via cron)"
+
+# Security considerations
+security:
+  cli_access_control:
+    require_feature_flags: true
+    validate_permissions: true
+    audit_cli_operations: true
+  
+  web_dashboard_security:
+    disable_in_production: true
+    require_authentication: true
+    use_https_only: true
+  
+  data_access:
+    validate_file_permissions: true
+    restrict_database_paths: true
+    audit_data_operations: true
