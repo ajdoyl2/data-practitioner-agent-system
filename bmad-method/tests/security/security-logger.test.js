@@ -7,7 +7,8 @@ const fs = require('fs-extra');
 const path = require('path');
 const {
   securityLogger,
-  SecurityEvents
+  SecurityEvents,
+  configureLogPaths
 } = require('../../tools/lib/security-logger');
 
 describe('Security Logger', () => {
@@ -19,19 +20,17 @@ describe('Security Logger', () => {
     // Create test log directory
     await fs.ensureDir(testLogDir);
     
-    // Mock log paths
-    jest.spyOn(path, 'join').mockImplementation((...args) => {
-      if (args.includes('logs')) {
-        return path.join(testLogDir, args[args.length - 1]);
-      }
-      return path.join(...args);
-    });
+    // Configure logger to use test directory
+    configureLogPaths(testLogDir);
   });
   
   afterEach(async () => {
     // Clean up test logs
     await fs.remove(testLogDir);
-    jest.restoreAllMocks();
+    
+    // Reset logger to default paths
+    const defaultLogDir = path.join(__dirname, '../../logs');
+    configureLogPaths(defaultLogDir);
   });
   
   describe('Event Logging', () => {
@@ -284,7 +283,11 @@ describe('Security Logger', () => {
     });
     
     test('should remove old archives', async () => {
-      // Create multiple archive files
+      // Create a large security log file to trigger rotation
+      const largeContent = 'x'.repeat(11 * 1024 * 1024); // 11MB to exceed 10MB limit
+      await fs.writeFile(securityLog, largeContent);
+      
+      // Create multiple existing archive files
       for (let i = 0; i < 7; i++) {
         const archiveName = `security.log.2024-01-0${i + 1}T00-00-00-000Z`;
         await fs.writeFile(path.join(testLogDir, archiveName), 'archived content');
@@ -293,7 +296,7 @@ describe('Security Logger', () => {
       await securityLogger.rotateLogs(10, 5);
       
       const files = await fs.readdir(testLogDir);
-      const archives = files.filter(f => f.startsWith('security.log.'));
+      const archives = files.filter(f => f.startsWith('security.log.') && f !== 'security.log');
       
       expect(archives.length).toBeLessThanOrEqual(5);
     });

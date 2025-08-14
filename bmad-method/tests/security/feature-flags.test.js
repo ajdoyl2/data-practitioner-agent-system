@@ -68,11 +68,12 @@ describe('Feature Flag Manager', () => {
     fs.writeFileSync(testFlagsPath, yaml.dump(testFlags));
     
     // Mock file reading to use test file
-    jest.spyOn(fs, 'readFileSync').mockImplementation((file) => {
+    const originalReadFileSync = fs.readFileSync;
+    jest.spyOn(fs, 'readFileSync').mockImplementation((file, ...args) => {
       if (file.includes('feature-flags.yaml')) {
-        return fs.readFileSync(testFlagsPath, 'utf8');
+        return originalReadFileSync(testFlagsPath, 'utf8');
       }
-      return fs.readFileSync(file, 'utf8');
+      return originalReadFileSync(file, ...args);
     });
   });
   
@@ -285,7 +286,7 @@ describe('Feature Flag Manager', () => {
       const result = validateFeatureFlags();
       
       expect(result.valid).toBe(false);
-      expect(result.errors).toContain(
+      expect(result.errors).toContainEqual(
         expect.stringMatching(/Circular dependency/)
       );
     });
@@ -300,7 +301,7 @@ describe('Feature Flag Manager', () => {
       const result = validateFeatureFlags();
       
       expect(result.valid).toBe(false);
-      expect(result.errors).toContain(
+      expect(result.errors).toContainEqual(
         expect.stringMatching(/depends on unknown feature/)
       );
     });
@@ -313,7 +314,7 @@ describe('Feature Flag Manager', () => {
       
       const result = validateFeatureFlags();
       
-      expect(result.warnings).toContain(
+      expect(result.warnings).toContainEqual(
         expect.stringMatching(/Missing metadata.version/)
       );
     });
