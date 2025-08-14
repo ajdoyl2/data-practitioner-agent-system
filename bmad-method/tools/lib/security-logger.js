@@ -6,10 +6,18 @@
 const fs = require('fs-extra');
 const path = require('path');
 
-// Log file locations
-const LOG_DIR = path.join(__dirname, '../../logs');
-const SECURITY_LOG = path.join(LOG_DIR, 'security.log');
-const AUDIT_LOG = path.join(LOG_DIR, 'audit.log');
+// Log file locations - configurable for testing
+let LOG_DIR = path.join(__dirname, '../../logs');
+let SECURITY_LOG = path.join(LOG_DIR, 'security.log');
+let AUDIT_LOG = path.join(LOG_DIR, 'audit.log');
+
+// Configuration function for testing
+function configureLogPaths(logDir) {
+  LOG_DIR = logDir;
+  SECURITY_LOG = path.join(LOG_DIR, 'security.log');
+  AUDIT_LOG = path.join(LOG_DIR, 'audit.log');
+  fs.ensureDirSync(LOG_DIR);
+}
 
 // Ensure log directory exists
 fs.ensureDirSync(LOG_DIR);
@@ -458,6 +466,7 @@ const securityLogger = {
 module.exports = {
   securityLogger,
   SecurityEvents,
+  configureLogPaths,
   logAuthSuccess,
   logAuthFailure,
   logPermissionDenied,
