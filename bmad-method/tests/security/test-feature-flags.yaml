@@ -1,0 +1,25 @@
+features:
+  feature_a:
+    enabled: false
+    description: Feature A
+    dependencies: []
+  feature_b:
+    enabled: false
+    description: Feature B
+    dependencies:
+      - feature_a
+  feature_c:
+    enabled: false
+    description: Feature C
+    dependencies:
+      - feature_b
+  feature_d:
+    enabled: true
+    description: Feature D
+    dependencies: []
+metadata:
+  version: 1.0.0
+  environment: test
+safety:
+  require_explicit_enable: true
+  disable_on_error: true

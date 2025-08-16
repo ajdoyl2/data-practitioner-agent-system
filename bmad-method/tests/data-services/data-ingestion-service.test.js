@@ -5,13 +5,43 @@
 const request = require('supertest');
 const express = require('express');
 const { isFeatureEnabled, requireFeatureMiddleware } = require('../../tools/lib/feature-flag-manager');
-const fs = require('fs-extra');
 
 // Mock dependencies
 jest.mock('../../tools/lib/feature-flag-manager');
 jest.mock('../../tools/data-services/pyairbyte-wrapper');
 jest.mock('../../tools/data-services/auth-middleware');
-jest.mock('fs-extra');
+jest.mock('../../tools/lib/security-logger', () => ({
+  securityLogger: {
+    logApiRequest: jest.fn(),
+    logApiError: jest.fn(),
+    logSecurityEvent: jest.fn()
+  }
+}));
+
+// Mock fs-extra with Jest functions
+jest.mock('fs-extra', () => ({
+  ensureDirSync: jest.fn(),
+  existsSync: jest.fn(),
+  readdir: jest.fn(),
+  writeFileSync: jest.fn(),
+  readFileSync: jest.fn(),
+  mkdirSync: jest.fn(),
+  rmSync: jest.fn(),
+  readdirSync: jest.fn(),
+  statSync: jest.fn(),
+  copyFileSync: jest.fn(),
+  pathExistsSync: jest.fn(),
+  readFile: jest.fn(),
+  writeFile: jest.fn(),
+  ensureDir: jest.fn(),
+  copy: jest.fn(),
+  remove: jest.fn(),
+  pathExists: jest.fn(),
+  unlink: jest.fn(),
+  appendFile: jest.fn()
+}));
+
+const fs = require('fs-extra');
 
 describe('DataIngestionService', () => {
   let service;
@@ -24,10 +54,21 @@ describe('DataIngestionService', () => {
     // Mock feature flag as enabled
     isFeatureEnabled.mockReturnValue(true);
     
-    // Mock fs-extra
+    // Mock fs-extra functions
     fs.ensureDirSync.mockImplementation(() => {});
     fs.existsSync.mockReturnValue(true);
     fs.readdir.mockResolvedValue([]);
+    fs.writeFileSync.mockImplementation(() => {});
+    fs.readFileSync.mockReturnValue('{}');
+    fs.readdirSync.mockReturnValue([]);
+    fs.statSync.mockReturnValue({ isDirectory: () => false, size: 1024 });
+    fs.pathExistsSync.mockReturnValue(true);
+    fs.readFile.mockResolvedValue('{}');
+    fs.writeFile.mockResolvedValue();
+    fs.ensureDir.mockResolvedValue();
+    fs.pathExists.mockResolvedValue(true);
+    fs.unlink.mockResolvedValue();
+    fs.appendFile.mockResolvedValue();
     
     // Mock auth middleware
     const authMiddleware = require('../../tools/data-services/auth-middleware');

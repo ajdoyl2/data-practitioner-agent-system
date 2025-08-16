@@ -1,0 +1,7 @@
+# PyAirbyte and Data Processing Dependencies
+airbyte>=0.20.0
+pandas>=2.0.0
+numpy>=1.24.0
+sqlalchemy>=2.0.0
+pyyaml>=6.0
+duckdb>=1.0.0
