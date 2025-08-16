@@ -15,6 +15,12 @@ openpyxl>=3.1.0
 xlrd>=2.0.0
 pyarrow>=15.0.0
 
+# Workflow orchestration
+dagster>=1.8.12
+dagster-webserver>=1.8.12
+dagster-postgres>=0.24.12
+dagster-docker>=0.24.12
+
 # Utilities
 pyyaml>=6.0.0
 python-dotenv>=1.0.0

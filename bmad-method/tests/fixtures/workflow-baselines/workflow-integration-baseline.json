@@ -1,0 +1,18 @@
+{
+  "timestamp": "2025-08-16T03:57:25.849Z",
+  "workflow": {
+    "discovery": {
+      "success": true,
+      "discoveryTime": 3,
+      "agentCount": 10,
+      "teamCount": 4,
+      "totalEntities": 14
+    },
+    "resolution": {},
+    "performance": {
+      "discoveryTime": 3,
+      "acceptable": true,
+      "scalabilityFactor": 14
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "timestamp": "2025-08-16T03:57:25.844Z",
+  "tests": {
+    "malformed-yaml": {
+      "testPerformed": true,
+      "expectedError": true,
+      "actualError": false,
+      "note": "Baseline for malformed YAML structure"
+    }
+  }
+}

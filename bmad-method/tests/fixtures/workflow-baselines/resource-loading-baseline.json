@@ -1,0 +1,25 @@
+{
+  "timestamp": "2025-08-16T03:57:25.823Z",
+  "resourceTypes": {
+    "tasks": {
+      "loadingTime": 3,
+      "success": false,
+      "hasContent": false
+    },
+    "templates": {
+      "loadingTime": 2,
+      "success": false,
+      "hasContent": false
+    },
+    "checklists": {
+      "loadingTime": 6,
+      "success": false,
+      "hasContent": false
+    },
+    "data": {
+      "loadingTime": 1,
+      "success": false,
+      "hasContent": false
+    }
+  }
+}

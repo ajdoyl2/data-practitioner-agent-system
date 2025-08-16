@@ -173,11 +173,22 @@ function disableFeature(featureName, cascade = true) {
   
   // Find and disable dependent features if cascading
   if (cascade) {
-    for (const [name, feature] of Object.entries(flags.features)) {
-      if (feature.dependencies && feature.dependencies.includes(featureName)) {
-        if (feature.enabled) {
-          feature.enabled = false;
-          disabledFeatures.push(name);
+    const toDisable = [featureName];
+    const processed = new Set();
+    
+    while (toDisable.length > 0) {
+      const currentFeature = toDisable.shift();
+      if (processed.has(currentFeature)) continue;
+      processed.add(currentFeature);
+      
+      // Find features that depend on current feature
+      for (const [name, feature] of Object.entries(flags.features)) {
+        if (feature.dependencies && feature.dependencies.includes(currentFeature)) {
+          if (feature.enabled && !disabledFeatures.includes(name)) {
+            feature.enabled = false;
+            disabledFeatures.push(name);
+            toDisable.push(name); // Add to queue for recursive disabling
+          }
         }
       }
     }

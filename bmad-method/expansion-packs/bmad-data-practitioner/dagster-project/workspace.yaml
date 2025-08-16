@@ -1,0 +1,39 @@
+# Dagster Workspace Configuration
+# Defines all the code locations and assets for the Data Practitioner pipeline
+
+load_from:
+  - python_file: 
+      relative_path: assets/ingestion_assets.py
+      location_name: "data_ingestion"
+      
+  - python_file:
+      relative_path: assets/analytics_assets.py
+      location_name: "analytics_engine"
+      
+  - python_file:
+      relative_path: assets/transformation_assets.py
+      location_name: "data_transformation"
+      
+  - python_file:
+      relative_path: assets/publication_assets.py
+      location_name: "data_publication"
+
+# Global configuration that applies to all code locations
+metadata:
+  project_name: "BMad Data Practitioner"
+  version: "1.4.0"
+  description: "Orchestrated data pipeline for the BMad Data Practitioner expansion pack"
+  
+# Sensor configuration
+sensors:
+  enabled: true
+  evaluation_interval: 30  # seconds
+
+# Schedule configuration  
+schedules:
+  enabled: true
+  
+# Auto-materialize configuration
+auto_materialize:
+  enabled: true
+  evaluation_interval: 60  # seconds

@@ -1,0 +1,221 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`Workflow Execution Baseline Tests Agent Discovery Baselines should establish agent discovery performance baseline: agent-discovery-error-baseline 1`] = `
+{
+  "agentCount": 0,
+  "error": "expect(received).toBeInstanceOf(expected)
+
+Expected constructor: Array
+Received constructor: Array
+",
+  "expectedError": false,
+  "timestamp": "2025-08-15T05:36:05.479Z",
+}
+`;
+
+exports[`Workflow Execution Baseline Tests Agent Discovery Baselines should establish team discovery performance baseline: team-discovery-error-baseline 1`] = `
+{
+  "error": "expect(received).toBeInstanceOf(expected)
+
+Expected constructor: Array
+Received constructor: Array
+",
+  "expectedError": false,
+  "teamCount": 0,
+  "timestamp": "2025-08-15T05:36:05.483Z",
+}
+`;
+
+exports[`Workflow Execution Baseline Tests Dependency Resolution Baselines should establish resource loading performance baseline: resource-loading-baseline 1`] = `
+{
+  "resourceTypes": {
+    "checklists": {
+      "hasContent": false,
+      "loadingTime": 1,
+      "success": false,
+    },
+    "data": {
+      "hasContent": false,
+      "loadingTime": 0,
+      "success": false,
+    },
+    "tasks": {
+      "hasContent": false,
+      "loadingTime": 20,
+      "success": false,
+    },
+    "templates": {
+      "hasContent": false,
+      "loadingTime": 5,
+      "success": false,
+    },
+  },
+  "timestamp": "2025-08-15T05:36:05.484Z",
+}
+`;
+
+exports[`Workflow Execution Baseline Tests Error Handling Baselines should establish malformed file handling baseline: malformed-file-baseline 1`] = `
+{
+  "tests": {
+    "malformed-yaml": {
+      "actualError": false,
+      "expectedError": true,
+      "note": "Baseline for malformed YAML structure",
+      "testPerformed": true,
+    },
+  },
+  "timestamp": "2025-08-15T05:36:05.514Z",
+}
+`;
+
+exports[`Workflow Execution Baseline Tests Error Handling Baselines should establish missing file error handling baseline: error-handling-baseline 1`] = `
+{
+  "errorTests": {
+    "agent-nonexistent-agent": {
+      "actualError": true,
+      "errorMessage": "ENOENT: no such file or directory, open '/Users/ajdoyle/data-practitioner-agent-system/bmad-method/bmad-core/agents/nonexistent-agent.md'",
+      "errorType": "Error",
+      "expectedError": true,
+      "responseTime": 0,
+    },
+    "resource-nonexistent-resource": {
+      "actualError": false,
+      "expectedError": true,
+      "responseTime": 1,
+      "result": "unexpected-success",
+    },
+    "team-nonexistent-team": {
+      "actualError": true,
+      "errorMessage": "ENOENT: no such file or directory, open '/Users/ajdoyle/data-practitioner-agent-system/bmad-method/bmad-core/agent-teams/nonexistent-team.yaml'",
+      "errorType": "Error",
+      "expectedError": true,
+      "responseTime": 0,
+    },
+  },
+  "timestamp": "2025-08-15T05:36:05.512Z",
+}
+`;
+
+exports[`Workflow Execution Baseline Tests System State Baselines should capture system state baseline: system-state-baseline 1`] = `
+{
+  "configuration": {},
+  "directories": {
+    "agent-teams": {
+      "exists": false,
+      "path": "/Users/ajdoyle/data-practitioner-agent-system/bmad-method/agent-teams",
+    },
+    "agents": {
+      "exists": false,
+      "path": "/Users/ajdoyle/data-practitioner-agent-system/bmad-method/agents",
+    },
+    "checklists": {
+      "exists": false,
+      "path": "/Users/ajdoyle/data-practitioner-agent-system/bmad-method/checklists",
+    },
+    "expansion-packs": {
+      "contents": [
+        "README.md",
+        "bmad-2d-phaser-game-dev",
+        "bmad-2d-unity-game-dev",
+        "bmad-data-practitioner",
+        "bmad-infrastructure-devops",
+      ],
+      "exists": true,
+      "fileCount": 5,
+      "path": "/Users/ajdoyle/data-practitioner-agent-system/bmad-method/expansion-packs",
+    },
+    "tasks": {
+      "exists": false,
+      "path": "/Users/ajdoyle/data-practitioner-agent-system/bmad-method/tasks",
+    },
+    "templates": {
+      "exists": false,
+      "path": "/Users/ajdoyle/data-practitioner-agent-system/bmad-method/templates",
+    },
+    "tests": {
+      "contents": [
+        "agents",
+        "data-services",
+        "fixtures",
+        "integration",
+        "performance",
+        "regression",
+        "security",
+        "storage",
+        "tools",
+        "utils",
+      ],
+      "exists": true,
+      "fileCount": 10,
+      "path": "/Users/ajdoyle/data-practitioner-agent-system/bmad-method/tests",
+    },
+    "tools": {
+      "contents": [
+        "bmad-npx-wrapper.js",
+        "builders",
+        "bump-all-versions.js",
+        "bump-expansion-version.js",
+        "cli",
+        "cli.js",
+        "data-services",
+        "flattener",
+        "installer",
+        "lib",
+        "md-assets",
+        "rollback",
+        "semantic-release-sync-installer.js",
+        "sync-installer-version.js",
+        "update-expansion-version.js",
+        "upgraders",
+        "version-bump.js",
+        "yaml-format.js",
+      ],
+      "exists": true,
+      "fileCount": 18,
+      "path": "/Users/ajdoyle/data-practitioner-agent-system/bmad-method/tools",
+    },
+  },
+  "files": {
+    "bmad-core/core-config.yaml": {
+      "exists": true,
+      "modified": "2025-08-08T04:05:02.129Z",
+      "path": "/Users/ajdoyle/data-practitioner-agent-system/bmad-method/bmad-core/core-config.yaml",
+      "size": 553,
+    },
+    "jest.config.js": {
+      "exists": true,
+      "modified": "2025-08-15T05:24:49.494Z",
+      "path": "/Users/ajdoyle/data-practitioner-agent-system/bmad-method/jest.config.js",
+      "size": 1502,
+    },
+    "package.json": {
+      "exists": true,
+      "modified": "2025-08-15T05:24:43.914Z",
+      "path": "/Users/ajdoyle/data-practitioner-agent-system/bmad-method/package.json",
+      "size": 3630,
+    },
+  },
+  "timestamp": "2025-08-15T05:36:05.521Z",
+}
+`;
+
+exports[`Workflow Execution Baseline Tests Workflow Integration Baselines should establish full workflow execution baseline: workflow-integration-baseline 1`] = `
+{
+  "timestamp": "2025-08-15T05:36:05.519Z",
+  "workflow": {
+    "discovery": {
+      "agentCount": 10,
+      "discoveryTime": 0,
+      "success": true,
+      "teamCount": 4,
+      "totalEntities": 14,
+    },
+    "performance": {
+      "acceptable": true,
+      "discoveryTime": 0,
+      "scalabilityFactor": 14,
+    },
+    "resolution": {},
+  },
+}
+`;

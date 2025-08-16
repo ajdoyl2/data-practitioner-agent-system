@@ -36,6 +36,16 @@ services:
         required: false
         sensitive: true
         example: "postgresql://user:pass@host:5432/dbname"
+      - name: "DATABASE_HOST"
+        description: "Database host"
+        required: false
+      - name: "DATABASE_USER"
+        description: "Database username"
+        required: false
+      - name: "DATABASE_PASSWORD"
+        description: "Database password"
+        required: false
+        sensitive: true
       - name: "ANALYTICS_DATABASE_URL"
         description: "Analytics database connection string"
         required: false

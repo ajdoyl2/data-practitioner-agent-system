@@ -1,0 +1,21 @@
+{
+  "timestamp": "2025-08-16T03:57:25.800Z",
+  "agentCount": 10,
+  "discoveryTime": 1,
+  "agents": [
+    "analyst",
+    "architect",
+    "bmad-master",
+    "bmad-orchestrator",
+    "dev",
+    "pm",
+    "po",
+    "qa",
+    "sm",
+    "ux-expert"
+  ],
+  "performance": {
+    "timePerAgent": 0.1,
+    "acceptable": true
+  }
+}

@@ -1,0 +1,101 @@
+{
+  "timestamp": "2025-08-16T03:57:25.855Z",
+  "directories": {
+    "agents": {
+      "exists": false,
+      "path": "/Users/ajdoyle/data-practitioner-agent-system/bmad-method/agents"
+    },
+    "agent-teams": {
+      "exists": false,
+      "path": "/Users/ajdoyle/data-practitioner-agent-system/bmad-method/agent-teams"
+    },
+    "tasks": {
+      "exists": false,
+      "path": "/Users/ajdoyle/data-practitioner-agent-system/bmad-method/tasks"
+    },
+    "templates": {
+      "exists": false,
+      "path": "/Users/ajdoyle/data-practitioner-agent-system/bmad-method/templates"
+    },
+    "checklists": {
+      "exists": false,
+      "path": "/Users/ajdoyle/data-practitioner-agent-system/bmad-method/checklists"
+    },
+    "expansion-packs": {
+      "exists": true,
+      "path": "/Users/ajdoyle/data-practitioner-agent-system/bmad-method/expansion-packs",
+      "fileCount": 5,
+      "contents": [
+        "README.md",
+        "bmad-2d-phaser-game-dev",
+        "bmad-2d-unity-game-dev",
+        "bmad-data-practitioner",
+        "bmad-infrastructure-devops"
+      ]
+    },
+    "tools": {
+      "exists": true,
+      "path": "/Users/ajdoyle/data-practitioner-agent-system/bmad-method/tools",
+      "fileCount": 18,
+      "contents": [
+        "bmad-npx-wrapper.js",
+        "builders",
+        "bump-all-versions.js",
+        "bump-expansion-version.js",
+        "cli",
+        "cli.js",
+        "data-services",
+        "flattener",
+        "installer",
+        "lib",
+        "md-assets",
+        "rollback",
+        "semantic-release-sync-installer.js",
+        "sync-installer-version.js",
+        "update-expansion-version.js",
+        "upgraders",
+        "version-bump.js",
+        "yaml-format.js"
+      ]
+    },
+    "tests": {
+      "exists": true,
+      "path": "/Users/ajdoyle/data-practitioner-agent-system/bmad-method/tests",
+      "fileCount": 11,
+      "contents": [
+        "README.md",
+        "agents",
+        "data-services",
+        "fixtures",
+        "integration",
+        "performance",
+        "regression",
+        "security",
+        "storage",
+        "tools",
+        "utils"
+      ]
+    }
+  },
+  "files": {
+    "package.json": {
+      "exists": true,
+      "path": "/Users/ajdoyle/data-practitioner-agent-system/bmad-method/package.json",
+      "size": 3630,
+      "modified": "2025-08-15T05:24:43.914Z"
+    },
+    "jest.config.js": {
+      "exists": true,
+      "path": "/Users/ajdoyle/data-practitioner-agent-system/bmad-method/jest.config.js",
+      "size": 1596,
+      "modified": "2025-08-16T01:18:51.914Z"
+    },
+    "bmad-core/core-config.yaml": {
+      "exists": true,
+      "path": "/Users/ajdoyle/data-practitioner-agent-system/bmad-method/bmad-core/core-config.yaml",
+      "size": 553,
+      "modified": "2025-08-08T04:05:02.129Z"
+    }
+  },
+  "configuration": {}
+}

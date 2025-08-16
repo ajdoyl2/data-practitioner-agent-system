@@ -242,9 +242,9 @@ describe('Security Integration - End to End', () => {
       }
       
       // Get masked credentials
-      const dbCreds = getServiceCredentials('database', true);
-      expect(dbCreds.password).toBe('***');
-      expect(dbCreds.host).toBe('localhost');
+      const dbCreds = getServiceCredentials('databases', true);
+      expect(dbCreds.database_password).toBe('***');
+      expect(dbCreds.database_host).toBe('localhost');
       
       // Clean up
       delete process.env.PYPI_API_TOKEN;
