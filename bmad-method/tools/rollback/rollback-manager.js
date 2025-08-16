@@ -227,7 +227,8 @@ async function rollbackStory(storyId, options = {}) {
     storyId,
     feature: STORY_FEATURES[storyId],
     reason: options.reason || 'Manual rollback',
-    preState: preState
+    preState: preState,
+    timestamp: new Date().toISOString()
   });
   
   try {

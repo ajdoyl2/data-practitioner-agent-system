@@ -1,0 +1,98 @@
+name: Test Coverage
+
+on:
+  push:
+    branches: [main, master, develop]
+  pull_request:
+    branches: [main, master, develop]
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Run tests with coverage
+      run: npm test -- --coverage
+      continue-on-error: true
+    
+    - name: Generate coverage report
+      run: node scripts/coverage-report.js
+      continue-on-error: true
+    
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        files: ./coverage/lcov.info
+        flags: unittests
+        name: codecov-umbrella
+        fail_ci_if_error: false
+    
+    - name: Upload coverage reports
+      uses: actions/upload-artifact@v3
+      with:
+        name: coverage-reports
+        path: |
+          coverage/lcov-report/
+          coverage/coverage-report.md
+          coverage/badge.json
+    
+    - name: Comment PR with coverage
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const fs = require('fs');
+          const coverage = JSON.parse(fs.readFileSync('coverage/coverage-summary.json', 'utf8'));
+          const total = coverage.total;
+          
+          const comment = `## 📊 Test Coverage Report
+          
+          | Metric | Coverage |
+          |--------|----------|
+          | Lines | ${total.lines.pct}% |
+          | Statements | ${total.statements.pct}% |
+          | Functions | ${total.functions.pct}% |
+          | Branches | ${total.branches.pct}% |
+          `;
+          
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: comment
+          });
+    
+    - name: Check coverage thresholds
+      run: |
+        node -e "
+        const coverage = require('./coverage/coverage-summary.json');
+        const total = coverage.total;
+        const threshold = 80;
+        
+        let failed = false;
+        ['lines', 'statements', 'functions', 'branches'].forEach(key => {
+          if (total[key].pct < threshold) {
+            console.error(\`❌ \${key} coverage (\${total[key].pct}%) is below threshold (\${threshold}%)\`);
+            failed = true;
+          } else {
+            console.log(\`✅ \${key} coverage: \${total[key].pct}%\`);
+          }
+        });
+        
+        if (failed) process.exit(1);
+        "

@@ -1,0 +1,148 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`CLI Regression Baseline Tests Agent Workflow Execution Baselines should establish agent discovery baseline: agent-workflow-baseline 1`] = `
+{
+  "agentsDirectory": {
+    "exists": false,
+    "path": "/Users/ajdoyle/data-practitioner-agent-system/bmad-method/agents",
+  },
+  "teamsDirectory": {
+    "exists": false,
+    "path": "/Users/ajdoyle/data-practitioner-agent-system/bmad-method/agent-teams",
+  },
+  "timestamp": "2025-08-15T05:36:04.687Z",
+}
+`;
+
+exports[`CLI Regression Baseline Tests Error Handling Baselines should establish invalid command error format: invalid-command-error 1`] = `
+"error: unknown command 'invalid-command'
+"
+`;
+
+exports[`CLI Regression Baseline Tests Error Handling Baselines should establish missing argument error format: build-invalid-flag-error 1`] = `
+"error: unknown option '--invalid-flag'
+"
+`;
+
+exports[`CLI Regression Baseline Tests Error Handling Baselines should establish missing argument error format: validate-invalid-flag-error 1`] = `
+"error: unknown option '--invalid-flag'
+"
+`;
+
+exports[`CLI Regression Baseline Tests Help Command Baselines should match help command output format: help-command-output 1`] = `
+"Usage: bmad-build [options] [command]
+
+BMad-Method build tool for creating web bundles
+
+Options:
+  -V, --version                        output the version number
+  -h, --help                           display help for command
+
+Commands:
+  build [options]                      Build web bundles for agents and teams
+  build:expansions [options]           Build web bundles for all expansion packs
+  list:agents                          List all available agents
+  list:expansions                      List all available expansion packs
+  validate                             Validate agent and team configurations
+  upgrade [options]                    Upgrade a BMad-Method V3 project to V4
+  start-data-service [options]         Start the data ingestion service
+  setup-python [options]               Setup Python environment for PyAirbyte
+  data-connectors                      List available data connectors
+  enable-feature [options] <feature>   Enable a data practitioner feature
+  disable-feature [options] <feature>  Disable a data practitioner feature
+  list-features                        List all data practitioner features and
+                                       their status
+  help [command]                       display help for command
+"
+`;
+
+exports[`CLI Regression Baseline Tests Help Command Baselines should match version command output format: version-command-output 1`] = `"4.0.0"`;
+
+exports[`CLI Regression Baseline Tests List Commands Baselines should match agents list format: agents-list-output 1`] = `
+"Available agents:
+  - analyst
+  - architect
+  - bmad-master
+  - bmad-orchestrator
+  - dev
+  - pm
+  - po
+  - qa
+  - sm
+  - ux-expert
+"
+`;
+
+exports[`CLI Regression Baseline Tests Performance Baselines should establish command execution time baselines: performance-baseline 1`] = `
+{
+  "commands": {
+    "--help": {
+      "executionTime": 183,
+      "success": true,
+      "timestamp": "2025-08-15T05:36:04.234Z",
+    },
+    "--version": {
+      "executionTime": 131,
+      "success": true,
+      "timestamp": "2025-08-15T05:36:04.366Z",
+    },
+    "list:agents": {
+      "executionTime": 145,
+      "success": true,
+      "timestamp": "2025-08-15T05:36:04.511Z",
+    },
+    "validate": {
+      "executionTime": 175,
+      "success": true,
+      "timestamp": "2025-08-15T05:36:04.686Z",
+    },
+  },
+  "timestamp": "2025-08-15T05:36:04.050Z",
+}
+`;
+
+exports[`CLI Regression Baseline Tests Validate Command Baselines should establish configuration validation baseline: config-validation-baseline 1`] = `
+{
+  "files": {
+    "bmad-core/core-config.yaml": {
+      "exists": true,
+      "modified": "2025-08-08T04:05:02.129Z",
+      "size": 553,
+    },
+    "jest.config.js": {
+      "exists": true,
+      "modified": "2025-08-15T05:24:49.494Z",
+      "size": 1502,
+    },
+    "package.json": {
+      "exists": true,
+      "modified": "2025-08-15T05:24:43.914Z",
+      "size": 3630,
+    },
+  },
+  "timestamp": "2025-08-15T05:36:03.610Z",
+}
+`;
+
+exports[`CLI Regression Baseline Tests Validate Command Baselines should match validation output format: validate-command-output 1`] = `
+"Validating agents...
+  ✓ analyst
+  ✓ architect
+  ✓ bmad-master
+  ✓ bmad-orchestrator
+  ✓ dev
+  ✓ pm
+  ✓ po
+  ✓ qa
+  ✓ sm
+  ✓ ux-expert
+
+Validating teams...
+  ✓ team-all
+  ✓ team-fullstack
+  ✓ team-ide-minimal
+  ✓ team-no-ui
+
+All configurations are valid!
+"
+`;

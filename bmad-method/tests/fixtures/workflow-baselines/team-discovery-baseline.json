@@ -1,0 +1,15 @@
+{
+  "timestamp": "2025-08-16T03:57:25.818Z",
+  "teamCount": 4,
+  "discoveryTime": 0,
+  "teams": [
+    "team-all",
+    "team-fullstack",
+    "team-ide-minimal",
+    "team-no-ui"
+  ],
+  "performance": {
+    "timePerTeam": 0,
+    "acceptable": true
+  }
+}

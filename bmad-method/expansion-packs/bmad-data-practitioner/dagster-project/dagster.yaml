@@ -1,0 +1,61 @@
+# Dagster Configuration
+# Configuration for the Data Practitioner workflow orchestration
+
+scheduler:
+  module: dagster.core.scheduler
+  class: DagsterDaemonScheduler
+
+run_coordinator:
+  module: dagster.core.run_coordinator
+  class: DefaultRunCoordinator
+
+compute_logs:
+  module: dagster.core.storage.compute_log_manager
+  class: LocalComputeLogManager
+  config:
+    base_dir: "logs"
+
+storage:
+  filesystem:
+    base_dir: "storage"
+
+run_launcher:
+  module: dagster.core.launcher
+  class: DefaultRunLauncher
+
+# Local development configuration
+local_artifact_storage:
+  module: dagster.core.storage.file_manager
+  class: LocalFileManager
+  config:
+    base_dir: "artifacts"
+
+# Telemetry (disabled for privacy)
+telemetry:
+  enabled: false
+
+# Instance-level configuration
+retention:
+  schedule:
+    purge_after_days:
+      completed: 7
+      failed: 30
+  sensor:
+    purge_after_days:
+      completed: 7  
+      failed: 30
+
+# Resource limits for local development
+resources:
+  memory_limit: "4GB"
+  cpu_limit: 4
+
+# Logging configuration
+python_logs:
+  python_log_level: INFO
+  dagster_handler_config:
+    handlers:
+      console:
+        class: logging.StreamHandler
+        formatter: colored
+        stream: ext://sys.stdout

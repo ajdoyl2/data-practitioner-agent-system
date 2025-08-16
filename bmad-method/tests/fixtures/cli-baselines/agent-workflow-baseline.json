@@ -1,0 +1,11 @@
+{
+  "timestamp": "2025-08-16T03:57:28.152Z",
+  "agentsDirectory": {
+    "exists": false,
+    "path": "/Users/ajdoyle/data-practitioner-agent-system/bmad-method/agents"
+  },
+  "teamsDirectory": {
+    "exists": false,
+    "path": "/Users/ajdoyle/data-practitioner-agent-system/bmad-method/agent-teams"
+  }
+}

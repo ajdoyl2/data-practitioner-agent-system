@@ -4,6 +4,7 @@
  */
 
 const crypto = require('crypto');
+const { securityLogger } = require('../lib/security-logger');
 
 // Permission scopes for data services
 const SCOPES = {
@@ -55,6 +56,14 @@ function validateApiKey(apiKey) {
   // Update usage statistics
   keyInfo.lastUsed = new Date().toISOString();
   keyInfo.usageCount++;
+  
+  // Log successful authentication
+  securityLogger.logAuthSuccess({
+    apiKey: apiKey.substring(0, 12) + '...', // Partial key for security
+    scopes: keyInfo.scopes,
+    description: keyInfo.description,
+    usageCount: keyInfo.usageCount
+  });
   
   return {
     valid: true,

@@ -1,0 +1,23 @@
+{
+  "timestamp": "2025-08-15T05:36:10.826Z",
+  "validations": {
+    "cli-baselines/performance-baseline.json": {
+      "exists": true,
+      "readable": true,
+      "hasTimestamp": true,
+      "fileSize": 556
+    },
+    "workflow-baselines/agent-discovery-baseline.json": {
+      "exists": true,
+      "readable": true,
+      "hasTimestamp": true,
+      "fileSize": 322
+    },
+    "baseline-summary.json": {
+      "exists": true,
+      "readable": true,
+      "hasTimestamp": true,
+      "fileSize": 962
+    }
+  }
+}

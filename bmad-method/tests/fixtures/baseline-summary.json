@@ -1,0 +1,35 @@
+{
+  "timestamp": "2025-08-15T05:36:05.635Z",
+  "generator": "BMad-Method Baseline Generator",
+  "version": "1.0.0",
+  "baselines": {
+    "cli": {
+      "count": 3,
+      "files": [
+        "agent-workflow-baseline.json",
+        "config-validation-baseline.json",
+        "performance-baseline.json"
+      ]
+    },
+    "workflow": {
+      "count": 9,
+      "files": [
+        "agent-discovery-baseline.json",
+        "agent-discovery-error-baseline.json",
+        "error-handling-baseline.json",
+        "malformed-file-baseline.json",
+        "resource-loading-baseline.json",
+        "system-state-baseline.json",
+        "team-discovery-baseline.json",
+        "team-discovery-error-baseline.json",
+        "workflow-integration-baseline.json"
+      ]
+    },
+    "system": {
+      "nodeVersion": "v24.3.0",
+      "platform": "darwin",
+      "architecture": "arm64",
+      "projectRoot": "/Users/ajdoyle/data-practitioner-agent-system/bmad-method"
+    }
+  }
+}

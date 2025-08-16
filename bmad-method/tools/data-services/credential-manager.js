@@ -370,8 +370,16 @@ function getServiceCredentials(serviceName, maskSensitive = false) {
       }
       keyName = keyName.toLowerCase();
       
+      // Mask sensitive credentials (check both original name and simplified key name)
+      const isSensitive = cred.name.includes('PASSWORD') || 
+                         cred.name.includes('SECRET') || 
+                         cred.name.includes('TOKEN') ||
+                         keyName.includes('password') ||
+                         keyName.includes('secret') ||
+                         keyName.includes('token');
+      
       credentials[keyName] = 
-        maskSensitive && cred.name.includes('PASSWORD') ? '***' : value;
+        maskSensitive && isSensitive ? '***' : value;
     }
   }
   

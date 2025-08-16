@@ -1,0 +1,25 @@
+{
+  "timestamp": "2025-08-16T03:57:27.424Z",
+  "commands": {
+    "--help": {
+      "success": true,
+      "executionTime": 166,
+      "timestamp": "2025-08-16T03:57:27.590Z"
+    },
+    "--version": {
+      "success": true,
+      "executionTime": 166,
+      "timestamp": "2025-08-16T03:57:27.756Z"
+    },
+    "list:agents": {
+      "success": true,
+      "executionTime": 171,
+      "timestamp": "2025-08-16T03:57:27.927Z"
+    },
+    "validate": {
+      "success": true,
+      "executionTime": 222,
+      "timestamp": "2025-08-16T03:57:28.150Z"
+    }
+  }
+}
