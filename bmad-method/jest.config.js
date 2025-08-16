@@ -63,7 +63,7 @@ module.exports = {
   // Test timeout for long-running tests
   testTimeout: 30000,
   // Setup files for test environment
-  setupFilesAfterEnv: [],
+  setupFilesAfterEnv: ['<rootDir>/tests/setup.js'],
   // Report slow tests
   slowTestThreshold: 5,
   // Error on deprecated features

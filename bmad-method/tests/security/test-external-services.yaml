@@ -1,0 +1,49 @@
+services:
+  test_db:
+    name: Test Database
+    type: database
+    credentials:
+      - name: TEST_DB_HOST
+        description: Database host
+        required: true
+      - name: TEST_DB_PORT
+        description: Database port
+        required: true
+      - name: TEST_DB_USERNAME
+        description: Database username
+        required: true
+      - name: TEST_DB_PASSWORD
+        description: Database password
+        required: true
+      - name: TEST_DB_DATABASE
+        description: Database name
+        required: true
+      - name: TEST_DB_SSL_CERT
+        description: SSL certificate
+        required: false
+    health_check:
+      type: tcp
+      timeout: 5000
+  test_api:
+    name: Test API
+    type: api
+    credentials:
+      - name: TEST_API_KEY
+        description: API key
+        required: true
+      - name: TEST_API_BASE_URL
+        description: Base URL
+        required: true
+      - name: TEST_API_RATE_LIMIT
+        description: Rate limit
+        required: false
+    health_check:
+      type: http
+      endpoint: /health
+      timeout: 3000
+categories: {}
+health_checks:
+  test_api:
+    endpoint: /health
+    method: GET
+    expected_status: 200
