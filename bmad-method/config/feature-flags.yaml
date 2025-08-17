@@ -4,7 +4,7 @@ features:
     description: Enable PyAirbyte connectors for data ingestion
     dependencies: []
   duckdb_analytics:
-    enabled: true
+    enabled: false
     description: Enable DuckDB for local analytics and data exploration
     dependencies: []
   dbt_transformations:
@@ -33,9 +33,14 @@ features:
     enabled: false
     description: Enable comprehensive QA and documentation framework
     dependencies: []
+  sqlmesh_transformations:
+    enabled: false
+    description: Enable SQLmesh for data transformation workflows with cost optimization
+    dependencies:
+      - duckdb_analytics
 metadata:
   version: 1.0.0
-  last_modified: '2025-08-17T02:24:38.674Z'
+  last_modified: '2025-08-17T15:31:12.216Z'
   environment: development
 safety:
   require_explicit_enable: true

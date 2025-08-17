@@ -1,0 +1,143 @@
+# SQLmesh Configuration for BMad Data Practitioner
+# DuckDB-based configuration with 4-environment strategy
+
+project: bmad_data_practitioner
+
+# Gateway configuration for DuckDB
+gateways:
+  default:
+    connection:
+      type: duckdb
+      database: bmad_warehouse.db
+      
+  # Development environment - virtual only
+  dev:
+    connection:
+      type: duckdb
+      database: dev_warehouse.db
+    state_connection:
+      type: duckdb 
+      database: .sqlmesh/state.db
+      
+  # Staging environment - sampled data
+  staging:
+    connection:
+      type: duckdb
+      database: staging_warehouse.db
+    state_connection:
+      type: duckdb
+      database: .sqlmesh/state.db
+      
+  # Production environment - full data
+  prod:
+    connection:
+      type: duckdb
+      database: prod_warehouse.db
+    state_connection:
+      type: duckdb
+      database: .sqlmesh/state.db
+
+# Model defaults
+model_defaults:
+  dialect: duckdb
+  start: 2024-01-01
+
+# Environment-specific configurations
+environments:
+  # Development - virtual execution only
+  dev:
+    suffix: _dev
+    target_environment: dev
+    state_connection:
+      type: duckdb
+      database: .sqlmesh/dev_state.db
+    # Virtual-only settings
+    physical_data_retention: 0  # No physical data storage
+    snapshot_ttl: 7  # 7-day retention for virtual snapshots
+    
+  # Staging - daily refresh with sampling
+  staging:
+    suffix: _staging
+    target_environment: staging
+    state_connection:
+      type: duckdb
+      database: .sqlmesh/staging_state.db
+    physical_data_retention: 30  # 30-day retention
+    snapshot_ttl: 30
+    sample_size: 0.1  # 10% sampling for cost reduction
+    
+  # Production - full data with backups
+  prod:
+    suffix: _prod
+    target_environment: prod
+    state_connection:
+      type: duckdb
+      database: .sqlmesh/prod_state.db
+    physical_data_retention: 90  # 90-day retention
+    snapshot_ttl: 90
+    enable_backup: true
+    
+  # Feature branches - dynamic environments
+  feature:
+    suffix: _feature
+    target_environment: feature
+    state_connection:
+      type: duckdb
+      database: .sqlmesh/feature_state.db
+    physical_data_retention: 14  # 14-day retention
+    snapshot_ttl: 14
+    auto_cleanup: true  # Automatic cleanup after merge
+
+# Plan configuration
+plan:
+  auto_categorize_changes:
+    full: false
+    forward_only: true
+  enable_preview: true
+  
+# Run configuration  
+run:
+  environment: dev  # Default to dev environment
+
+# Testing configuration
+test:
+  # Test connection uses in-memory DuckDB
+  connection:
+    type: duckdb
+    database: ':memory:'
+
+# Audit configuration
+audit:
+  # Audit all models by default
+  include_unmodified: false
+  
+# UI configuration (optional)
+ui:
+  enabled: true
+  port: 8001
+  host: 0.0.0.0
+
+# Notification settings (optional)
+notification:
+  # Can be configured for Slack, email, etc.
+  enabled: false
+
+# Custom macros path
+macro_paths:
+  - macros
+
+# Model paths  
+model_paths:
+  - models
+
+# Seed paths
+seed_paths:
+  - seeds
+
+# Test paths
+test_paths:
+  - tests
+
+# Audit paths
+audit_paths:
+  - audits
