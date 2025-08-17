@@ -39,7 +39,7 @@ This document supplements existing BMad-Method architecture by defining how new 
 
 ### Enhancement Overview
 **Enhancement Type:** Integration with New Systems + Major Feature Modification + New Infrastructure  
-**Scope:** Comprehensive data practitioner expansion pack with 6 specialized agents, modern data stack integration (PyAirbyte, DuckDB, dbt-core, Dagster, Evidence.dev), and publication-quality insight generation  
+**Scope:** Comprehensive data practitioner expansion pack with 6 specialized agents, modern data stack integration (PyAirbyte, DuckDB, dbt-core/SQLmesh, Dagster, Evidence.dev), and publication-quality insight generation  
 **Integration Impact:** Significant - Introduces Python ecosystem dependencies while maintaining full compatibility with existing Node.js infrastructure
 
 ### Integration Approach
@@ -81,6 +81,7 @@ This document supplements existing BMad-Method architecture by defining how new 
 |------------|---------|---------|-----------|-------------------|
 | DuckDB | ^1.1.3 | Embedded analytical database | Latest stable with performance improvements and WASM support for Evidence.dev | Node.js bindings with subprocess fallback |
 | dbt-core | ^1.8.8 | Data transformation workflows | Latest stable with improved Jinja rendering and enhanced testing framework | Python subprocess execution |
+| SQLmesh | ^0.25.0 | Data transformation workflows with cost optimization | Latest stable with blue-green deployment and embedded documentation | Python subprocess execution |
 | PyAirbyte | ^0.20.0 | Flexible data ingestion | Major version update with improved caching and stream selection capabilities | Python subprocess with JSON communication |
 | Dagster | ^1.8.12 | Workflow orchestration | Latest stable with enhanced asset lineage and improved web UI performance | Python subprocess with web UI integration |
 | Evidence.dev | ^25.0.0 | Publication-quality reporting | Latest major version with improved Universal SQL and faster build times | Build system integration |
@@ -126,15 +127,15 @@ This document supplements existing BMad-Method architecture by defining how new 
 - **With New:** Parent to DataTransformation and InsightDocument entities
 
 #### DataTransformation
-**Purpose:** Represents dbt-core transformation workflows with lineage and quality metrics  
-**Integration:** Stored as YAML metadata alongside dbt model definitions, following BMad template patterns
+**Purpose:** Represents transformation workflows (dbt-core or SQLmesh) with lineage and quality metrics  
+**Integration:** Stored as YAML metadata alongside transformation model definitions, following BMad template patterns
 
 **Key Attributes:**
-- transformation_id: String - Unique identifier for dbt model tracking
-- model_name: String - dbt model name following naming conventions
+- transformation_id: String - Unique identifier for transformation model tracking
+- model_name: String - Transformation model name following naming conventions
 - source_references: Array[String] - References to DataSource entities
-- transformation_logic: String - SQL transformation logic (stored in dbt models)
-- test_results: Object - dbt test execution results and quality metrics
+- transformation_logic: String - SQL transformation logic (stored in transformation models)
+- test_results: Object - Transformation test execution results and quality metrics
 - lineage_metadata: Object - Upstream and downstream dependencies
 - execution_metadata: Object - Performance and resource usage tracking
 
@@ -209,11 +210,13 @@ This document supplements existing BMad-Method architecture by defining how new 
 - **Technology Stack:** DuckDB ^1.1.3, Python subprocess execution, configurable LLM interfaces
 
 #### TransformationEngine
-**Responsibility:** Executes dbt-core transformation workflows, manages data lineage tracking, and maintains data quality through comprehensive testing  
+**Responsibility:** Executes transformation workflows using auto-detected engines (dbt-core or SQLmesh), manages data lineage tracking, maintains data quality through comprehensive testing, and provides cost optimization through intelligent execution strategies  
 **Integration Points:** Follows existing task execution patterns, integrates with BMad template system for guided ELT workflows
 
 **Key Interfaces:**
-- dbt-core project initialization and model execution
+- Auto-detection and selection of available transformation engines
+- dbt-core project initialization and model execution (legacy support)
+- SQLmesh project initialization and model execution (preferred)
 - Guided ELT modeling templates following BMad elicitation patterns
 - Data quality testing framework with automated test generation
 - Lineage visualization and documentation generation
@@ -221,7 +224,7 @@ This document supplements existing BMad-Method architecture by defining how new 
 **Dependencies:**
 - **Existing Components:** Task execution framework, template engine, validation systems
 - **New Components:** AnalyticalEngine (data sources), WorkflowOrchestrator (pipeline coordination)
-- **Technology Stack:** dbt-core ^1.8.8, Python subprocess execution, YAML-based configuration
+- **Technology Stack:** dbt-core ^1.8.8, SQLmesh ^0.25.0, Python subprocess execution, YAML-based configuration
 
 #### WorkflowOrchestrator  
 **Responsibility:** Manages Dagster asset-centric workflow orchestration, pipeline scheduling, and comprehensive monitoring across all data operations  
@@ -291,7 +294,9 @@ graph TB
     subgraph "External Tools"
         PyAB[PyAirbyte]
         Duck[DuckDB]
+        TRANSFORM[Transformation Engine]
         DBT[dbt-core]
+        SQLM[SQLmesh]
         Dag[Dagster]
         Evid[Evidence.dev]
     end
@@ -309,7 +314,9 @@ graph TB
     DIS --> Duck
     AE --> Duck
     AE --> TE
-    TE --> DBT
+    TE --> TRANSFORM
+    TRANSFORM --> DBT
+    TRANSFORM --> SQLM
     TE --> Duck
     WO --> Dag
     WO --> DIS
@@ -396,6 +403,13 @@ bmad-method/
 │   └── installer/               # Enhanced installer
 ├── requirements.txt             # NEW: Python dependencies for data tools
 ├── dbt_project.yml             # NEW: dbt-core project configuration
+├── sqlmesh-project/            # NEW: SQLmesh project structure
+│   ├── config.yaml
+│   ├── models/
+│   ├── audits/
+│   ├── seeds/
+│   ├── macros/
+│   └── tests/
 ├── .python-version             # NEW: Python version specification
 └── .duckdb/                    # NEW: DuckDB database files (gitignored)
 ```
@@ -448,7 +462,7 @@ bmad-method/
 ### Enhancement-Specific Standards
 
 - **Python Code Integration Standards:** All Python code executed through Node.js subprocess interfaces, Python scripts follow PEP 8 standards with black formatting, virtual environment isolation with pinned dependency versions
-- **Data Processing Standards:** SQL queries follow consistent formatting and naming conventions, dbt models use standardized layering (source → staging → intermediate → marts), DuckDB operations wrapped with proper error handling and resource management
+- **Data Processing Standards:** SQL queries follow consistent formatting and naming conventions, transformation models use standardized layering (source → staging → intermediate → marts), DuckDB operations wrapped with proper error handling and resource management
 - **Configuration Management Standards:** All data tool configurations stored in YAML following existing technical-preferences patterns, environment-specific settings isolated in separate configuration files, sensitive credentials encrypted using existing BMad security patterns
 - **API Endpoint Standards:** RESTful endpoint design following existing CLI command patterns, consistent error response formats with proper HTTP status codes, JSON schema validation for all request/response payloads
 - **Agent Workflow Standards:** Data agents follow identical YAML schema structure as existing agents, natural language instructions maintain existing elicitation and template patterns, cross-agent workflow coordination uses established handoff mechanisms
@@ -484,7 +498,7 @@ bmad-method/
 
 **Scope:** End-to-end data workflows from ingestion through publication, cross-component data flow validation, Python-Node.js interoperability testing  
 **Existing System Verification:** All existing BMad-Method functionality must continue working unchanged, regression testing for core agent workflows and CLI tools  
-**New Feature Testing:** Complete data analysis pipeline testing (PyAirbyte → DuckDB → dbt → Dagster → Evidence.dev), LLM hypothesis generation with multiple provider validation
+**New Feature Testing:** Complete data analysis pipeline testing (PyAirbyte → DuckDB → Transformation Engine → Dagster → Evidence.dev), LLM hypothesis generation with multiple provider validation
 
 #### Regression Testing
 
@@ -645,7 +659,7 @@ Begin implementing the Data Practitioner expansion pack following the architectu
 
 **Key Technical Decisions Based on Project Constraints:**
 - DuckDB embedded approach maintains BMad-Method's simplicity philosophy
-- PyAirbyte, dbt-core, Dagster executed through Python subprocess interfaces
+- PyAirbyte, dbt-core, SQLmesh, Dagster executed through Python subprocess interfaces
 - Evidence.dev integrated through existing web-builder patterns
 - Virtual environment isolation prevents dependency conflicts
 
@@ -659,7 +673,7 @@ Begin implementing the Data Practitioner expansion pack following the architectu
 1. **Foundation Phase:** Expansion pack structure and agent definitions (Week 1-2)
 2. **Data Ingestion:** PyAirbyte integration with Node.js wrappers (Week 3-4)  
 3. **Analytics Engine:** DuckDB integration with memory management (Week 5-6)
-4. **Transformation:** dbt-core workflows with guided templates (Week 7-8)
+4. **Transformation:** Dual transformation engine workflows with guided templates (Week 7-8)
 5. **Orchestration:** Dagster pipeline coordination (Week 9-10)
 6. **Analysis:** Automated EDA and hypothesis generation (Week 11-12)
 7. **Publication:** Evidence.dev integration and site generation (Week 13-14)
@@ -673,7 +687,7 @@ Begin implementing the Data Practitioner expansion pack following the architectu
 - **Validation Gate:** All existing BMad functionality preserved
 
 **Milestone 2 (Weeks 5-8): Analytics and Transformation**  
-- Stories 1.3-1.4: DuckDB integration and dbt-core transformation workflows
+- Stories 1.3-1.4: DuckDB integration and transformation workflows
 - **Key Deliverable:** Complete ELT pipeline with data quality validation
 - **Validation Gate:** Performance benchmarks met, no system degradation
 

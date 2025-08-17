@@ -1,0 +1,48 @@
+# BMad Data Practitioner dbt Profiles Configuration
+# DuckDB connection configuration for local analytics
+
+bmad_data_practitioner:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: '../../../.duckdb/analytics.db'
+      schema: main
+      threads: 4
+      keepalives_idle: 0 # default 0, indicating the system default
+      search_path: "main"
+      
+    # Production environment (for future use)
+    prod:
+      type: duckdb
+      path: '../../../.duckdb/analytics_prod.db'
+      schema: main
+      threads: 8
+      keepalives_idle: 0
+      search_path: "main"
+      
+    # Testing environment with in-memory database
+    test:
+      type: duckdb
+      path: ':memory:'
+      schema: main
+      threads: 2
+      keepalives_idle: 0
+      search_path: "main"
+
+# Configuration for different project environments
+config:
+  # Send anonymous usage statistics to dbt Labs
+  send_anonymous_usage_stats: false
+  
+  # Use colors in terminal output
+  use_colors: true
+  
+  # Printer width for dbt output
+  printer_width: 80
+  
+  # Partial parsing for faster compilation
+  partial_parse: true
+  
+  # Static parser for improved performance
+  static_parser: true
