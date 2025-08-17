@@ -1,102 +1,102 @@
 {
-  "generated": "2025-08-17T02:24:43.728Z",
+  "generated": "2025-08-17T15:31:20.576Z",
   "baselines": {
     "validate": {
       "command": "validate",
       "iterations": 5,
-      "duration": 252,
-      "min": 214,
-      "max": 312,
-      "variation": 33,
+      "duration": 463,
+      "min": 400,
+      "max": 527,
+      "variation": 43,
       "measurements": [
-        257.428917,
-        230.912583,
-        213.811958,
-        311.671583,
-        245.578042
+        526.5295,
+        486.690583,
+        467.896375,
+        399.815375,
+        434.586209
       ]
     },
     "build": {
       "command": "build",
       "iterations": 5,
-      "duration": 489,
-      "min": 400,
-      "max": 592,
-      "variation": 74,
+      "duration": 865,
+      "min": 726,
+      "max": 1168,
+      "variation": 166,
       "measurements": [
-        441.16325,
-        400.018541,
-        559.034958,
-        450.648417,
-        592.357125
+        912.301833,
+        1168.457333,
+        725.553167,
+        726.461917,
+        792.059375
       ]
     },
     "list:agents": {
       "command": "list:agents",
       "iterations": 5,
-      "duration": 160,
-      "min": 149,
-      "max": 175,
-      "variation": 9,
+      "duration": 323,
+      "min": 302,
+      "max": 348,
+      "variation": 18,
       "measurements": [
-        158.243792,
-        156.585167,
-        160.20525,
-        175.0715,
-        148.515959
+        318.147583,
+        301.715875,
+        348.331666,
+        308.823042,
+        338.50225
       ]
     },
     "help": {
       "command": "help",
       "iterations": 5,
-      "duration": 155,
-      "min": 144,
-      "max": 173,
-      "variation": 11,
+      "duration": 316,
+      "min": 295,
+      "max": 338,
+      "variation": 14,
       "measurements": [
-        144.118875,
-        173.151417,
-        160.484417,
-        143.790042,
-        151.712666
+        309.759375,
+        338.22025,
+        321.756125,
+        317.184292,
+        295.166375
       ]
     },
     "build-teams": {
       "command": "build-teams",
       "iterations": 5,
-      "duration": 382,
-      "min": 317,
-      "max": 453,
-      "variation": 45,
+      "duration": 605,
+      "min": 472,
+      "max": 748,
+      "variation": 105,
       "measurements": [
-        362.192375,
-        399.829041,
-        452.971875,
-        376.229416,
-        317.253209
+        637.800584,
+        747.633458,
+        670.952667,
+        497.914958,
+        472.025791
       ]
     },
     "build-full": {
       "command": "build-full",
       "iterations": 3,
-      "duration": 342,
-      "min": 315,
-      "max": 381,
-      "variation": 28,
+      "duration": 508,
+      "min": 484,
+      "max": 540,
+      "variation": 24,
       "measurements": [
-        380.569541,
-        332.045167,
-        314.683542
+        499.541583,
+        484.210708,
+        540.263458
       ]
     }
   },
   "thresholds": {
-    "validate": 444,
-    "build": 882,
-    "list:agents": 258,
-    "help": 255,
-    "build-teams": 663,
-    "build-full": 569
+    "validate": 781,
+    "build": 1630,
+    "list:agents": 521,
+    "help": 502,
+    "build-teams": 1118,
+    "build-full": 810
   },
   "note": "These thresholds were generated automatically. Adjust as needed for your environment."
 }
