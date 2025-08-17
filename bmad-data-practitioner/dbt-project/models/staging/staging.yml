@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: stg_sample_source
+    description: "Staging model for sample source data with basic cleaning"
+    columns:
+      - name: source_id
+        description: "Primary key from source system"
+        tests:
+          - unique
+          - not_null
+      
+      - name: source_name
+        description: "Cleaned and standardized name field"
+        tests:
+          - not_null
+      
+      - name: created_timestamp
+        description: "Record creation timestamp"
+        tests:
+          - not_null
+      
+      - name: updated_timestamp
+        description: "Record update timestamp"
+      
+      - name: processed_at
+        description: "dbt processing timestamp"
+        tests:
+          - not_null

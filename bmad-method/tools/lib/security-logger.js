@@ -46,7 +46,10 @@ const SecurityEvents = {
   CONNECTION_CLEANUP: 'connection_cleanup',
   CONNECTION_MANAGER_DESTROY: 'connection_manager_destroy',
   PYTHON_PACKAGE_INSTALL: 'python_package_install',
-  PYTHON_VENV_CREATION: 'python_venv_creation'
+  PYTHON_VENV_CREATION: 'python_venv_creation',
+  ANALYTICS_QUERY: 'analytics_query',
+  DATA_LOAD: 'data_load',
+  TABLE_DROP: 'table_drop'
 };
 
 /**
@@ -303,6 +306,36 @@ function logPythonVenvCreation(data) {
 }
 
 /**
+ * Log analytics query execution
+ * @param {Object} data - Analytics query data
+ */
+function logAnalyticsQuery(data) {
+  const entry = formatLogEntry('INFO', SecurityEvents.ANALYTICS_QUERY, data);
+  writeLog(SECURITY_LOG, entry);
+  writeLog(AUDIT_LOG, entry);
+}
+
+/**
+ * Log data loading operations
+ * @param {Object} data - Data load operation data
+ */
+function logDataLoad(data) {
+  const entry = formatLogEntry('INFO', SecurityEvents.DATA_LOAD, data);
+  writeLog(SECURITY_LOG, entry);
+  writeLog(AUDIT_LOG, entry);
+}
+
+/**
+ * Log table drop operations
+ * @param {Object} data - Table drop operation data
+ */
+function logTableDrop(data) {
+  const entry = formatLogEntry('WARN', SecurityEvents.TABLE_DROP, data);
+  writeLog(SECURITY_LOG, entry);
+  writeLog(AUDIT_LOG, entry);
+}
+
+/**
  * Get recent security events
  * @param {number} count - Number of events to retrieve
  * @param {string} eventType - Optional event type filter
@@ -457,6 +490,9 @@ const securityLogger = {
   logConnectionManagerDestroy,
   logPythonPackageInstall,
   logPythonVenvCreation,
+  logAnalyticsQuery,
+  logDataLoad,
+  logTableDrop,
   getRecentEvents,
   analyzeSecurityEvents,
   rotateLogs
@@ -489,6 +525,9 @@ module.exports = {
   logConnectionManagerDestroy,
   logPythonPackageInstall,
   logPythonVenvCreation,
+  logAnalyticsQuery,
+  logDataLoad,
+  logTableDrop,
   getRecentEvents,
   analyzeSecurityEvents,
   rotateLogs

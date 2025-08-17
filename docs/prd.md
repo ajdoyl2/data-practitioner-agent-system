@@ -26,7 +26,7 @@ Key documents from document-project output:
 ✓ New Feature Addition  
 
 #### Enhancement Description
-Adding a comprehensive Data Practitioner expansion pack that integrates autonomous analysis capabilities, modern data stack tools (DuckDB, dbt, PyAirbyte, Dagster, Evidence.dev), and publication-quality insight generation into the BMad-Method framework. This represents a major extension of BMad-Method from pure software development into data analysis and intelligence workflows.
+Adding a comprehensive Data Practitioner expansion pack that integrates autonomous analysis capabilities, modern data stack tools (DuckDB, dbt/SQLmesh, PyAirbyte, Dagster, Evidence.dev), and publication-quality insight generation into the BMad-Method framework. This represents a major extension of BMad-Method from pure software development into data analysis and intelligence workflows.
 
 #### Impact Assessment
 ✓ **Significant Impact** - This enhancement requires:
@@ -40,7 +40,7 @@ Adding a comprehensive Data Practitioner expansion pack that integrates autonomo
 
 #### Goals
 - Enable autonomous data analysis workflows through specialized AI agents
-- Integrate modern data stack tools (DuckDB, dbt, PyAirbyte, Dagster) for ELT processing
+- Integrate modern data stack tools (DuckDB, dbt/SQLmesh, PyAirbyte, Dagster) for ELT processing
 - Support API and data file ingestion from diverse sources
 - Generate publication-quality insight documents via Evidence.dev integration
 - Provide guided ELT modeling and hypothesis generation capabilities
@@ -68,7 +68,7 @@ The BMad-Method has proven successful as an agentic framework for software devel
 
 - **FR4:** The system shall integrate DuckDB as the local analytical engine for in-process data processing, supporting larger-than-memory datasets through smart partitioning.
 
-- **FR5:** The system shall integrate dbt-core for transformation workflows, supporting the layered architecture approach (Source → Staging → Intermediate → Marts) with comprehensive testing patterns and documentation generation.
+- **FR5:** The system shall provide dual transformation engine support with auto-detection capabilities, integrating both dbt-core and SQLmesh for transformation workflows. The system shall support the layered architecture approach (Source → Staging → Intermediate → Marts) with comprehensive testing patterns, embedded documentation, blue-green deployment capabilities, and cost optimization features through intelligent execution strategies.
 
 - **FR6:** The system shall enable automated exploratory data analysis through integration with tools like pandas-profiling, Sweetviz, and AutoViz.
 
@@ -126,7 +126,7 @@ The BMad-Method has proven successful as an agentic framework for software devel
 
 **Frontend Integration Strategy**: Evidence.dev will operate as a separate static site generator that consumes outputs from the data pipeline, with build integration through the existing web-builder.js patterns.
 
-**Testing Integration Strategy**: dbt-core's testing framework will complement the minimal Jest setup, providing data-specific validation while maintaining compatibility with existing validation scripts.
+**Testing Integration Strategy**: Dual transformation engine testing frameworks (dbt-core and SQLmesh) will complement the minimal Jest setup, providing data-specific validation while maintaining compatibility with existing validation scripts.
 
 ### Code Organization and Standards
 
@@ -142,11 +142,11 @@ The BMad-Method has proven successful as an agentic framework for software devel
 
 **Build Process Integration**: Extend web-builder.js to bundle data practitioner agents and resolve Python tool dependencies. Add new build targets for Evidence.dev static site generation.
 
-**Deployment Strategy**: Maintain NPM package distribution for expansion pack installation. Python dependencies (PyAirbyte, dbt-core) will be managed through requirements.txt with automated setup during installation.
+**Deployment Strategy**: Maintain NPM package distribution for expansion pack installation. Python dependencies (PyAirbyte, dbt-core, SQLmesh) will be managed through requirements.txt with automated setup during installation.
 
 **Monitoring and Logging**: Leverage Dagster's built-in monitoring for data pipelines while maintaining console-based logging for agent interactions, consistent with current framework approach.
 
-**Configuration Management**: Extend core-config.yaml to include data tool configurations (DuckDB paths, dbt project settings, PyAirbyte connection strings) while maintaining backward compatibility.
+**Configuration Management**: Extend core-config.yaml to include data tool configurations (DuckDB paths, transformation engine settings, PyAirbyte connection strings) while maintaining backward compatibility.
 
 ### Risk Assessment and Mitigation
 
@@ -178,7 +178,7 @@ The BMad-Method has proven successful as an agentic framework for software devel
 
 ## Epic 1: Data Practitioner Agent System Expansion Pack Integration
 
-**Epic Goal**: Integrate a comprehensive data practitioner expansion pack into BMad-Method, enabling autonomous data analysis workflows through specialized agents, modern data stack tools integration (PyAirbyte, DuckDB, dbt-core, Dagster, Evidence.dev), and publication-quality insight generation.
+**Epic Goal**: Integrate a comprehensive data practitioner expansion pack into BMad-Method, enabling autonomous data analysis workflows through specialized agents, modern data stack tools integration (PyAirbyte, DuckDB, dbt-core/SQLmesh, Dagster, Evidence.dev), and publication-quality insight generation.
 
 **Integration Requirements**: 
 - Maintain full compatibility with existing BMad-Method infrastructure

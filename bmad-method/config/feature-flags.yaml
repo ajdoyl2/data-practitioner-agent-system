@@ -4,7 +4,7 @@ features:
     description: Enable PyAirbyte connectors for data ingestion
     dependencies: []
   duckdb_analytics:
-    enabled: false
+    enabled: true
     description: Enable DuckDB for local analytics and data exploration
     dependencies: []
   dbt_transformations:
