@@ -1,0 +1,52 @@
+
+        class BMadUIEnhancer {
+          constructor() {
+            this.init();
+          }
+          
+          init() {
+            this.addQuickActions();
+            this.enhanceAssetDisplay();
+            this.setupNotifications();
+          }
+          
+          addQuickActions() {
+            const quickActions = [{"label":"Run Full Pipeline","action":"launch_job","job_name":"complete_data_pipeline","description":"Execute the complete data pipeline from ingestion to publication","icon":"play_arrow","color":"primary"},{"label":"Incremental Update","action":"launch_job","job_name":"incremental_pipeline","description":"Run incremental data updates","icon":"update","color":"secondary"},{"label":"Data Quality Check","action":"launch_job","job_name":"data_quality_pipeline","description":"Validate data quality across all assets","icon":"check_circle","color":"success"},{"label":"Generate Lineage Report","action":"external_link","url":"http://localhost:5000/api/lineage/report?format=html","description":"Generate comprehensive lineage report","icon":"account_tree","color":"info"},{"label":"View Monitoring Dashboard","action":"external_link","url":"http://localhost:3003/api/v1/orchestration/monitoring/pipeline-status","description":"View real-time pipeline monitoring","icon":"dashboard","color":"warning"}];
+            // Implementation would add quick action buttons to Dagster UI
+          }
+          
+          enhanceAssetDisplay() {
+            // Add custom metadata display to asset cards
+            document.querySelectorAll('.asset-card').forEach(card => {
+              this.addAssetGroupBadge(card);
+            });
+          }
+          
+          addAssetGroupBadge(card) {
+            const groupName = card.dataset.group || 'other';
+            const badge = document.createElement('span');
+            badge.className = `bmad-asset-group ${groupName}`;
+            badge.textContent = groupName;
+            card.appendChild(badge);
+          }
+          
+          setupNotifications() {
+            // Setup real-time notifications from orchestrator
+            const eventSource = new EventSource('http://localhost:3003/api/v1/orchestration/events');
+            eventSource.onmessage = (event) => {
+              const data = JSON.parse(event.data);
+              this.showNotification(data);
+            };
+          }
+          
+          showNotification(data) {
+            // Display notification in Dagster UI
+            console.log('Pipeline notification:', data);
+          }
+        }
+        
+        // Initialize BMad UI enhancements when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+          new BMadUIEnhancer();
+        });
+      

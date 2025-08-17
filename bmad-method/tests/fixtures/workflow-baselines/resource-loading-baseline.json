@@ -1,23 +1,23 @@
 {
-  "timestamp": "2025-08-16T21:12:19.481Z",
+  "timestamp": "2025-08-17T02:24:35.012Z",
   "resourceTypes": {
     "tasks": {
-      "loadingTime": 107,
+      "loadingTime": 76,
       "success": false,
       "hasContent": false
     },
     "templates": {
-      "loadingTime": 4,
-      "success": false,
-      "hasContent": false
-    },
-    "checklists": {
       "loadingTime": 3,
       "success": false,
       "hasContent": false
     },
-    "data": {
+    "checklists": {
       "loadingTime": 1,
+      "success": false,
+      "hasContent": false
+    },
+    "data": {
+      "loadingTime": 2,
       "success": false,
       "hasContent": false
     }

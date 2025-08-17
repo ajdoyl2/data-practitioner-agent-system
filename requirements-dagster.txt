@@ -1,0 +1,17 @@
+# Core Dagster dependencies for Story 1.4
+dagster>=1.8.12
+dagster-webserver>=1.8.12
+
+# Data processing and manipulation
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Database connectors
+sqlalchemy>=2.0.0
+
+# File format support
+pyarrow>=15.0.0
+
+# Utilities
+pyyaml>=6.0.0
+python-dotenv>=1.0.0

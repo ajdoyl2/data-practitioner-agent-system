@@ -1,0 +1,83 @@
+{
+  "title": "BMad Data Practitioner - Workflow Orchestration",
+  "description": "Asset-centric data pipeline orchestration with Dagster",
+  "navigation": [
+    {
+      "label": "Pipeline Overview",
+      "url": "http://localhost:3001/overview",
+      "description": "Overview of all pipeline assets and jobs"
+    },
+    {
+      "label": "Asset Lineage",
+      "url": "http://localhost:3001/asset-lineage",
+      "description": "Interactive asset dependency visualization"
+    },
+    {
+      "label": "Run History",
+      "url": "http://localhost:3001/runs",
+      "description": "Pipeline execution history and logs"
+    },
+    {
+      "label": "Schedules & Sensors",
+      "url": "http://localhost:3001/automation",
+      "description": "Automated pipeline triggers and schedules"
+    }
+  ],
+  "external_links": [
+    {
+      "label": "Orchestrator API",
+      "url": "http://localhost:3003/health",
+      "description": "Workflow orchestrator service status",
+      "type": "api"
+    },
+    {
+      "label": "Lineage Explorer",
+      "url": "http://localhost:5000",
+      "description": "Interactive lineage visualization tool",
+      "type": "webapp"
+    },
+    {
+      "label": "API Documentation",
+      "url": "http://localhost:3003/api/docs",
+      "description": "REST API documentation",
+      "type": "docs"
+    }
+  ],
+  "asset_groups": [
+    {
+      "name": "infrastructure",
+      "color": "#FF6B6B",
+      "description": "Infrastructure and system health assets"
+    },
+    {
+      "name": "ingestion",
+      "color": "#4ECDC4",
+      "description": "Data ingestion and source assets"
+    },
+    {
+      "name": "analytics",
+      "color": "#45B7D1",
+      "description": "Analytical processing and computation assets"
+    },
+    {
+      "name": "transformation",
+      "color": "#96CEB4",
+      "description": "Data transformation and cleaning assets"
+    },
+    {
+      "name": "publication",
+      "color": "#FECA57",
+      "description": "Data publication and reporting assets"
+    },
+    {
+      "name": "validation",
+      "color": "#FF9FF3",
+      "description": "Data quality and validation assets"
+    },
+    {
+      "name": "monitoring",
+      "color": "#A8E6CF",
+      "description": "Monitoring and alerting assets"
+    }
+  ]
+}

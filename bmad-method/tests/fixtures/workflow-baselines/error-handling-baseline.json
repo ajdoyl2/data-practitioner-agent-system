@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-08-16T21:12:19.631Z",
+  "timestamp": "2025-08-17T02:24:35.096Z",
   "errorTests": {
     "agent-nonexistent-agent": {
       "expectedError": true,
@@ -13,13 +13,13 @@
       "actualError": true,
       "errorMessage": "ENOENT: no such file or directory, open '/Users/ajdoyle/data-practitioner-agent-system/bmad-method/bmad-core/agent-teams/nonexistent-team.yaml'",
       "errorType": "Error",
-      "responseTime": 0
+      "responseTime": 1
     },
     "resource-nonexistent-resource": {
       "expectedError": true,
       "actualError": false,
       "result": "unexpected-success",
-      "responseTime": 3
+      "responseTime": 1
     }
   }
 }

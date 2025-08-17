@@ -1,0 +1,45 @@
+{
+  "ui_customization": {
+    "theme": {
+      "primary_color": "#667eea",
+      "secondary_color": "#764ba2",
+      "accent_color": "#4ECDC4"
+    },
+    "branding": {
+      "title": "BMad Data Practitioner",
+      "subtitle": "Asset-Centric Data Pipeline Orchestration",
+      "logo_url": "/static/bmad-logo.png"
+    },
+    "layout": {
+      "sidebar_width": 280,
+      "header_height": 64,
+      "compact_mode": false
+    }
+  },
+  "features": {
+    "asset_lineage_enabled": true,
+    "monitoring_dashboard_enabled": true,
+    "custom_metadata_enabled": true,
+    "external_integrations_enabled": true
+  },
+  "notifications": {
+    "pipeline_failures": {
+      "enabled": true,
+      "channels": [
+        "ui",
+        "webhook"
+      ],
+      "webhook_url": "http://localhost:3003/api/v1/orchestration/webhooks/notifications"
+    },
+    "asset_materialization": {
+      "enabled": true,
+      "channels": [
+        "ui"
+      ],
+      "filter_by_group": [
+        "analytics",
+        "publication"
+      ]
+    }
+  }
+}

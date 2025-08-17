@@ -1,0 +1,72 @@
+{
+  "dashboard_title": "BMad Data Practitioner Pipeline",
+  "widgets": [
+    {
+      "type": "pipeline_status",
+      "title": "Pipeline Health",
+      "position": {
+        "row": 1,
+        "col": 1,
+        "width": 2,
+        "height": 1
+      },
+      "config": {
+        "show_success_rate": true,
+        "show_last_run": true,
+        "time_window": "24h"
+      }
+    },
+    {
+      "type": "asset_groups",
+      "title": "Asset Groups",
+      "position": {
+        "row": 1,
+        "col": 3,
+        "width": 2,
+        "height": 1
+      },
+      "config": {
+        "show_counts": true,
+        "color_coded": true
+      }
+    },
+    {
+      "type": "recent_runs",
+      "title": "Recent Pipeline Runs",
+      "position": {
+        "row": 2,
+        "col": 1,
+        "width": 4,
+        "height": 2
+      },
+      "config": {
+        "limit": 10,
+        "show_duration": true,
+        "show_status": true
+      }
+    },
+    {
+      "type": "lineage_preview",
+      "title": "Asset Lineage Preview",
+      "position": {
+        "row": 4,
+        "col": 1,
+        "width": 4,
+        "height": 2
+      },
+      "config": {
+        "focus_asset": null,
+        "interactive": true,
+        "link_to_full_view": "http://localhost:5000"
+      }
+    }
+  ],
+  "auto_refresh": {
+    "enabled": true,
+    "interval": 30000,
+    "widgets": [
+      "pipeline_status",
+      "recent_runs"
+    ]
+  }
+}

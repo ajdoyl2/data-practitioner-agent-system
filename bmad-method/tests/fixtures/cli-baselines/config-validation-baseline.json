@@ -1,15 +1,15 @@
 {
-  "timestamp": "2025-08-16T21:12:20.335Z",
+  "timestamp": "2025-08-17T02:24:36.082Z",
   "files": {
     "package.json": {
       "exists": true,
       "size": 3630,
-      "modified": "2025-08-16T21:12:10.379Z"
+      "modified": "2025-08-16T21:44:56.586Z"
     },
     "jest.config.js": {
       "exists": true,
-      "size": 1596,
-      "modified": "2025-08-16T15:51:57.558Z"
+      "size": 1622,
+      "modified": "2025-08-16T21:44:56.584Z"
     },
     "bmad-core/core-config.yaml": {
       "exists": true,

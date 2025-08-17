@@ -1,0 +1,40 @@
+
+        .bmad-asset-group {
+          display: inline-block;
+          padding: 4px 8px;
+          border-radius: 4px;
+          font-size: 12px;
+          font-weight: bold;
+          text-transform: uppercase;
+        }
+        
+        .bmad-asset-group.infrastructure { background-color: #FF6B6B; color: white; }
+        .bmad-asset-group.ingestion { background-color: #4ECDC4; color: white; }
+        .bmad-asset-group.analytics { background-color: #45B7D1; color: white; }
+        .bmad-asset-group.transformation { background-color: #96CEB4; color: white; }
+        .bmad-asset-group.publication { background-color: #FECA57; color: black; }
+        .bmad-asset-group.validation { background-color: #FF9FF3; color: black; }
+        .bmad-asset-group.monitoring { background-color: #A8E6CF; color: black; }
+        
+        .bmad-quick-actions {
+          display: flex;
+          gap: 10px;
+          margin: 15px 0;
+          flex-wrap: wrap;
+        }
+        
+        .bmad-quick-action {
+          padding: 8px 16px;
+          border-radius: 6px;
+          border: none;
+          cursor: pointer;
+          font-weight: 500;
+          transition: background-color 0.2s;
+        }
+        
+        .bmad-quick-action.primary { background: #667eea; color: white; }
+        .bmad-quick-action.secondary { background: #6c757d; color: white; }
+        .bmad-quick-action.success { background: #28a745; color: white; }
+        .bmad-quick-action.info { background: #17a2b8; color: white; }
+        .bmad-quick-action.warning { background: #ffc107; color: black; }
+      
