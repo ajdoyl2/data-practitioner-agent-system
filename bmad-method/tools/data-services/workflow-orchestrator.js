@@ -143,6 +143,11 @@ class WorkflowOrchestrator {
     this.app.get('/api/v1/orchestration/monitoring/performance', this.getPerformanceMetrics.bind(this));
     this.app.get('/api/v1/orchestration/monitoring/alerts', this.getAlerts.bind(this));
     
+    // Lineage and visualization endpoints
+    this.app.get('/api/v1/orchestration/lineage/visualization', this.generateLineageVisualization.bind(this));
+    this.app.get('/api/v1/orchestration/lineage/report', this.generateLineageReport.bind(this));
+    this.app.get('/api/v1/orchestration/lineage/summary', this.getLineageSummary.bind(this));
+    
     // Error handling middleware
     this.app.use(this.errorHandler.bind(this));
   }
@@ -535,6 +540,230 @@ class WorkflowOrchestrator {
       
     } catch (error) {
       this.handleError(res, error, 'Failed to get alerts');
+    }
+  }
+
+  /**
+   * Generate lineage visualization
+   */
+  async generateLineageVisualization(req, res) {
+    try {
+      const { focus_asset, format = 'png' } = req.query;
+      
+      // Get all assets from asset manager
+      const assetsData = await this.assetManager.listAssets();
+      const assets = assetsData.all || [];
+      
+      if (assets.length === 0) {
+        return res.json({
+          success: false,
+          error: 'No assets available for visualization',
+          timestamp: new Date().toISOString()
+        });
+      }
+      
+      // Call Python lineage visualizer via subprocess
+      const { spawn } = require('child_process');
+      const path = require('path');
+      const fs = require('fs-extra');
+      const tempfile = require('tempfile');
+      
+      // Create temporary file with assets data
+      const tempAssetsFile = tempfile('.json');
+      await fs.writeJson(tempAssetsFile, assets);
+      
+      // Prepare command arguments
+      const visualizerPath = path.join(this.dagsterProjectPath, 'visualization', 'lineage_visualizer.py');
+      const args = [visualizerPath, tempAssetsFile, '--format', format];
+      
+      if (focus_asset) {
+        args.push('--focus', focus_asset);
+      }
+      
+      // Execute Python script
+      const pythonProcess = spawn('python3', args);
+      
+      let output = '';
+      let errorOutput = '';
+      
+      pythonProcess.stdout.on('data', (data) => {
+        output += data.toString();
+      });
+      
+      pythonProcess.stderr.on('data', (data) => {
+        errorOutput += data.toString();
+      });
+      
+      pythonProcess.on('close', async (code) => {
+        // Cleanup temp file
+        await fs.remove(tempAssetsFile);
+        
+        if (code === 0) {
+          const visualizationPath = output.trim().replace('Visualization generated: ', '');
+          
+          res.json({
+            success: true,
+            data: {
+              visualization_path: visualizationPath,
+              focus_asset: focus_asset || null,
+              format: format,
+              total_assets: assets.length
+            },
+            timestamp: new Date().toISOString()
+          });
+        } else {
+          this.handleError(res, new Error(`Visualization failed: ${errorOutput}`), 'Failed to generate lineage visualization');
+        }
+      });
+      
+    } catch (error) {
+      this.handleError(res, error, 'Failed to generate lineage visualization');
+    }
+  }
+
+  /**
+   * Generate lineage report
+   */
+  async generateLineageReport(req, res) {
+    try {
+      const { format = 'html' } = req.query;
+      
+      // Get all assets from asset manager
+      const assetsData = await this.assetManager.listAssets();
+      const assets = assetsData.all || [];
+      
+      if (assets.length === 0) {
+        return res.json({
+          success: false,
+          error: 'No assets available for report generation',
+          timestamp: new Date().toISOString()
+        });
+      }
+      
+      // Call Python lineage visualizer via subprocess
+      const { spawn } = require('child_process');
+      const path = require('path');
+      const fs = require('fs-extra');
+      const tempfile = require('tempfile');
+      
+      // Create temporary file with assets data
+      const tempAssetsFile = tempfile('.json');
+      await fs.writeJson(tempAssetsFile, assets);
+      
+      // Prepare command arguments
+      const visualizerPath = path.join(this.dagsterProjectPath, 'visualization', 'lineage_visualizer.py');
+      const args = [visualizerPath, tempAssetsFile, '--report', format];
+      
+      // Execute Python script
+      const pythonProcess = spawn('python3', args);
+      
+      let output = '';
+      let errorOutput = '';
+      
+      pythonProcess.stdout.on('data', (data) => {
+        output += data.toString();
+      });
+      
+      pythonProcess.stderr.on('data', (data) => {
+        errorOutput += data.toString();
+      });
+      
+      pythonProcess.on('close', async (code) => {
+        // Cleanup temp file
+        await fs.remove(tempAssetsFile);
+        
+        if (code === 0) {
+          const reportPath = output.trim().replace('Report generated: ', '');
+          
+          res.json({
+            success: true,
+            data: {
+              report_path: reportPath,
+              format: format,
+              total_assets: assets.length,
+              download_available: true
+            },
+            timestamp: new Date().toISOString()
+          });
+        } else {
+          this.handleError(res, new Error(`Report generation failed: ${errorOutput}`), 'Failed to generate lineage report');
+        }
+      });
+      
+    } catch (error) {
+      this.handleError(res, error, 'Failed to generate lineage report');
+    }
+  }
+
+  /**
+   * Get lineage summary statistics
+   */
+  async getLineageSummary(req, res) {
+    try {
+      // Get all assets from asset manager
+      const assetsData = await this.assetManager.listAssets();
+      const assets = assetsData.all || [];
+      
+      if (assets.length === 0) {
+        return res.json({
+          success: true,
+          data: {
+            total_assets: 0,
+            total_dependencies: 0,
+            asset_groups: {},
+            message: 'No assets available'
+          },
+          timestamp: new Date().toISOString()
+        });
+      }
+      
+      // Calculate summary statistics
+      const summary = {
+        total_assets: assets.length,
+        total_dependencies: 0,
+        asset_groups: {},
+        compute_kinds: {},
+        most_connected_assets: []
+      };
+      
+      // Calculate statistics
+      const dependencyMap = new Map();
+      
+      for (const asset of assets) {
+        const assetKey = asset.name || asset.asset_key;
+        const group = asset.group_name || 'other';
+        const computeKind = asset.compute_kind || 'default';
+        
+        // Count asset groups
+        summary.asset_groups[group] = (summary.asset_groups[group] || 0) + 1;
+        summary.compute_kinds[computeKind] = (summary.compute_kinds[computeKind] || 0) + 1;
+        
+        // Count dependencies
+        const dependencies = asset.dependencies || [];
+        summary.total_dependencies += dependencies.length;
+        
+        // Track connections for most connected assets
+        dependencyMap.set(assetKey, dependencies.length);
+      }
+      
+      // Find most connected assets
+      const sortedByConnections = Array.from(dependencyMap.entries())
+        .sort(([,a], [,b]) => b - a)
+        .slice(0, 5);
+      
+      summary.most_connected_assets = sortedByConnections.map(([asset, connections]) => ({
+        asset,
+        connections
+      }));
+      
+      res.json({
+        success: true,
+        data: summary,
+        timestamp: new Date().toISOString()
+      });
+      
+    } catch (error) {
+      this.handleError(res, error, 'Failed to get lineage summary');
     }
   }
 

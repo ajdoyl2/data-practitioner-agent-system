@@ -34,6 +34,13 @@ class IngestionConfig(Config):
     timeout: int = 300
     retry_attempts: int = 3
     
+    def get_headers(self) -> Dict[str, str]:
+        """Get HTTP headers for API requests"""
+        headers = {"Content-Type": "application/json"}
+        if self.api_key:
+            headers["X-API-Key"] = self.api_key
+        return headers
+    
 class DataSourceConfig(Config):
     """Configuration for specific data source"""
     source_type: str
@@ -55,7 +62,7 @@ def ingestion_service_health(context: AssetExecutionContext, config: IngestionCo
         response = requests.get(
             f"http://localhost:{config.service_port}/health",
             timeout=config.timeout,
-            headers={"X-API-Key": config.api_key} if config.api_key else {}
+            headers=config.get_headers()
         )
         
         if response.status_code == 200:
@@ -96,7 +103,7 @@ def available_data_sources(context: AssetExecutionContext, config: IngestionConf
         response = requests.get(
             f"http://localhost:{config.service_port}/api/v1/ingestion/sources",
             timeout=config.timeout,
-            headers={"X-API-Key": config.api_key} if config.api_key else {}
+            headers=config.get_headers()
         )
         
         if response.status_code == 200:
@@ -152,12 +159,13 @@ def ingest_data_source(
         
         context.log.info(f"Starting ingestion from {config.source_type} to {config.destination_table}")
         
-        # Execute ingestion via API
+        # Execute ingestion via API - use IngestionConfig for service port
+        ingestion_config = IngestionConfig(api_key=getattr(config, 'api_key', None))
         response = requests.post(
-            f"http://localhost:3001/api/v1/ingestion/sync",
+            f"http://localhost:{ingestion_config.service_port}/api/v1/ingestion/sync",
             json=ingestion_request,
-            timeout=300,
-            headers={"X-API-Key": config.api_key} if hasattr(config, 'api_key') and config.api_key else {}
+            timeout=ingestion_config.timeout,
+            headers=ingestion_config.get_headers()
         )
         
         if response.status_code == 200:
@@ -212,11 +220,13 @@ def validate_ingested_data(
             ]
         }
         
+        # Use consistent configuration pattern
+        ingestion_config = IngestionConfig(api_key=getattr(config, 'api_key', None))
         response = requests.post(
             "http://localhost:3002/api/v1/analytics/validate",
             json=validation_request,
             timeout=60,
-            headers={"X-API-Key": config.api_key} if hasattr(config, 'api_key') and config.api_key else {}
+            headers=ingestion_config.get_headers()
         )
         
         if response.status_code == 200:

@@ -17,6 +17,26 @@ load_from:
   - python_file:
       relative_path: assets/publication_assets.py
       location_name: "data_publication"
+      
+  - python_file:
+      relative_path: jobs/data_pipeline_jobs.py
+      location_name: "pipeline_jobs"
+      
+  - python_file:
+      relative_path: jobs/manual_triggers.py
+      location_name: "manual_triggers"
+      
+  - python_file:
+      relative_path: schedules/daily_data_refresh.py
+      location_name: "daily_schedules"
+      
+  - python_file:
+      relative_path: schedules/hourly_incremental.py
+      location_name: "hourly_schedules"
+      
+  - python_file:
+      relative_path: sensors/data_source_sensor.py
+      location_name: "data_sensors"
 
 # Global configuration that applies to all code locations
 metadata:

@@ -1,0 +1,15 @@
+telemetry:
+  enabled: false
+ui:
+  title: BMad Data Practitioner
+  theme:
+    primaryColor: '#667eea'
+    secondaryColor: '#764ba2'
+python_logs:
+  python_log_level: INFO
+  dagster_handler_config:
+    handlers:
+      console:
+        class: logging.StreamHandler
+        level: INFO
+        formatter: colored

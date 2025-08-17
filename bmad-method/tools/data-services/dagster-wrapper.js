@@ -11,9 +11,9 @@ const execAsync = util.promisify(exec);
 
 class DagsterWrapper {
   constructor(options = {}) {
-    this.projectPath = options.projectPath;
-    this.webUIPort = options.webUIPort || 3001;
-    this.daemonPort = options.daemonPort || 3070;
+    this.projectPath = this._validatePath(options.projectPath);
+    this.webUIPort = this._validatePort(options.webUIPort || 3001);
+    this.daemonPort = this._validatePort(options.daemonPort || 3070);
     
     // Process management
     this.daemonProcess = null;
@@ -22,6 +22,33 @@ class DagsterWrapper {
     // Python environment settings
     this.pythonPath = options.pythonPath || 'python';
     this.dagsterExecutable = options.dagsterExecutable || 'dagster';
+  }
+
+  /**
+   * Validate and sanitize file paths to prevent path injection
+   */
+  _validatePath(inputPath) {
+    if (!inputPath) return null;
+    
+    const resolvedPath = path.resolve(inputPath);
+    
+    // Prevent path traversal attacks
+    if (resolvedPath.includes('..')) {
+      throw new Error('Invalid path: path traversal detected');
+    }
+    
+    return resolvedPath;
+  }
+
+  /**
+   * Validate port numbers
+   */
+  _validatePort(port) {
+    const portNum = parseInt(port);
+    if (isNaN(portNum) || portNum < 1024 || portNum > 65535) {
+      throw new Error(`Invalid port number: ${port}`);
+    }
+    return portNum;
   }
 
   /**
