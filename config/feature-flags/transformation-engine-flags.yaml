@@ -1,0 +1,522 @@
+# Transformation Engine Feature Flags Configuration
+#
+# This configuration file controls feature flags for transformation engine selection,
+# agent behavior, and experimental capabilities. Feature flags enable safe rollout
+# of new features, A/B testing of recommendations, and gradual migration of capabilities.
+
+# Configuration metadata
+config_version: "1.2.0"
+last_updated: "2024-08-18"
+environment: "production"
+validation_schema: "transformation-engine-flags-v1.2"
+
+# ============================================================================
+# CORE ENGINE SELECTION FLAGS
+# ============================================================================
+
+engine_selection:
+  # Enable/disable specific transformation engines
+  engines:
+    sqlmesh:
+      enabled: true
+      stable: true
+      description: "SQLmesh transformation engine with virtual environments"
+      min_agent_version: "1.0.0"
+      feature_gates:
+        - "virtual_environments"
+        - "cost_optimization"
+        - "python_integration"
+      
+    dbt:
+      enabled: true
+      stable: true
+      description: "dbt (data build tool) transformation engine"
+      min_agent_version: "1.0.0"
+      feature_gates:
+        - "sql_transformations"
+        - "testing_framework"
+        - "documentation"
+      
+    dual_engine:
+      enabled: true
+      stable: false
+      description: "Dual SQLmesh + dbt engine coordination"
+      min_agent_version: "1.1.0"
+      experimental: true
+      rollout_percentage: 25
+      feature_gates:
+        - "advanced_coordination"
+        - "multi_engine_management"
+  
+  # Default engine selection behavior
+  defaults:
+    recommendation_engine: "intelligent"  # Options: intelligent, conservative, aggressive
+    confidence_threshold: 0.7
+    fallback_engine: "dbt"
+    enable_multi_engine_comparison: true
+    
+  # Recommendation algorithm configuration
+  algorithm:
+    enabled_factors:
+      - "technical_fit"
+      - "cost_efficiency" 
+      - "team_readiness"
+      - "risk_mitigation"
+    
+    factor_weights:
+      technical_fit: 0.35
+      cost_efficiency: 0.25
+      team_readiness: 0.25
+      risk_mitigation: 0.15
+    
+    experimental_factors:
+      enabled: false
+      rollout_percentage: 10
+      factors:
+        - "market_trends"
+        - "community_momentum"
+
+# ============================================================================
+# AGENT INTELLIGENCE FLAGS
+# ============================================================================
+
+agent_intelligence:
+  # Auto-detection and analysis capabilities
+  auto_detection:
+    enabled: true
+    project_analysis:
+      enabled: true
+      deep_analysis: true
+      caching_enabled: true
+      cache_ttl_hours: 24
+      
+    team_assessment:
+      enabled: true
+      git_history_analysis: true
+      skill_inference: true
+      experience_weighting: true
+    
+    cost_modeling:
+      enabled: true
+      warehouse_cost_estimation: true
+      migration_cost_estimation: true
+      roi_calculation: true
+  
+  # Recommendation generation
+  recommendations:
+    enabled: true
+    multi_option_comparison: true
+    alternative_suggestions: true
+    risk_assessment: true
+    implementation_planning: true
+    
+    explanation_detail: "comprehensive"  # Options: minimal, standard, comprehensive
+    include_reasoning: true
+    include_trade_offs: true
+    include_migration_path: true
+  
+  # Learning and adaptation
+  learning:
+    enabled: false  # Currently experimental
+    feedback_collection: true
+    recommendation_tracking: true
+    success_rate_optimization: false
+    user_preference_adaptation: false
+
+# ============================================================================
+# USER OVERRIDE AND CUSTOMIZATION FLAGS
+# ============================================================================
+
+user_overrides:
+  # Override capability controls
+  override_system:
+    enabled: true
+    validation_enabled: true
+    audit_logging: true
+    approval_workflows: false  # Enterprise feature
+    
+  # Override types and permissions
+  allowed_override_types:
+    force_engine_selection: true
+    exclude_engines: true
+    budget_constraints: true
+    timeline_constraints: true
+    technical_preferences: true
+    risk_tolerance: true
+  
+  # Override validation and safety
+  validation:
+    enabled: true
+    consistency_checks: true
+    safety_constraints: true
+    business_rule_validation: true
+    
+    risk_thresholds:
+      maximum_risk_score: 0.8
+      require_approval_above: 0.6
+      warn_above: 0.4
+  
+  # User preference management
+  preferences:
+    enabled: true
+    persistent_profiles: true
+    organizational_templates: true
+    preference_inheritance: true
+
+# ============================================================================
+# COST OPTIMIZATION FLAGS
+# ============================================================================
+
+cost_optimization:
+  # Cost analysis capabilities
+  analysis:
+    enabled: true
+    real_time_cost_estimation: true
+    comparative_cost_analysis: true
+    roi_projection: true
+    
+  # Virtual environment cost optimization
+  virtual_environments:
+    enabled: true
+    cost_modeling: true
+    savings_estimation: true
+    automatic_recommendations: true
+    
+  # Warehouse usage optimization
+  warehouse_optimization:
+    enabled: true
+    query_optimization_suggestions: true
+    storage_optimization: true
+    compute_scaling_recommendations: true
+  
+  # Cost monitoring and alerting
+  monitoring:
+    enabled: true
+    cost_tracking: true
+    budget_alerts: true
+    anomaly_detection: false  # Experimental
+
+# ============================================================================
+# DEPLOYMENT AND MIGRATION FLAGS
+# ============================================================================
+
+deployment:
+  # Blue-green deployment patterns
+  blue_green:
+    enabled: true
+    automatic_validation: true
+    rollback_automation: true
+    monitoring_integration: true
+    
+  # Migration assistance
+  migration:
+    enabled: true
+    dbt_to_sqlmesh_migration: true
+    automated_migration_tools: false  # Under development
+    migration_validation: true
+    rollback_planning: true
+  
+  # Production deployment safety
+  safety:
+    enabled: true
+    pre_deployment_validation: true
+    automated_testing: true
+    gradual_rollout: true
+    canary_deployments: false  # Enterprise feature
+
+# ============================================================================
+# PERFORMANCE AND RELIABILITY FLAGS
+# ============================================================================
+
+performance:
+  # Performance monitoring and optimization
+  monitoring:
+    enabled: true
+    execution_time_tracking: true
+    resource_usage_monitoring: true
+    performance_regression_detection: true
+    
+  # Caching and optimization
+  caching:
+    enabled: true
+    recommendation_caching: true
+    project_analysis_caching: true
+    metadata_caching: true
+    cache_warming: false
+    
+  # Reliability features
+  reliability:
+    enabled: true
+    error_handling: true
+    retry_mechanisms: true
+    graceful_degradation: true
+    fallback_strategies: true
+
+# ============================================================================
+# EXPERIMENTAL AND BETA FEATURES
+# ============================================================================
+
+experimental:
+  # AI/ML enhanced recommendations
+  ml_recommendations:
+    enabled: false
+    rollout_percentage: 5
+    model_version: "beta-0.1"
+    feedback_collection: true
+    
+  # Advanced analysis capabilities
+  advanced_analysis:
+    enabled: false
+    natural_language_queries: false
+    automated_documentation_generation: false
+    intelligent_test_generation: false
+    
+  # Integration enhancements
+  integrations:
+    enabled: false
+    real_time_collaboration: false
+    advanced_git_integration: false
+    ci_cd_intelligence: false
+
+# ============================================================================
+# ENVIRONMENT-SPECIFIC OVERRIDES
+# ============================================================================
+
+environments:
+  development:
+    overrides:
+      experimental.ml_recommendations.enabled: true
+      experimental.ml_recommendations.rollout_percentage: 50
+      agent_intelligence.learning.enabled: true
+      performance.caching.cache_warming: true
+      
+  staging:
+    overrides:
+      engine_selection.engines.dual_engine.rollout_percentage: 50
+      experimental.advanced_analysis.enabled: true
+      deployment.safety.canary_deployments: true
+      
+  production:
+    overrides:
+      engine_selection.engines.dual_engine.rollout_percentage: 25
+      experimental.ml_recommendations.enabled: false
+      performance.reliability.enabled: true
+      deployment.safety.enabled: true
+
+# ============================================================================
+# ROLLOUT AND A/B TESTING CONFIGURATION
+# ============================================================================
+
+rollout:
+  # Gradual feature rollout
+  strategies:
+    percentage_based:
+      enabled: true
+      default_percentage: 10
+      increment_rate: 10
+      increment_interval_days: 7
+      
+    user_based:
+      enabled: true
+      beta_users: true
+      internal_users: true
+      opted_in_users: true
+      
+    organization_based:
+      enabled: false  # Enterprise feature
+      pilot_organizations: []
+      rollout_schedule: {}
+  
+  # A/B testing framework
+  ab_testing:
+    enabled: true
+    test_allocation: "consistent_hash"  # Options: random, consistent_hash
+    
+    active_tests:
+      recommendation_algorithm_v2:
+        enabled: true
+        allocation_percentage: 20
+        control_group: "current_algorithm"
+        test_group: "enhanced_algorithm_v2"
+        success_metrics: ["accuracy", "user_satisfaction"]
+        
+      cost_optimization_ui:
+        enabled: true
+        allocation_percentage: 30
+        control_group: "standard_ui"
+        test_group: "enhanced_cost_ui"
+        success_metrics: ["engagement", "cost_savings_adoption"]
+
+# ============================================================================
+# COMPLIANCE AND GOVERNANCE FLAGS
+# ============================================================================
+
+compliance:
+  # Audit and logging
+  audit:
+    enabled: true
+    detailed_logging: true
+    recommendation_tracking: true
+    user_action_logging: true
+    
+  # Data privacy and security
+  privacy:
+    enabled: true
+    data_anonymization: true
+    pii_detection: true
+    secure_storage: true
+    
+  # Governance controls
+  governance:
+    enabled: false  # Enterprise feature
+    approval_workflows: false
+    policy_enforcement: false
+    compliance_reporting: false
+
+# ============================================================================
+# INTEGRATION AND API FLAGS
+# ============================================================================
+
+integrations:
+  # External tool integrations
+  tools:
+    git:
+      enabled: true
+      advanced_analysis: true
+      commit_message_intelligence: false
+      
+    ci_cd:
+      enabled: true
+      pipeline_integration: true
+      automated_deployment: false
+      
+    monitoring:
+      enabled: true
+      metrics_collection: true
+      alerting_integration: true
+  
+  # API capabilities
+  api:
+    enabled: true
+    rest_api: true
+    graphql_api: false
+    webhook_support: true
+    
+    rate_limiting:
+      enabled: true
+      requests_per_minute: 100
+      burst_allowance: 20
+    
+    authentication:
+      enabled: true
+      api_key_auth: true
+      oauth2: false
+      jwt: false
+
+# ============================================================================
+# MONITORING AND OBSERVABILITY FLAGS
+# ============================================================================
+
+observability:
+  # Metrics collection
+  metrics:
+    enabled: true
+    performance_metrics: true
+    usage_metrics: true
+    error_metrics: true
+    business_metrics: true
+    
+  # Logging configuration
+  logging:
+    enabled: true
+    log_level: "INFO"  # Options: DEBUG, INFO, WARN, ERROR
+    structured_logging: true
+    log_retention_days: 30
+    
+  # Health checks and monitoring
+  health:
+    enabled: true
+    health_check_endpoint: true
+    dependency_monitoring: true
+    automated_alerting: true
+
+# ============================================================================
+# FEATURE FLAG MANAGEMENT
+# ============================================================================
+
+management:
+  # Dynamic configuration updates
+  dynamic_updates:
+    enabled: true
+    hot_reload: true
+    validation_on_update: true
+    rollback_on_error: true
+    
+  # Flag lifecycle management
+  lifecycle:
+    enabled: true
+    deprecation_warnings: true
+    removal_scheduling: true
+    usage_tracking: true
+    
+  # Emergency controls
+  emergency:
+    enabled: true
+    kill_switch: true
+    emergency_rollback: true
+    incident_response: true
+
+# ============================================================================
+# VALIDATION RULES
+# ============================================================================
+
+validation:
+  # Configuration validation rules
+  rules:
+    - name: "engine_availability"
+      condition: "at_least_one_engine_enabled"
+      error_message: "At least one transformation engine must be enabled"
+      
+    - name: "fallback_engine_enabled"
+      condition: "fallback_engine_is_enabled"
+      error_message: "Fallback engine must be enabled"
+      
+    - name: "percentage_bounds"
+      condition: "rollout_percentages_between_0_and_100"
+      error_message: "Rollout percentages must be between 0 and 100"
+      
+    - name: "version_compatibility"
+      condition: "min_agent_versions_valid"
+      error_message: "Minimum agent versions must be valid semantic versions"
+  
+  # Schema validation
+  schema_validation:
+    enabled: true
+    strict_mode: true
+    additional_properties: false
+
+# ============================================================================
+# FEATURE FLAG USAGE EXAMPLES
+# ============================================================================
+
+examples:
+  # Example feature flag checks (for documentation)
+  check_engine_enabled: |
+    if feature_flags.engine_selection.engines.sqlmesh.enabled:
+        return "sqlmesh"
+    elif feature_flags.engine_selection.engines.dbt.enabled:
+        return "dbt"
+    else:
+        raise ValueError("No engines enabled")
+  
+  check_experimental_feature: |
+    if (feature_flags.experimental.ml_recommendations.enabled and 
+        user_in_rollout_group("ml_recommendations")):
+        return use_ml_recommendations()
+    else:
+        return use_standard_recommendations()
+  
+  environment_override_example: |
+    # Configuration is automatically merged with environment overrides
+    # In development: experimental.ml_recommendations.enabled = true
+    # In production: experimental.ml_recommendations.enabled = false
