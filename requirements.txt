@@ -22,12 +22,15 @@ dagster-postgres>=0.24.12
 dagster-docker>=0.24.12
 
 # Automated EDA and analysis tools
-pandas-profiling>=3.6.6
+ydata-profiling>=4.0.0
 sweetviz>=2.3.1
 autoviz>=0.1.88
 scipy>=1.11.0
 scikit-learn>=1.3.0
 statsmodels>=0.14.0
+
+# Database connectors - continued
+duckdb>=1.0.0
 
 # Utilities
 pyyaml>=6.0.0
