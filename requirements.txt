@@ -1,5 +1,5 @@
 # PyAirbyte for data ingestion
-pyairbyte==0.20.0
+airbyte==0.20.0
 
 # Data processing and manipulation
 pandas>=2.0.0
