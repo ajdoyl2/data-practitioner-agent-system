@@ -4,7 +4,7 @@ features:
     description: Enable PyAirbyte connectors for data ingestion
     dependencies: []
   duckdb_analytics:
-    enabled: false
+    enabled: true
     description: Enable DuckDB for local analytics and data exploration
     dependencies: []
   dbt_transformations:
@@ -19,10 +19,26 @@ features:
       - pyairbyte_integration
       - duckdb_analytics
   eda_automation:
-    enabled: false
+    enabled: true
     description: Enable automated exploratory data analysis
     dependencies:
       - duckdb_analytics
+  automated_eda:
+    enabled: true
+    description: Enable automated EDA using pandas-profiling, Sweetviz, and AutoViz
+    dependencies: []
+  agent_hypothesis_generation:
+    enabled: true
+    description: Enable agent-based hypothesis generation from EDA reports
+    dependencies: []
+  statistical_testing:
+    enabled: true
+    description: Enable automated statistical testing framework
+    dependencies: []
+  pattern_detection:
+    enabled: true
+    description: Enable pattern detection and anomaly identification
+    dependencies: []
   evidence_publishing:
     enabled: false
     description: Enable Evidence.dev for data publication

@@ -1,0 +1,29 @@
+# Feature flags configuration for BMad Data Practitioner
+# Enable features for integration testing and development
+
+features:
+  automated_eda:
+    enabled: true
+    description: "Automated Exploratory Data Analysis using pandas-profiling, Sweetviz, and AutoViz"
+    
+  agent_hypothesis_generation:
+    enabled: true
+    description: "Agent-based hypothesis generation from EDA reports"
+    
+  statistical_testing:
+    enabled: true
+    description: "Automated statistical testing framework"
+    
+  pattern_detection:
+    enabled: true
+    description: "Pattern detection and anomaly identification"
+    
+  dagster_orchestration:
+    enabled: true
+    description: "Dagster-based workflow orchestration"
+
+# Testing configuration
+testing:
+  mock_mode: true
+  skip_python_dependencies: false
+  enable_all_features: true
