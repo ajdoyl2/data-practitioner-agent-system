@@ -337,14 +337,16 @@ describe('Workflow Execution Baseline Tests', () => {
           };
           
         } catch (error) {
-          // Sanitize error message to remove absolute paths
+          // Sanitize error message to remove absolute paths while preserving relative structure
           let sanitizedErrorMessage = error.message;
           if (typeof sanitizedErrorMessage === 'string') {
             sanitizedErrorMessage = sanitizedErrorMessage
-              .replace(/\/Users\/[^\/]+\/[^']+/g, '/PROJECT_ROOT')
-              .replace(/\/home\/runner\/work\/[^']+/g, '/PROJECT_ROOT')
-              .replace(/\/[^:,'\\s]+\/bmad-method/g, '/PROJECT_ROOT')
-              .replace(/\/[^:,'\\s]+:/g, '/PROJECT_ROOT:');
+              // Replace user home paths but preserve bmad-method structure  
+              .replace(/\/Users\/[^\/]+\/[^\/]*\/bmad-method/g, '/PROJECT_ROOT/bmad-method')
+              // Replace CI paths but preserve bmad-method structure
+              .replace(/\/home\/runner\/work\/[^\/]+\/[^\/]+\/bmad-method/g, '/PROJECT_ROOT/bmad-method')
+              // Replace any remaining absolute paths that end with bmad-method
+              .replace(/\/[^:\s']+\/bmad-method/g, '/PROJECT_ROOT/bmad-method');
           }
           
           errorBaselines.errorTests[`${type}-${id}`] = {
