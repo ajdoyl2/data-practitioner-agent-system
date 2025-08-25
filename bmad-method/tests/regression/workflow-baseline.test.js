@@ -17,6 +17,62 @@ describe('Workflow Execution Baseline Tests', () => {
     dependencyResolver = new DependencyResolver(projectRoot);
   });
 
+  /**
+   * Sanitizes objects for snapshot testing by removing volatile data
+   * that changes between test runs (timestamps, performance timings, paths)
+   */
+  function sanitizeForSnapshot(obj) {
+    if (!obj || typeof obj !== 'object') return obj;
+    
+    const sanitized = Array.isArray(obj) ? [...obj] : { ...obj };
+    
+    // Remove volatile fields
+    const volatileFields = [
+      'timestamp', 'discoveryTime', 'loadingTime', 'responseTime', 
+      'resolutionTime', 'timePerAgent', 'timePerTeam', 'modified'
+    ];
+    
+    volatileFields.forEach(field => {
+      if (field in sanitized) {
+        delete sanitized[field];
+      }
+    });
+    
+    // Sanitize error messages and paths to remove absolute paths
+    if ('errorMessage' in sanitized && typeof sanitized.errorMessage === 'string') {
+      // Handle error messages with file paths more comprehensively
+      sanitized.errorMessage = sanitized.errorMessage
+        .replace(/\/Users\/[^\/]+\/[^\/]+\/bmad-method/g, '/PROJECT_ROOT/bmad-method')
+        .replace(/\/home\/runner\/work\/[^\/]+\/[^\/]+\/bmad-method/g, '/PROJECT_ROOT/bmad-method')
+        .replace(/\/[^:\s']+\/bmad-method/g, '/PROJECT_ROOT/bmad-method');
+    }
+    if ('error' in sanitized && typeof sanitized.error === 'string') {
+      sanitized.error = sanitized.error
+        .replace(/\/Users\/[^\/]+\/[^\/]+\/bmad-method/g, '/PROJECT_ROOT/bmad-method')
+        .replace(/\/home\/runner\/work\/[^\/]+\/[^\/]+\/bmad-method/g, '/PROJECT_ROOT/bmad-method')
+        .replace(/\/[^:\s']+\/bmad-method/g, '/PROJECT_ROOT/bmad-method');
+    }
+    if ('path' in sanitized && typeof sanitized.path === 'string') {
+      // Replace absolute paths with relative PROJECT_ROOT paths
+      const projectRoot = process.cwd();
+      if (sanitized.path.startsWith(projectRoot)) {
+        sanitized.path = sanitized.path.replace(projectRoot, 'PROJECT_ROOT');
+      } else {
+        // Handle CI environment paths that might be different
+        sanitized.path = sanitized.path.replace(/^\/.*?\/bmad-method/, 'PROJECT_ROOT');
+      }
+    }
+    
+    // Recursively sanitize nested objects
+    Object.keys(sanitized).forEach(key => {
+      if (typeof sanitized[key] === 'object' && sanitized[key] !== null) {
+        sanitized[key] = sanitizeForSnapshot(sanitized[key]);
+      }
+    });
+    
+    return sanitized;
+  }
+
   describe('Agent Discovery Baselines', () => {
     test('should establish agent discovery performance baseline', async () => {
       const startTime = Date.now();
@@ -45,7 +101,7 @@ describe('Workflow Execution Baseline Tests', () => {
         // Performance expectations
         expect(discoveryTime).toBeLessThan(5000);
         expect(agents).toBeInstanceOf(Array);
-        expect(discoveryBaseline).toMatchSnapshot('agent-discovery-baseline');
+        expect(sanitizeForSnapshot(discoveryBaseline)).toMatchSnapshot('agent-discovery-baseline');
         
       } catch (error) {
         // Handle directory not found gracefully
@@ -62,7 +118,7 @@ describe('Workflow Execution Baseline Tests', () => {
           { spaces: 2 }
         );
         
-        expect(errorBaseline).toMatchSnapshot('agent-discovery-error-baseline');
+        expect(sanitizeForSnapshot(errorBaseline)).toMatchSnapshot('agent-discovery-error-baseline');
       }
     });
 
@@ -93,7 +149,7 @@ describe('Workflow Execution Baseline Tests', () => {
         // Performance expectations
         expect(discoveryTime).toBeLessThan(3000);
         expect(teams).toBeInstanceOf(Array);
-        expect(teamDiscoveryBaseline).toMatchSnapshot('team-discovery-baseline');
+        expect(sanitizeForSnapshot(teamDiscoveryBaseline)).toMatchSnapshot('team-discovery-baseline');
         
       } catch (error) {
         // Handle directory not found gracefully
@@ -110,7 +166,7 @@ describe('Workflow Execution Baseline Tests', () => {
           { spaces: 2 }
         );
         
-        expect(errorBaseline).toMatchSnapshot('team-discovery-error-baseline');
+        expect(sanitizeForSnapshot(errorBaseline)).toMatchSnapshot('team-discovery-error-baseline');
       }
     });
   });
@@ -154,10 +210,12 @@ describe('Workflow Execution Baseline Tests', () => {
       
       // Performance expectations for resource loading
       Object.values(loadingResults.resourceTypes).forEach(result => {
-        expect(result.loadingTime).toBeLessThan(2000); // 2 second limit per resource
+        if (result.loadingTime !== undefined) {
+          expect(result.loadingTime).toBeLessThan(2000); // 2 second limit per resource
+        }
       });
       
-      expect(loadingResults).toMatchSnapshot('resource-loading-baseline');
+      expect(sanitizeForSnapshot(loadingResults)).toMatchSnapshot('resource-loading-baseline');
     });
 
     test('should establish agent dependency resolution baseline', async () => {
@@ -195,7 +253,7 @@ describe('Workflow Execution Baseline Tests', () => {
               
               expect(resolutionTime).toBeLessThan(10000); // 10 second limit
               expect(result.agent).toBeDefined();
-              expect(resolutionBaseline).toMatchSnapshot('agent-resolution-baseline');
+              expect(sanitizeForSnapshot(resolutionBaseline)).toMatchSnapshot('agent-resolution-baseline');
               
             } catch (resolutionError) {
               const resolutionTime = Date.now() - startTime;
@@ -214,7 +272,7 @@ describe('Workflow Execution Baseline Tests', () => {
                 { spaces: 2 }
               );
               
-              expect(errorBaseline).toMatchSnapshot('agent-resolution-error-baseline');
+              expect(sanitizeForSnapshot(errorBaseline)).toMatchSnapshot('agent-resolution-error-baseline');
             }
           }
         }
@@ -234,7 +292,7 @@ describe('Workflow Execution Baseline Tests', () => {
           { spaces: 2 }
         );
         
-        expect(noAgentsBaseline).toMatchSnapshot('no-agents-baseline');
+        expect(sanitizeForSnapshot(noAgentsBaseline)).toMatchSnapshot('no-agents-baseline');
       }
     });
   });
@@ -277,10 +335,22 @@ describe('Workflow Execution Baseline Tests', () => {
           };
           
         } catch (error) {
+          // Sanitize error message to remove absolute paths while preserving relative structure
+          let sanitizedErrorMessage = error.message;
+          if (typeof sanitizedErrorMessage === 'string') {
+            sanitizedErrorMessage = sanitizedErrorMessage
+              // Replace user home paths but preserve bmad-method and beyond  
+              .replace(/\/Users\/[^\/]+\/[^\/]+\/bmad-method/g, '/PROJECT_ROOT/bmad-method')
+              // Replace CI paths but preserve bmad-method and beyond
+              .replace(/\/home\/runner\/work\/[^\/]+\/[^\/]+\/bmad-method/g, '/PROJECT_ROOT/bmad-method')
+              // Replace any remaining absolute paths that contain bmad-method
+              .replace(/\/[^:\s']+\/bmad-method/g, '/PROJECT_ROOT/bmad-method');
+          }
+          
           errorBaselines.errorTests[`${type}-${id}`] = {
             expectedError: true,
             actualError: true,
-            errorMessage: error.message,
+            errorMessage: sanitizedErrorMessage,
             errorType: error.constructor.name,
             responseTime: Date.now() - startTime
           };
@@ -293,7 +363,7 @@ describe('Workflow Execution Baseline Tests', () => {
         { spaces: 2 }
       );
       
-      expect(errorBaselines).toMatchSnapshot('error-handling-baseline');
+      expect(sanitizeForSnapshot(errorBaselines)).toMatchSnapshot('error-handling-baseline');
     });
 
     test('should establish malformed file handling baseline', async () => {
@@ -346,7 +416,7 @@ missing: bracket
         { spaces: 2 }
       );
       
-      expect(malformedTests).toMatchSnapshot('malformed-file-baseline');
+      expect(sanitizeForSnapshot(malformedTests)).toMatchSnapshot('malformed-file-baseline');
     });
   });
 
@@ -402,7 +472,7 @@ missing: bracket
         expect(workflowBaseline.workflow.discovery.discoveryTime).toBeLessThan(8000);
       }
       
-      expect(workflowBaseline).toMatchSnapshot('workflow-integration-baseline');
+      expect(sanitizeForSnapshot(workflowBaseline)).toMatchSnapshot('workflow-integration-baseline');
     });
   });
 
@@ -474,7 +544,7 @@ missing: bracket
         { spaces: 2 }
       );
       
-      expect(systemBaseline).toMatchSnapshot('system-state-baseline');
+      expect(sanitizeForSnapshot(systemBaseline)).toMatchSnapshot('system-state-baseline');
     });
   });
 });

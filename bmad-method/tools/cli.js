@@ -223,7 +223,7 @@ program
         console.log('✓ Python packages installed');
       } else {
         console.log('⚠️  requirements.txt not found, installing basic packages...');
-        await python.installPackages(['pyairbyte==0.20.0', 'pandas', 'numpy'], { timeout: 300000 });
+        await python.installPackages(['airbyte==0.20.0', 'pandas', 'numpy'], { timeout: 300000 });
       }
       
       // Test PyAirbyte availability

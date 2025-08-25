@@ -295,9 +295,97 @@ print(json.dumps(info, indent=2))
       timestamp: new Date().toISOString()
     });
 
-    return this.execute(this.pythonExecutable, args, {
+    return this._executeCommand(args, {
       timeout: options.timeout || 120000, // 2 minutes for package installation
       ...options
+    });
+  }
+
+  /**
+   * Execute Python command with arguments (not a script)
+   * @param {Array} args - Command arguments 
+   * @param {Object} options - Execution options
+   * @returns {Promise} Promise resolving to execution result
+   */
+  async _executeCommand(args, options = {}) {
+    return new Promise((resolve, reject) => {
+      const startTime = Date.now();
+      
+      try {
+        const execOptions = {
+          stdio: ['pipe', 'pipe', 'pipe'],
+          timeout: options.timeout || this.timeout,
+          maxBuffer: options.maxBuffer || 10 * 1024 * 1024, // 10MB
+          ...options.execOptions
+        };
+
+        // Spawn Python process with command arguments
+        const child = spawn(this.pythonExecutable, args, execOptions);
+        
+        let stdout = '';
+        let stderr = '';
+        let killed = false;
+
+        // Handle stdout
+        child.stdout.on('data', (data) => {
+          stdout += data.toString();
+        });
+
+        // Handle stderr  
+        child.stderr.on('data', (data) => {
+          stderr += data.toString();
+        });
+
+        // Handle process exit
+        child.on('exit', (code, signal) => {
+          const duration = Date.now() - startTime;
+          
+          if (killed) {
+            return; // Already handled by timeout
+          }
+
+          if (code === 0) {
+            resolve({
+              success: true,
+              stdout,
+              stderr: stderr || null,
+              duration,
+              code
+            });
+          } else {
+            reject(new Error(
+              `Python command failed with code ${code}${signal ? ` (${signal})` : ''}: ${stderr || stdout}`
+            ));
+          }
+        });
+
+        // Handle process errors
+        child.on('error', (error) => {
+          reject(new Error(`Failed to spawn Python process: ${error.message}`));
+        });
+
+        // Set up timeout
+        if (execOptions.timeout > 0) {
+          setTimeout(() => {
+            if (!killed && !child.killed) {
+              killed = true;
+              child.kill('SIGTERM');
+              
+              // Force kill after 5 seconds
+              setTimeout(() => {
+                if (!child.killed) {
+                  child.kill('SIGKILL');
+                }
+              }, 5000);
+              
+              reject(new Error(`Python command timed out after ${execOptions.timeout}ms`));
+            }
+          }, execOptions.timeout);
+        }
+
+      } catch (error) {
+        reject(error);
+      }
     });
   }
 
@@ -314,7 +402,7 @@ print(json.dumps(info, indent=2))
       timestamp: new Date().toISOString()
     });
 
-    return this.execute('python3', args, {
+    return this._executeCommand(args, {
       timeout: 60000 // 1 minute
     });
   }

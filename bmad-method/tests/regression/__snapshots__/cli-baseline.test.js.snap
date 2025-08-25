@@ -10,7 +10,6 @@ exports[`CLI Regression Baseline Tests Agent Workflow Execution Baselines should
     "exists": false,
     "path": "/Users/ajdoyle/data-practitioner-agent-system/bmad-method/agent-teams",
   },
-  "timestamp": "2025-08-15T05:36:04.687Z",
 }
 `;
 
@@ -77,27 +76,18 @@ exports[`CLI Regression Baseline Tests Performance Baselines should establish co
 {
   "commands": {
     "--help": {
-      "executionTime": 183,
       "success": true,
-      "timestamp": "2025-08-15T05:36:04.234Z",
     },
     "--version": {
-      "executionTime": 131,
       "success": true,
-      "timestamp": "2025-08-15T05:36:04.366Z",
     },
     "list:agents": {
-      "executionTime": 145,
       "success": true,
-      "timestamp": "2025-08-15T05:36:04.511Z",
     },
     "validate": {
-      "executionTime": 175,
       "success": true,
-      "timestamp": "2025-08-15T05:36:04.686Z",
     },
   },
-  "timestamp": "2025-08-15T05:36:04.050Z",
 }
 `;
 
@@ -106,21 +96,17 @@ exports[`CLI Regression Baseline Tests Validate Command Baselines should establi
   "files": {
     "bmad-core/core-config.yaml": {
       "exists": true,
-      "modified": "2025-08-08T04:05:02.129Z",
       "size": 553,
     },
     "jest.config.js": {
       "exists": true,
-      "modified": "2025-08-15T05:24:49.494Z",
-      "size": 1502,
+      "size": 1622,
     },
     "package.json": {
       "exists": true,
-      "modified": "2025-08-15T05:24:43.914Z",
       "size": 3630,
     },
   },
-  "timestamp": "2025-08-15T05:36:03.610Z",
 }
 `;
 
