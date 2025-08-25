@@ -90,15 +90,15 @@ exports[`Workflow Execution Baseline Tests System State Baselines should capture
   "directories": {
     "agent-teams": {
       "exists": false,
-      "path": "/Users/ajdoyle/data-practitioner-agent-system/bmad-method/agent-teams",
+      "path": "PROJECT_ROOT/agent-teams",
     },
     "agents": {
       "exists": false,
-      "path": "/Users/ajdoyle/data-practitioner-agent-system/bmad-method/agents",
+      "path": "PROJECT_ROOT/agents",
     },
     "checklists": {
       "exists": false,
-      "path": "/Users/ajdoyle/data-practitioner-agent-system/bmad-method/checklists",
+      "path": "PROJECT_ROOT/checklists",
     },
     "expansion-packs": {
       "contents": [
@@ -110,15 +110,15 @@ exports[`Workflow Execution Baseline Tests System State Baselines should capture
       ],
       "exists": true,
       "fileCount": 5,
-      "path": "/Users/ajdoyle/data-practitioner-agent-system/bmad-method/expansion-packs",
+      "path": "PROJECT_ROOT/expansion-packs",
     },
     "tasks": {
       "exists": false,
-      "path": "/Users/ajdoyle/data-practitioner-agent-system/bmad-method/tasks",
+      "path": "PROJECT_ROOT/tasks",
     },
     "templates": {
       "exists": false,
-      "path": "/Users/ajdoyle/data-practitioner-agent-system/bmad-method/templates",
+      "path": "PROJECT_ROOT/templates",
     },
     "tests": {
       "contents": [
@@ -138,7 +138,7 @@ exports[`Workflow Execution Baseline Tests System State Baselines should capture
       ],
       "exists": true,
       "fileCount": 13,
-      "path": "/Users/ajdoyle/data-practitioner-agent-system/bmad-method/tests",
+      "path": "PROJECT_ROOT/tests",
     },
     "tools": {
       "contents": [
@@ -163,23 +163,23 @@ exports[`Workflow Execution Baseline Tests System State Baselines should capture
       ],
       "exists": true,
       "fileCount": 18,
-      "path": "/Users/ajdoyle/data-practitioner-agent-system/bmad-method/tools",
+      "path": "PROJECT_ROOT/tools",
     },
   },
   "files": {
     "bmad-core/core-config.yaml": {
       "exists": true,
-      "path": "/Users/ajdoyle/data-practitioner-agent-system/bmad-method/bmad-core/core-config.yaml",
+      "path": "PROJECT_ROOT/bmad-core/core-config.yaml",
       "size": 553,
     },
     "jest.config.js": {
       "exists": true,
-      "path": "/Users/ajdoyle/data-practitioner-agent-system/bmad-method/jest.config.js",
+      "path": "PROJECT_ROOT/jest.config.js",
       "size": 1622,
     },
     "package.json": {
       "exists": true,
-      "path": "/Users/ajdoyle/data-practitioner-agent-system/bmad-method/package.json",
+      "path": "PROJECT_ROOT/package.json",
       "size": 3630,
     },
   },

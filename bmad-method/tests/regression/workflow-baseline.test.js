@@ -38,12 +38,22 @@ describe('Workflow Execution Baseline Tests', () => {
       }
     });
     
-    // Sanitize error messages to remove absolute paths
+    // Sanitize error messages and paths to remove absolute paths
     if ('errorMessage' in sanitized && typeof sanitized.errorMessage === 'string') {
       sanitized.errorMessage = sanitized.errorMessage.replace(/\/[^:]+:/g, '/PROJECT_ROOT:');
     }
     if ('error' in sanitized && typeof sanitized.error === 'string') {
       sanitized.error = sanitized.error.replace(/\/[^:]+:/g, '/PROJECT_ROOT:');
+    }
+    if ('path' in sanitized && typeof sanitized.path === 'string') {
+      // Replace absolute paths with relative PROJECT_ROOT paths
+      const projectRoot = process.cwd();
+      if (sanitized.path.startsWith(projectRoot)) {
+        sanitized.path = sanitized.path.replace(projectRoot, 'PROJECT_ROOT');
+      } else {
+        // Handle CI environment paths that might be different
+        sanitized.path = sanitized.path.replace(/^\/.*?\/bmad-method/, 'PROJECT_ROOT');
+      }
     }
     
     // Recursively sanitize nested objects
