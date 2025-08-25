@@ -42,17 +42,15 @@ describe('Workflow Execution Baseline Tests', () => {
     if ('errorMessage' in sanitized && typeof sanitized.errorMessage === 'string') {
       // Handle error messages with file paths more comprehensively
       sanitized.errorMessage = sanitized.errorMessage
-        .replace(/\/Users\/[^\/]+\/[^']+/g, '/PROJECT_ROOT')
-        .replace(/\/home\/runner\/work\/[^']+/g, '/PROJECT_ROOT')
-        .replace(/\/[^:,'\s]+\/bmad-method/g, '/PROJECT_ROOT')
-        .replace(/\/[^:,'\s]+:/g, '/PROJECT_ROOT:');
+        .replace(/\/Users\/[^\/]+\/[^\/]+\/bmad-method/g, '/PROJECT_ROOT/bmad-method')
+        .replace(/\/home\/runner\/work\/[^\/]+\/[^\/]+\/bmad-method/g, '/PROJECT_ROOT/bmad-method')
+        .replace(/\/[^:\s']+\/bmad-method/g, '/PROJECT_ROOT/bmad-method');
     }
     if ('error' in sanitized && typeof sanitized.error === 'string') {
       sanitized.error = sanitized.error
-        .replace(/\/Users\/[^\/]+\/[^']+/g, '/PROJECT_ROOT')
-        .replace(/\/home\/runner\/work\/[^']+/g, '/PROJECT_ROOT')
-        .replace(/\/[^:,'\s]+\/bmad-method/g, '/PROJECT_ROOT')
-        .replace(/\/[^:,'\s]+:/g, '/PROJECT_ROOT:');
+        .replace(/\/Users\/[^\/]+\/[^\/]+\/bmad-method/g, '/PROJECT_ROOT/bmad-method')
+        .replace(/\/home\/runner\/work\/[^\/]+\/[^\/]+\/bmad-method/g, '/PROJECT_ROOT/bmad-method')
+        .replace(/\/[^:\s']+\/bmad-method/g, '/PROJECT_ROOT/bmad-method');
     }
     if ('path' in sanitized && typeof sanitized.path === 'string') {
       // Replace absolute paths with relative PROJECT_ROOT paths
@@ -341,11 +339,11 @@ describe('Workflow Execution Baseline Tests', () => {
           let sanitizedErrorMessage = error.message;
           if (typeof sanitizedErrorMessage === 'string') {
             sanitizedErrorMessage = sanitizedErrorMessage
-              // Replace user home paths but preserve bmad-method structure  
-              .replace(/\/Users\/[^\/]+\/[^\/]*\/bmad-method/g, '/PROJECT_ROOT/bmad-method')
-              // Replace CI paths but preserve bmad-method structure
+              // Replace user home paths but preserve bmad-method and beyond  
+              .replace(/\/Users\/[^\/]+\/[^\/]+\/bmad-method/g, '/PROJECT_ROOT/bmad-method')
+              // Replace CI paths but preserve bmad-method and beyond
               .replace(/\/home\/runner\/work\/[^\/]+\/[^\/]+\/bmad-method/g, '/PROJECT_ROOT/bmad-method')
-              // Replace any remaining absolute paths that end with bmad-method
+              // Replace any remaining absolute paths that contain bmad-method
               .replace(/\/[^:\s']+\/bmad-method/g, '/PROJECT_ROOT/bmad-method');
           }
           
