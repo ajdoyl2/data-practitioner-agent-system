@@ -1,13 +1,13 @@
 {
-  "timestamp": "2025-08-17T15:31:04.288Z",
+  "timestamp": "2025-08-24T23:53:02.038Z",
   "resourceTypes": {
     "tasks": {
-      "loadingTime": 74,
+      "loadingTime": 60,
       "success": false,
       "hasContent": false
     },
     "templates": {
-      "loadingTime": 3,
+      "loadingTime": 2,
       "success": false,
       "hasContent": false
     },
@@ -17,7 +17,7 @@
       "hasContent": false
     },
     "data": {
-      "loadingTime": 1,
+      "loadingTime": 0,
       "success": false,
       "hasContent": false
     }

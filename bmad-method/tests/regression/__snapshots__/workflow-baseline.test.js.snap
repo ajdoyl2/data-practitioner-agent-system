@@ -9,7 +9,6 @@ Expected constructor: Array
 Received constructor: Array
 ",
   "expectedError": false,
-  "timestamp": "2025-08-15T05:36:05.479Z",
 }
 `;
 
@@ -22,7 +21,6 @@ Received constructor: Array
 ",
   "expectedError": false,
   "teamCount": 0,
-  "timestamp": "2025-08-15T05:36:05.483Z",
 }
 `;
 
@@ -31,26 +29,21 @@ exports[`Workflow Execution Baseline Tests Dependency Resolution Baselines shoul
   "resourceTypes": {
     "checklists": {
       "hasContent": false,
-      "loadingTime": 1,
       "success": false,
     },
     "data": {
       "hasContent": false,
-      "loadingTime": 0,
       "success": false,
     },
     "tasks": {
       "hasContent": false,
-      "loadingTime": 20,
       "success": false,
     },
     "templates": {
       "hasContent": false,
-      "loadingTime": 5,
       "success": false,
     },
   },
-  "timestamp": "2025-08-15T05:36:05.484Z",
 }
 `;
 
@@ -64,7 +57,6 @@ exports[`Workflow Execution Baseline Tests Error Handling Baselines should estab
       "testPerformed": true,
     },
   },
-  "timestamp": "2025-08-15T05:36:05.514Z",
 }
 `;
 
@@ -76,12 +68,10 @@ exports[`Workflow Execution Baseline Tests Error Handling Baselines should estab
       "errorMessage": "ENOENT: no such file or directory, open '/Users/ajdoyle/data-practitioner-agent-system/bmad-method/bmad-core/agents/nonexistent-agent.md'",
       "errorType": "Error",
       "expectedError": true,
-      "responseTime": 0,
     },
     "resource-nonexistent-resource": {
       "actualError": false,
       "expectedError": true,
-      "responseTime": 1,
       "result": "unexpected-success",
     },
     "team-nonexistent-team": {
@@ -89,10 +79,8 @@ exports[`Workflow Execution Baseline Tests Error Handling Baselines should estab
       "errorMessage": "ENOENT: no such file or directory, open '/Users/ajdoyle/data-practitioner-agent-system/bmad-method/bmad-core/agent-teams/nonexistent-team.yaml'",
       "errorType": "Error",
       "expectedError": true,
-      "responseTime": 0,
     },
   },
-  "timestamp": "2025-08-15T05:36:05.512Z",
 }
 `;
 
@@ -134,19 +122,22 @@ exports[`Workflow Execution Baseline Tests System State Baselines should capture
     },
     "tests": {
       "contents": [
+        "README.md",
         "agents",
         "data-services",
         "fixtures",
+        "helpers",
         "integration",
         "performance",
         "regression",
         "security",
+        "setup.js",
         "storage",
         "tools",
         "utils",
       ],
       "exists": true,
-      "fileCount": 10,
+      "fileCount": 13,
       "path": "/Users/ajdoyle/data-practitioner-agent-system/bmad-method/tests",
     },
     "tools": {
@@ -178,41 +169,34 @@ exports[`Workflow Execution Baseline Tests System State Baselines should capture
   "files": {
     "bmad-core/core-config.yaml": {
       "exists": true,
-      "modified": "2025-08-08T04:05:02.129Z",
       "path": "/Users/ajdoyle/data-practitioner-agent-system/bmad-method/bmad-core/core-config.yaml",
       "size": 553,
     },
     "jest.config.js": {
       "exists": true,
-      "modified": "2025-08-15T05:24:49.494Z",
       "path": "/Users/ajdoyle/data-practitioner-agent-system/bmad-method/jest.config.js",
-      "size": 1502,
+      "size": 1622,
     },
     "package.json": {
       "exists": true,
-      "modified": "2025-08-15T05:24:43.914Z",
       "path": "/Users/ajdoyle/data-practitioner-agent-system/bmad-method/package.json",
       "size": 3630,
     },
   },
-  "timestamp": "2025-08-15T05:36:05.521Z",
 }
 `;
 
 exports[`Workflow Execution Baseline Tests Workflow Integration Baselines should establish full workflow execution baseline: workflow-integration-baseline 1`] = `
 {
-  "timestamp": "2025-08-15T05:36:05.519Z",
   "workflow": {
     "discovery": {
       "agentCount": 10,
-      "discoveryTime": 0,
       "success": true,
       "teamCount": 4,
       "totalEntities": 14,
     },
     "performance": {
       "acceptable": true,
-      "discoveryTime": 0,
       "scalabilityFactor": 14,
     },
     "resolution": {},

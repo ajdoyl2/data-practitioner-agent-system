@@ -15,6 +15,35 @@ describe('CLI Regression Baseline Tests', () => {
     await fs.ensureDir(baselineDir);
   });
 
+  /**
+   * Sanitizes objects for snapshot testing by removing volatile data
+   */
+  function sanitizeForSnapshot(obj) {
+    if (!obj || typeof obj !== 'object') return obj;
+    
+    const sanitized = Array.isArray(obj) ? [...obj] : { ...obj };
+    
+    // Remove volatile fields
+    const volatileFields = [
+      'timestamp', 'executionTime', 'modified', 'responseTime'
+    ];
+    
+    volatileFields.forEach(field => {
+      if (field in sanitized) {
+        delete sanitized[field];
+      }
+    });
+    
+    // Recursively sanitize nested objects
+    Object.keys(sanitized).forEach(key => {
+      if (typeof sanitized[key] === 'object' && sanitized[key] !== null) {
+        sanitized[key] = sanitizeForSnapshot(sanitized[key]);
+      }
+    });
+    
+    return sanitized;
+  }
+
   describe('Help Command Baselines', () => {
     test('should match help command output format', () => {
       const helpOutput = execSync(`node ${cliPath} --help`, { 
@@ -197,7 +226,7 @@ describe('CLI Regression Baseline Tests', () => {
         { spaces: 2 }
       );
       
-      expect(configBaseline).toMatchSnapshot('config-validation-baseline');
+      expect(sanitizeForSnapshot(configBaseline)).toMatchSnapshot('config-validation-baseline');
     });
   });
 
@@ -283,7 +312,7 @@ describe('CLI Regression Baseline Tests', () => {
         { spaces: 2 }
       );
       
-      expect(performanceBaseline).toMatchSnapshot('performance-baseline');
+      expect(sanitizeForSnapshot(performanceBaseline)).toMatchSnapshot('performance-baseline');
     });
   });
 
@@ -322,7 +351,7 @@ describe('CLI Regression Baseline Tests', () => {
         { spaces: 2 }
       );
       
-      expect(workflowBaseline).toMatchSnapshot('agent-workflow-baseline');
+      expect(sanitizeForSnapshot(workflowBaseline)).toMatchSnapshot('agent-workflow-baseline');
     });
 
     test('should validate agent file structure baselines', async () => {
