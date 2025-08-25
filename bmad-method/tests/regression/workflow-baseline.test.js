@@ -40,10 +40,19 @@ describe('Workflow Execution Baseline Tests', () => {
     
     // Sanitize error messages and paths to remove absolute paths
     if ('errorMessage' in sanitized && typeof sanitized.errorMessage === 'string') {
-      sanitized.errorMessage = sanitized.errorMessage.replace(/\/[^:]+:/g, '/PROJECT_ROOT:');
+      // Handle error messages with file paths more comprehensively
+      sanitized.errorMessage = sanitized.errorMessage
+        .replace(/\/Users\/[^\/]+\/[^']+/g, '/PROJECT_ROOT')
+        .replace(/\/home\/runner\/work\/[^']+/g, '/PROJECT_ROOT')
+        .replace(/\/[^:,'\s]+\/bmad-method/g, '/PROJECT_ROOT')
+        .replace(/\/[^:,'\s]+:/g, '/PROJECT_ROOT:');
     }
     if ('error' in sanitized && typeof sanitized.error === 'string') {
-      sanitized.error = sanitized.error.replace(/\/[^:]+:/g, '/PROJECT_ROOT:');
+      sanitized.error = sanitized.error
+        .replace(/\/Users\/[^\/]+\/[^']+/g, '/PROJECT_ROOT')
+        .replace(/\/home\/runner\/work\/[^']+/g, '/PROJECT_ROOT')
+        .replace(/\/[^:,'\s]+\/bmad-method/g, '/PROJECT_ROOT')
+        .replace(/\/[^:,'\s]+:/g, '/PROJECT_ROOT:');
     }
     if ('path' in sanitized && typeof sanitized.path === 'string') {
       // Replace absolute paths with relative PROJECT_ROOT paths
@@ -328,10 +337,20 @@ describe('Workflow Execution Baseline Tests', () => {
           };
           
         } catch (error) {
+          // Sanitize error message to remove absolute paths
+          let sanitizedErrorMessage = error.message;
+          if (typeof sanitizedErrorMessage === 'string') {
+            sanitizedErrorMessage = sanitizedErrorMessage
+              .replace(/\/Users\/[^\/]+\/[^']+/g, '/PROJECT_ROOT')
+              .replace(/\/home\/runner\/work\/[^']+/g, '/PROJECT_ROOT')
+              .replace(/\/[^:,'\\s]+\/bmad-method/g, '/PROJECT_ROOT')
+              .replace(/\/[^:,'\\s]+:/g, '/PROJECT_ROOT:');
+          }
+          
           errorBaselines.errorTests[`${type}-${id}`] = {
             expectedError: true,
             actualError: true,
-            errorMessage: error.message,
+            errorMessage: sanitizedErrorMessage,
             errorType: error.constructor.name,
             responseTime: Date.now() - startTime
           };
