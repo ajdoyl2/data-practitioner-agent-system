@@ -65,7 +65,7 @@ exports[`Workflow Execution Baseline Tests Error Handling Baselines should estab
   "errorTests": {
     "agent-nonexistent-agent": {
       "actualError": true,
-      "errorMessage": "ENOENT: no such file or directory, open '/Users/ajdoyle/data-practitioner-agent-system/bmad-method/bmad-core/agents/nonexistent-agent.md'",
+      "errorMessage": "ENOENT: no such file or directory, open '/PROJECT_ROOT/bmad-method/bmad-core/agents/nonexistent-agent.md'",
       "errorType": "Error",
       "expectedError": true,
     },
@@ -76,7 +76,7 @@ exports[`Workflow Execution Baseline Tests Error Handling Baselines should estab
     },
     "team-nonexistent-team": {
       "actualError": true,
-      "errorMessage": "ENOENT: no such file or directory, open '/Users/ajdoyle/data-practitioner-agent-system/bmad-method/bmad-core/agent-teams/nonexistent-team.yaml'",
+      "errorMessage": "ENOENT: no such file or directory, open '/PROJECT_ROOT/bmad-method/bmad-core/agent-teams/nonexistent-team.yaml'",
       "errorType": "Error",
       "expectedError": true,
     },

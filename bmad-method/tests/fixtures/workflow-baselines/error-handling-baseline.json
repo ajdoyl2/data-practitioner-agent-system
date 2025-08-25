@@ -1,19 +1,19 @@
 {
-  "timestamp": "2025-08-25T00:10:29.887Z",
+  "timestamp": "2025-08-25T00:52:06.986Z",
   "errorTests": {
     "agent-nonexistent-agent": {
       "expectedError": true,
       "actualError": true,
-      "errorMessage": "ENOENT: no such file or directory, open '/Users/ajdoyle/data-practitioner-agent-system/bmad-method/bmad-core/agents/nonexistent-agent.md'",
+      "errorMessage": "ENOENT: no such file or directory, open '/PROJECT_ROOT/bmad-method/bmad-core/agents/nonexistent-agent.md'",
       "errorType": "Error",
       "responseTime": 0
     },
     "team-nonexistent-team": {
       "expectedError": true,
       "actualError": true,
-      "errorMessage": "ENOENT: no such file or directory, open '/Users/ajdoyle/data-practitioner-agent-system/bmad-method/bmad-core/agent-teams/nonexistent-team.yaml'",
+      "errorMessage": "ENOENT: no such file or directory, open '/PROJECT_ROOT/bmad-method/bmad-core/agent-teams/nonexistent-team.yaml'",
       "errorType": "Error",
-      "responseTime": 1
+      "responseTime": 0
     },
     "resource-nonexistent-resource": {
       "expectedError": true,
