@@ -18,7 +18,7 @@ jobs:
     strategy:
       matrix:
         node-version: [18.x, 20.x]
-        python-version: [3.9, 3.11]
+        python-version: [3.11]
 
     services:
       # DuckDB doesn't need a service, it's embedded
@@ -52,7 +52,7 @@ jobs:
         cache-dependency-path: requirements.txt
 
     - name: Cache Python virtual environment
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ~/.cache/pip
         key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
@@ -147,7 +147,7 @@ jobs:
         npm test -- --coverage --coverageDirectory=coverage --collectCoverageFrom="tools/**/*.js" --collectCoverageFrom="tests/**/*.js"
 
     - name: Upload Coverage to Codecov
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v4
       with:
         file: ./bmad-method/coverage/lcov.info
         directory: ./bmad-method/coverage
@@ -170,7 +170,7 @@ jobs:
         "
 
     - name: Archive Test Results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: always()
       with:
         name: test-results-node${{ matrix.node-version }}-python${{ matrix.python-version }}

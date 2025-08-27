@@ -1,0 +1,23 @@
+{
+  "name": "bmad-data-practitioner-evidence",
+  "version": "1.0.0",
+  "description": "Evidence.dev publication platform for BMad Data Practitioner Agent System",
+  "type": "module",
+  "scripts": {
+    "dev": "evidence dev",
+    "build": "evidence build",
+    "build:strict": "evidence build:strict",
+    "sources": "evidence sources",
+    "deploy": "bash ./deploy.sh deploy",
+    "deploy:build": "bash ./deploy.sh build",
+    "deploy:test": "bash ./deploy.sh test",
+    "deploy:validate": "bash ./deploy.sh validate"
+  },
+  "dependencies": {
+    "@evidence-dev/duckdb": "^1.0.13",
+    "@evidence-dev/evidence": "^25.0.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

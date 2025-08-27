@@ -44,9 +44,13 @@
     "data:connectors": "node tools/cli.js data-connectors",
     "analytics:service": "node tools/cli.js start-analytics-service",
     "analytics:query": "node tools/cli.js analytics-query",
+    "build:evidence": "node tools/builders/evidence-builder.js",
+    "evidence:dev": "cd expansion-packs/bmad-data-practitioner/evidence-project && npx @evidence-dev/evidence dev",
+    "evidence:build": "cd expansion-packs/bmad-data-practitioner/evidence-project && npx @evidence-dev/evidence build",
     "postinstall": "npm run setup:python --silent || echo 'Python setup failed - run: npm run setup:python'"
   },
   "dependencies": {
+    "@evidence-dev/evidence": "^25.0.0",
     "@kayvan/markdown-tree-parser": "^1.5.0",
     "bmad-method": "^4.30.3",
     "chalk": "^4.1.2",

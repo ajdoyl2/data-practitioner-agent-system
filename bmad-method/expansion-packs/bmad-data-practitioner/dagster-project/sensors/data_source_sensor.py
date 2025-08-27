@@ -255,3 +255,156 @@ def check_database_change(source: Dict[str, Any]) -> str:
     # 4. Return a state hash or timestamp
     
     return None
+
+# Story 1.7 Task 8: Publication refresh sensor
+
+@job(
+    name="publication_refresh_pipeline",
+    description="Publication refresh triggered by analysis data updates",
+    tags={"trigger": "data_update", "story": "1.7", "pipeline": "publication"}
+)
+def publication_refresh_pipeline_job():
+    """
+    Job definition for publication refresh triggered by analysis data updates
+    Automatically refreshes Evidence.dev publications when upstream data changes
+    """
+    pass
+
+@sensor(
+    job=publication_refresh_pipeline_job,
+    default_status=DefaultSensorStatus.STOPPED,
+    description="Monitors analysis assets for updates and triggers publication refresh",
+    minimum_interval_seconds=300  # Check every 5 minutes
+)
+def publication_refresh_sensor(context: SensorEvaluationContext):
+    """
+    Sensor that monitors analysis assets for updates and triggers publication refresh
+    Ensures publications are always up-to-date with latest analysis results
+    """
+    
+    try:
+        # Monitor key analysis assets for changes
+        analysis_assets_to_monitor = [
+            "analytics_cleaned_dataset",
+            "narrative_generation_results", 
+            "hypothesis_test_results",
+            "statistical_analysis_results"
+        ]
+        
+        # Check for recent materializations of analysis assets
+        changes_detected = []
+        
+        for asset_name in analysis_assets_to_monitor:
+            change_info = check_analysis_asset_change(context, asset_name)
+            if change_info:
+                changes_detected.append(change_info)
+        
+        if not changes_detected:
+            return SkipReason("No changes detected in analysis assets")
+        
+        # Determine refresh strategy based on changes
+        requires_full_refresh = any(
+            change["change_type"] in ["schema_change", "major_update"] 
+            for change in changes_detected
+        )
+        
+        # Generate publication refresh run request
+        config = {
+            "ops": {
+                "publication_refresh_pipeline": {
+                    "config": {
+                        "triggered_by": "analysis_data_update",
+                        "full_refresh": requires_full_refresh,
+                        "changed_assets": [change["asset_name"] for change in changes_detected],
+                        "detection_time": datetime.now().isoformat(),
+                        "refresh_templates": True,
+                        "deploy_to_staging": True,
+                        "deploy_to_production": False,  # Requires manual approval
+                        "schedule_name": "publication_refresh_sensor"
+                    }
+                }
+            }
+        }
+        
+        tags = {
+            "trigger": "analysis_data_update",
+            "story": "1.7",
+            "full_refresh": str(requires_full_refresh),
+            "changed_assets": ",".join([change["asset_name"] for change in changes_detected]),
+            "detection_time": datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        }
+        
+        context.log.info(f"Detected changes in {len(changes_detected)} analysis assets, triggering publication refresh")
+        
+        return RunRequest(
+            run_key=f"publication_refresh_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
+            run_config=config,
+            tags=tags
+        )
+        
+    except Exception as e:
+        context.log.error(f"Error in publication refresh sensor: {str(e)}")
+        return SkipReason(f"Sensor error: {str(e)}")
+
+def check_analysis_asset_change(context: SensorEvaluationContext, asset_name: str) -> Dict[str, Any]:
+    """
+    Check if an analysis asset has been updated recently
+    Returns change information if change is detected, None otherwise
+    """
+    
+    try:
+        # Get cursor to track last check time
+        cursor_key = f"analysis_asset_check_{asset_name}"
+        last_check_time_str = context.cursor or "{}"
+        last_check_dict = json.loads(last_check_time_str) if last_check_time_str else {}
+        last_check_time = last_check_dict.get(asset_name)
+        
+        # Convert string back to datetime if exists
+        if last_check_time:
+            last_check_datetime = datetime.fromisoformat(last_check_time)
+        else:
+            # First time checking - look back 1 hour
+            last_check_datetime = datetime.now() - timedelta(hours=1)
+        
+        # Mock check for asset materialization (in real implementation, would query Dagster event log)
+        # For now, simulate periodic updates
+        current_time = datetime.now()
+        time_since_last_check = (current_time - last_check_datetime).total_seconds()
+        
+        # Simulate different update frequencies for different assets
+        update_frequencies = {
+            "analytics_cleaned_dataset": 3600,  # 1 hour
+            "narrative_generation_results": 7200,  # 2 hours  
+            "hypothesis_test_results": 1800,  # 30 minutes
+            "statistical_analysis_results": 1800  # 30 minutes
+        }
+        
+        expected_frequency = update_frequencies.get(asset_name, 3600)
+        
+        # Check if enough time has passed for this asset to potentially have updated
+        if time_since_last_check >= expected_frequency:
+            # Update cursor with current check time
+            last_check_dict[asset_name] = current_time.isoformat()
+            context.update_cursor(json.dumps(last_check_dict))
+            
+            # Determine change type based on asset
+            if asset_name == "analytics_cleaned_dataset":
+                change_type = "data_update"
+            elif asset_name == "narrative_generation_results":
+                change_type = "narrative_update" 
+            else:
+                change_type = "analysis_update"
+            
+            return {
+                "asset_name": asset_name,
+                "change_type": change_type,
+                "detection_time": current_time.isoformat(),
+                "time_since_last_check": time_since_last_check,
+                "requires_full_refresh": change_type == "schema_change"
+            }
+        
+        return None  # No change detected or not enough time passed
+        
+    except Exception as e:
+        context.log.error(f"Error checking analysis asset {asset_name}: {str(e)}")
+        return None

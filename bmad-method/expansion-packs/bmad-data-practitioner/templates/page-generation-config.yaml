@@ -1,0 +1,258 @@
+# Dynamic Page Generation Configuration
+# Defines page generation rules, template mappings, and variable defaults
+
+page_generation_config:
+  version: "1.0"
+  last_updated: "2025-08-27"
+  
+  # Template to page type mappings
+  template_mappings:
+    insight_document:
+      template_file: "insight-document.md"
+      output_directory: "analysis"
+      default_audience: "analysts"
+      supported_formats: ["html", "pdf", "static"]
+      
+    pew_research:
+      template_file: "pew-research-style.md"
+      output_directory: "research"
+      default_audience: "public"
+      supported_formats: ["html", "pdf"]
+      
+    executive_briefing:
+      template_file: "executive-briefing.md"
+      output_directory: "briefings"
+      default_audience: "executives"
+      supported_formats: ["html", "pdf"]
+
+  # Multi-page generation presets
+  generation_presets:
+    comprehensive_analysis:
+      description: "Generate full analysis suite from single dataset"
+      pages:
+        - template: "executive-briefing"
+          config:
+            page_name: "executive-summary"
+            title: "{{analysis_title}} - Executive Summary"
+            confidence_threshold: 0.90
+            detail_level: "summary"
+            
+        - template: "insight_document" 
+          config:
+            page_name: "detailed-analysis"
+            title: "{{analysis_title}} - Detailed Analysis"
+            confidence_threshold: 0.80
+            detail_level: "comprehensive"
+            
+        - template: "insight_document"
+          config:
+            page_name: "technical-appendix"
+            title: "{{analysis_title}} - Technical Appendix"
+            confidence_threshold: 0.70
+            detail_level: "technical"
+            include_methodology: true
+            
+    survey_publication:
+      description: "Generate survey research publication suite"
+      pages:
+        - template: "pew_research"
+          config:
+            page_name: "main-report"
+            title: "{{study_title}}"
+            methodology_detail: "full"
+            demographic_analysis: true
+            
+        - template: "executive_briefing"
+          config:
+            page_name: "key-findings-brief"
+            title: "{{study_title}} - Key Findings"
+            demographic_analysis: false
+            executive_focus: true
+
+    performance_dashboard:
+      description: "Generate performance monitoring suite"
+      pages:
+        - template: "executive_briefing"
+          config:
+            page_name: "performance-overview"
+            title: "Performance Dashboard - {{reporting_period}}"
+            focus_areas: ["kpis", "trends", "risks"]
+            
+        - template: "insight_document"
+          config:
+            page_name: "performance-deep-dive"  
+            title: "Performance Analysis - {{reporting_period}}"
+            focus_areas: ["statistical_analysis", "correlations", "recommendations"]
+
+  # Variable defaults and validation rules
+  variable_defaults:
+    metadata:
+      organization_name: "BMad Data Practitioner Agent System"
+      analysis_engine: "BMad-Analytics-Engine"
+      template_version: "1.0"
+      confidence_threshold: 0.80
+      
+    formatting:
+      date_format: "YYYY-MM-DD"
+      number_format: "en-US"
+      currency_symbol: "$"
+      percentage_decimals: 1
+      
+    content:
+      methodology_detail: "standard"
+      include_appendix: true
+      include_citations: true
+      interactive_elements: true
+
+  # Variable validation rules
+  variable_validation:
+    required_variables:
+      - "title"
+      - "analysis_title" 
+      - "generation_date"
+      
+    optional_variables:
+      - "subtitle"
+      - "author"
+      - "version"
+      - "data_sources"
+      - "confidence_threshold"
+      
+    variable_types:
+      confidence_threshold:
+        type: "number"
+        min: 0.0
+        max: 1.0
+        default: 0.80
+        
+      generation_date:
+        type: "date"
+        format: "YYYY-MM-DD"
+        auto_generate: true
+        
+      sample_size:
+        type: "integer"
+        min: 1
+        
+      margin_of_error:
+        type: "number"
+        min: 0.0
+        max: 50.0
+        unit: "percentage"
+
+  # Conditional section rules
+  conditional_sections:
+    methodology:
+      show_when:
+        - "audience != 'executives'"
+        - "detail_level != 'summary'"
+        
+    technical_appendix:
+      show_when:
+        - "include_appendix == true"
+        - "audience in ['analysts', 'researchers']"
+        
+    executive_summary:
+      always_show: true
+      max_length: 500  # words
+      
+    statistical_analysis:
+      show_when:
+        - "has_statistical_data == true"
+        - "confidence_threshold < 1.0"
+
+  # SQL query parameter mapping
+  sql_parameters:
+    confidence_filters:
+      high_confidence: "confidence_score >= 0.85"
+      medium_confidence: "confidence_score >= 0.70" 
+      low_confidence: "confidence_score >= 0.50"
+      
+    date_ranges:
+      current_period: "date_recorded >= CURRENT_DATE - INTERVAL 30 DAYS"
+      quarterly: "date_recorded >= CURRENT_DATE - INTERVAL 3 MONTHS"
+      annual: "date_recorded >= CURRENT_DATE - INTERVAL 1 YEAR"
+      
+    significance_levels:
+      highly_significant: "p_value < 0.01"
+      significant: "p_value < 0.05"
+      marginally_significant: "p_value < 0.10"
+
+  # Output formatting options
+  output_formats:
+    html:
+      evidence_build: true
+      interactive_elements: true
+      responsive_design: true
+      
+    pdf:
+      page_size: "A4"
+      margins: "1in"
+      font_family: "Arial"
+      include_charts: true
+      
+    static:
+      minify_css: true
+      optimize_images: true
+      generate_sitemap: true
+
+  # Page relationship definitions
+  page_relationships:
+    navigation:
+      executive_summary:
+        next: "detailed_analysis"
+        parent: null
+        
+      detailed_analysis:
+        previous: "executive_summary"
+        next: "technical_appendix"
+        parent: null
+        
+      technical_appendix:
+        previous: "detailed_analysis"
+        next: null
+        parent: "detailed_analysis"
+
+  # Performance optimization settings
+  performance_optimization:
+    template_caching: true
+    variable_preprocessing: true
+    sql_query_optimization: true
+    
+    cache_settings:
+      template_cache_ttl: 3600  # seconds
+      variable_cache_ttl: 1800  # seconds
+      max_cache_size: 100  # templates
+      
+    generation_limits:
+      max_pages_per_batch: 10
+      max_template_size: "5MB"
+      max_variables_per_template: 200
+
+# Example page generation configurations
+example_configurations:
+  quarterly_business_review:
+    preset: "comprehensive_analysis"
+    variables:
+      analysis_title: "Q3 2025 Business Performance Review"
+      reporting_period: "Q3 2025"
+      confidence_threshold: 0.85
+      data_sources: "CRM, ERP, Analytics Warehouse"
+      focus_areas: ["revenue", "customer_satisfaction", "operational_efficiency"]
+    
+  customer_survey_results:
+    preset: "survey_publication" 
+    variables:
+      study_title: "2025 Customer Satisfaction Survey Results"
+      sample_size: 2450
+      margin_of_error: 2.1
+      methodology_summary: "Online survey of active customers"
+      demographic_categories: ["age_group", "region", "product_category"]
+
+  monthly_performance_report:
+    preset: "performance_dashboard"
+    variables:
+      analysis_title: "Monthly Performance Report"
+      reporting_period: "August 2025"
+      kpi_focus: ["revenue", "conversion", "retention"]
+      comparison_periods: ["previous_month", "year_over_year"]

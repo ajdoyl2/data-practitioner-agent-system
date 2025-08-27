@@ -1,0 +1,46 @@
+# DuckDB WASM Connection Configuration for Evidence.dev
+# This configures the Universal SQL connection to analytical datasets
+
+name: analytics
+type: duckdb-wasm
+description: "BMad Data Practitioner Agent System analytical datasets"
+
+# Connection settings
+options:
+  database: ".duckdb/analytics.db"
+  extensions:
+    - httpfs
+    - parquet
+    - json
+  settings:
+    memory_limit: "2GB"
+    threads: 4
+    enable_external_access: true
+    # Optimize for analytical workloads
+    default_order: "ASC"
+    # Enable parallel processing
+    enable_object_cache: true
+
+# Query optimization settings
+query_optimization:
+  enable_optimizer: true
+  enable_join_order: true
+  enable_filter_pushdown: true
+
+# Performance monitoring
+performance:
+  query_timeout: 30000  # 30 seconds
+  result_cache_size: "100MB"
+  enable_profiling: true
+
+# Integration with transformation engines
+transformation_integration:
+  # Story 1.4 - Connect to dbt/SQLmesh outputs
+  enable_transformation_outputs: true
+  transformation_schema: "marts"
+  
+# Integration with analytical engine  
+analytical_integration:
+  # Story 1.3 - Connect to analytical datasets
+  enable_analytical_datasets: true
+  analytical_schema: "analytics"

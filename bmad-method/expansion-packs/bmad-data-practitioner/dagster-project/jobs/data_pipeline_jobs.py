@@ -8,7 +8,6 @@ from dagster import (
     Config,
     OpExecutionContext,
     op,
-    asset_selection,
     define_asset_job,
     AssetSelection
 )
@@ -178,6 +177,70 @@ emergency_recovery_job = define_asset_job(
     }
 )
 
+# Story 1.7 Task 8: Publication pipeline jobs
+
+# Publication generation job - generates Evidence.dev sites
+publication_generation_job = define_asset_job(
+    name="publication_generation_pipeline",
+    description="Generate Evidence.dev publications from analysis results and narratives",
+    selection=AssetSelection.groups("publication").upstream() + AssetSelection.groups("publication"),
+    tags={
+        "pipeline": "publication",
+        "story": "1.7",
+        "criticality": "medium"
+    }
+)
+
+# Publication deployment job - deploys to staging/production
+publication_deployment_job = define_asset_job(
+    name="publication_deployment_pipeline", 
+    description="Deploy Evidence.dev publications to staging/production environments",
+    selection=AssetSelection.keys("evidence_publication_generation", "evidence_publication_deployment"),
+    tags={
+        "pipeline": "deployment",
+        "story": "1.7", 
+        "criticality": "low"
+    }
+)
+
+# Full publication workflow job - generation + deployment + monitoring
+full_publication_workflow_job = define_asset_job(
+    name="full_publication_workflow",
+    description="Complete publication workflow: generate, deploy, monitor, and version track",
+    selection=AssetSelection.groups("publication"),
+    tags={
+        "pipeline": "publication_complete",
+        "story": "1.7",
+        "criticality": "medium"
+    }
+)
+
+# Publication monitoring job - health checks and performance monitoring
+publication_monitoring_job = define_asset_job(
+    name="publication_monitoring_pipeline",
+    description="Monitor publication sites for performance, availability, and alerts", 
+    selection=AssetSelection.keys("publication_monitoring", "publication_versioning"),
+    tags={
+        "pipeline": "monitoring",
+        "story": "1.7",
+        "criticality": "low"
+    }
+)
+
+# Data-driven publication refresh job - triggered when analysis data updates
+data_driven_publication_refresh_job = define_asset_job(
+    name="data_driven_publication_refresh",
+    description="Refresh publications when upstream analysis data is updated",
+    selection=(AssetSelection.groups("analytics", "transformation") + 
+               AssetSelection.groups("publication")),
+    tags={
+        "pipeline": "data_driven_refresh", 
+        "story": "1.7",
+        "trigger": "data_update",
+        "criticality": "medium"
+    }
+)
+
 # Export job definitions for Dagster workspace
 pipeline_jobs = [
     complete_data_pipeline_job,
@@ -187,5 +250,11 @@ pipeline_jobs = [
     data_quality_job,
     manual_pipeline_execution,
     incremental_pipeline_job,
-    emergency_recovery_job
+    emergency_recovery_job,
+    # Story 1.7 Task 8: Publication jobs
+    publication_generation_job,
+    publication_deployment_job,
+    full_publication_workflow_job,
+    publication_monitoring_job,
+    data_driven_publication_refresh_job
 ]
