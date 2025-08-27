@@ -2,7 +2,27 @@ import { d as dev } from "../../../chunks/environment2.js";
 import { f as fail } from "../../../chunks/index.js";
 import { logQueryEvent } from "@evidence-dev/telemetry";
 const load = async () => {
-  return {};
+  {
+    const { getDatasourceOptions, getDatasourcePlugins } = await import("@evidence-dev/plugin-connector");
+    const datasourceSettings = await getDatasourceOptions();
+    const datasourcePlugins = await getDatasourcePlugins();
+    const serializedPlugins = Object.fromEntries(
+      Object.entries(datasourcePlugins).map(([k, v]) => [
+        k,
+        {
+          ...v,
+          factory: void 0,
+          testConnection: void 0,
+          processSource: void 0
+        }
+      ])
+    );
+    return {
+      datasourceSettings: datasourceSettings.map((sp) => ({ ...sp, queries: [] })),
+      // stripping out queries prevents large files (e.g. duckdb databases) from being sent to the frontend.
+      plugins: serializedPlugins
+    };
+  }
 };
 const actions = {
   updateSource: async (e) => {

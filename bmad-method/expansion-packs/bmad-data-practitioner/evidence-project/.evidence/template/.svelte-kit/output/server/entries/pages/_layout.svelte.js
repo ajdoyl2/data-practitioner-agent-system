@@ -1,7 +1,7 @@
-import { c as create_ssr_component, a as createEventDispatcher, e as escape, b as subscribe, d as each, v as validate_component, o as onDestroy, f as add_attribute, n as null_to_empty, g as compute_rest_props, h as get_current_component, i as noop } from "../../chunks/index3.js";
+import { c as create_ssr_component, a as createEventDispatcher, e as escape, b as validate_store, d as subscribe, f as each, v as validate_component, o as onDestroy, g as add_attribute, n as null_to_empty, h as compute_rest_props, i as get_current_component, j as noop } from "../../chunks/index3.js";
 import { p as page, n as navigating } from "../../chunks/stores.js";
 import { d as dev } from "../../chunks/environment2.js";
-import { f as forwardEventsBuilder, u as useMenuContext, M as MenuStates, R as Render, a as useOpenClosed, S as State, F as Features, b as Menu } from "../../chunks/VennDiagram.svelte_svelte_type_style_lang.js";
+import { I as Icon, C as ChevronRight, f as forwardEventsBuilder, u as useMenuContext, M as MenuStates, R as Render, a as useOpenClosed, S as State, F as Features, X, b as Menu2, c as Menu, D as Dots, d as Settings, _ as _3dCubeSphere, T as Table, L as Link } from "../../chunks/VennDiagram.svelte_svelte_type_style_lang.js";
 import "@evidence-dev/component-utilities/globalContexts";
 import "@evidence-dev/component-utilities/buildQuery";
 import { toasts, showQueries } from "@evidence-dev/component-utilities/stores";
@@ -10,7 +10,6 @@ import "devalue";
 import "yaml";
 import "@astronautlabs/jsonpath";
 import "@evidence-dev/query-store";
-import { I as Icon, C as ChevronRight, X, M as Menu2, D as Dots } from "../../chunks/Icon.js";
 import "export-to-csv";
 import "@evidence-dev/component-utilities/getColumnSummary";
 import "@evidence-dev/component-utilities/formatting";
@@ -42,7 +41,7 @@ import "echarts-stat";
 const fonts = "";
 const app = "";
 const css$3 = {
-  code: ".error.svelte-8cyjz5{--tw-border-opacity:1;border-color:rgb(254 202 202 / var(--tw-border-opacity));--tw-bg-opacity:1;background-color:rgb(254 242 242 / var(--tw-bg-opacity));--tw-text-opacity:1;color:rgb(153 27 27 / var(--tw-text-opacity))\n}.warning.svelte-8cyjz5{--tw-border-opacity:1;border-color:rgb(254 240 138 / var(--tw-border-opacity));--tw-bg-opacity:1;background-color:rgb(254 252 232 / var(--tw-bg-opacity));--tw-text-opacity:1;color:rgb(133 77 14 / var(--tw-text-opacity))\n}.success.svelte-8cyjz5{--tw-border-opacity:1;border-color:rgb(187 247 208 / var(--tw-border-opacity));--tw-bg-opacity:1;background-color:rgb(240 253 244 / var(--tw-bg-opacity));--tw-text-opacity:1;color:rgb(22 101 52 / var(--tw-text-opacity))\n}.info.svelte-8cyjz5{--tw-border-opacity:1;border-color:rgb(229 231 235 / var(--tw-border-opacity));--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity));--tw-text-opacity:1;color:rgb(31 41 55 / var(--tw-text-opacity))\n}",
+  code: ".error.s-NeKSDzPoUAYQ{--tw-border-opacity:1;border-color:rgb(254 202 202 / var(--tw-border-opacity));--tw-bg-opacity:1;background-color:rgb(254 242 242 / var(--tw-bg-opacity));--tw-text-opacity:1;color:rgb(153 27 27 / var(--tw-text-opacity))\n}.warning.s-NeKSDzPoUAYQ{--tw-border-opacity:1;border-color:rgb(254 240 138 / var(--tw-border-opacity));--tw-bg-opacity:1;background-color:rgb(254 252 232 / var(--tw-bg-opacity));--tw-text-opacity:1;color:rgb(133 77 14 / var(--tw-text-opacity))\n}.success.s-NeKSDzPoUAYQ{--tw-border-opacity:1;border-color:rgb(187 247 208 / var(--tw-border-opacity));--tw-bg-opacity:1;background-color:rgb(240 253 244 / var(--tw-bg-opacity));--tw-text-opacity:1;color:rgb(22 101 52 / var(--tw-text-opacity))\n}.info.s-NeKSDzPoUAYQ{--tw-border-opacity:1;border-color:rgb(229 231 235 / var(--tw-border-opacity));--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity));--tw-text-opacity:1;color:rgb(31 41 55 / var(--tw-text-opacity))\n}",
   map: null
 };
 const Toast = create_ssr_component(($$result, $$props, $$bindings, slots) => {
@@ -63,12 +62,13 @@ const Toast = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   if ($$props.dismissable === void 0 && $$bindings.dismissable && dismissable !== void 0)
     $$bindings.dismissable(dismissable);
   $$result.css.add(css$3);
-  return `<div class="${"print:hidden rounded py-1 px-3 my-4 mx-0 shadow-md text-xs font-mono flex justify-between transition-all duration-300 border " + escape(status ?? "", true) + " svelte-8cyjz5"}">${title ? `<span class="${"cursor-pointer font-bold pr-8 flex items-center"}">${escape(title)}</span>` : ``}
+  return `<div class="${"print:hidden rounded py-1 px-3 my-4 mx-0 shadow-md text-xs font-mono flex justify-between transition-all duration-300 border " + escape(status ?? "", true) + " s-NeKSDzPoUAYQ"}">${title ? `<span class="${"cursor-pointer font-bold pr-8 flex items-center"}">${escape(title)}</span>` : ``}
 	<span class="${"cursor-pointer"}">${escape(message)}</span>
 </div>`;
 });
 const ToastWrapper = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let $toasts, $$unsubscribe_toasts;
+  validate_store(toasts, "toasts");
   $$unsubscribe_toasts = subscribe(toasts, (value) => $toasts = value);
   $$unsubscribe_toasts();
   return `<div class="${"z-[1] fixed right-0 bottom-0 mx-10 my-6 w-80"}">${each($toasts, (toast) => {
@@ -76,7 +76,7 @@ const ToastWrapper = create_ssr_component(($$result, $$props, $$bindings, slots)
   })}</div>`;
 });
 const css$2 = {
-  code: "a.svelte-12zx847{display:block;padding-top:0.25rem;padding-bottom:0.25rem;font-size:0.75rem;line-height:1rem;--tw-text-opacity:1;color:rgb(75 85 99 / var(--tw-text-opacity));transition-property:all;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:200ms\n}a.svelte-12zx847:hover{text-decoration-line:underline\n}a.h2.svelte-12zx847{padding-left:0px;--tw-text-opacity:1;color:rgb(107 114 128 / var(--tw-text-opacity))\n}a.h1.svelte-12zx847{margin-top:0.75rem;display:block;--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity));font-weight:600;--tw-shadow:0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);--tw-shadow-color:#fff;--tw-shadow:var(--tw-shadow-colored)\n}",
+  code: "a.s-NODGZ2nfAwBS{display:block;padding-top:0.25rem;padding-bottom:0.25rem;font-size:0.75rem;line-height:1rem;--tw-text-opacity:1;color:rgb(75 85 99 / var(--tw-text-opacity));transition-property:all;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:200ms\n}a.s-NODGZ2nfAwBS:hover{text-decoration-line:underline\n}a.h2.s-NODGZ2nfAwBS{padding-left:0px;--tw-text-opacity:1;color:rgb(107 114 128 / var(--tw-text-opacity))\n}a.h1.s-NODGZ2nfAwBS{margin-top:0.75rem;display:block;--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity));font-weight:600;--tw-shadow:0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);--tw-shadow-color:#fff;--tw-shadow:var(--tw-shadow-colored)\n}",
   map: null
 };
 const ContentsList = create_ssr_component(($$result, $$props, $$bindings, slots) => {
@@ -88,7 +88,7 @@ const ContentsList = create_ssr_component(($$result, $$props, $$bindings, slots)
 	</span>
 	${each(headers, (header, i) => {
     return `<a${add_attribute("href", "#" + encodeURIComponent(i + 1), 0)} class="${[
-      escape(null_to_empty(header.nodeName.toLowerCase()), true) + " svelte-12zx847",
+      escape(null_to_empty(header.nodeName.toLowerCase()), true) + " s-NODGZ2nfAwBS",
       i === 0 ? "first" : ""
     ].join(" ").trim()}">${escape(header.innerText)}
 		</a>`;
@@ -96,6 +96,7 @@ const ContentsList = create_ssr_component(($$result, $$props, $$bindings, slots)
 });
 const QueryStatus = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let $$unsubscribe_page;
+  validate_store(page, "page");
   $$unsubscribe_page = subscribe(page, (value) => value);
   $$unsubscribe_page();
   return ``;
@@ -103,7 +104,9 @@ const QueryStatus = create_ssr_component(($$result, $$props, $$bindings, slots) 
 const TableOfContents = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let $navigating, $$unsubscribe_navigating;
   let $page, $$unsubscribe_page;
+  validate_store(navigating, "navigating");
   $$unsubscribe_navigating = subscribe(navigating, (value) => $navigating = value);
+  validate_store(page, "page");
   $$unsubscribe_page = subscribe(page, (value) => $page = value);
   $$unsubscribe_navigating();
   $$unsubscribe_page();
@@ -113,6 +116,7 @@ const BreadCrumbs = create_ssr_component(($$result, $$props, $$bindings, slots) 
   let pathArray;
   let crumbs;
   let $page, $$unsubscribe_page;
+  validate_store(page, "page");
   $$unsubscribe_page = subscribe(page, (value) => $page = value);
   let { fileTree: fileTree2 } = $$props;
   const checkUrl = function(href, fileTree3) {
@@ -202,6 +206,7 @@ const MenuButton = create_ssr_component(($$result, $$props, $$bindings, slots) =
   let { disabled = false } = $$props;
   const forwardEvents = forwardEventsBuilder(get_current_component());
   const api = useMenuContext("MenuButton");
+  validate_store(api, "api");
   $$unsubscribe_api = subscribe(api, (value) => $api = value);
   const id2 = `headlessui-menu-button-${useId()}`;
   if ($$props.as === void 0 && $$bindings.as && as !== void 0)
@@ -280,9 +285,11 @@ const MenuItems = create_ssr_component(($$result, $$props, $$bindings, slots) =>
   let { use = [] } = $$props;
   const forwardEvents = forwardEventsBuilder(get_current_component());
   const api = useMenuContext("MenuItems");
+  validate_store(api, "api");
   $$unsubscribe_api = subscribe(api, (value) => $api = value);
   const id2 = `headlessui-menu-items-${useId()}`;
   let openClosedState = useOpenClosed();
+  validate_store(openClosedState, "openClosedState");
   $$unsubscribe_openClosedState = subscribe(openClosedState, (value) => $openClosedState = value);
   if ($$props.as === void 0 && $$bindings.as && as !== void 0)
     $$bindings.as(as);
@@ -370,6 +377,7 @@ const MenuItem = create_ssr_component(($$result, $$props, $$bindings, slots) => 
     }
   ]);
   const api = useMenuContext("MenuItem");
+  validate_store(api, "api");
   $$unsubscribe_api = subscribe(api, (value) => $api = value);
   const id2 = `headlessui-menu-item-${useId()}`;
   let elementRef;
@@ -421,11 +429,12 @@ const Logo = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   return `<img${add_attribute("src", logo, 0)} alt="${"evidence"}" class="${"h-5 aspect-auto"}" href="${"/"}">`;
 });
 const css$1 = {
-  code: ".active.svelte-1dn9mm0{--tw-bg-opacity:1;background-color:rgb(243 244 246 / var(--tw-bg-opacity))\n}",
+  code: ".active.s-yQgMqWykCNDs{--tw-bg-opacity:1;background-color:rgb(243 244 246 / var(--tw-bg-opacity))\n}",
   map: null
 };
 const Header = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let $showQueries, $$unsubscribe_showQueries;
+  validate_store(showQueries, "showQueries");
   $$unsubscribe_showQueries = subscribe(showQueries, (value) => $showQueries = value);
   let { mobileSidebarOpen } = $$props;
   new Event("export-beforeprint");
@@ -464,7 +473,7 @@ const Header = create_ssr_component(($$result, $$props, $$bindings, slots) => {
             return `<div class="${"shrink w-44 border border-gray-300 rounded-lg bg-white px-1 py-1 text-sm leading-6 text-gray-950 shadow-xl"}">${validate_component(MenuItem, "MenuItem").$$render($$result, {}, {}, {
               default: ({ active }) => {
                 return `<div class="${[
-                  "w-full text-left py-1 px-2 hover:bg-gray-100 rounded-[0.25rem] cursor-pointer svelte-1dn9mm0",
+                  "w-full text-left py-1 px-2 hover:bg-gray-100 rounded-[0.25rem] cursor-pointer s-yQgMqWykCNDs",
                   active ? "active" : ""
                 ].join(" ").trim()}">Print PDF
 								</div>`;
@@ -474,13 +483,83 @@ const Header = create_ssr_component(($$result, $$props, $$bindings, slots) => {
 							${validate_component(MenuItem, "MenuItem").$$render($$result, {}, {}, {
               default: ({ active }) => {
                 return `<div class="${[
-                  "w-full text-left py-1 px-2 hover:bg-gray-100 rounded-[0.25rem] cursor-pointer svelte-1dn9mm0",
+                  "w-full text-left py-1 px-2 hover:bg-gray-100 rounded-[0.25rem] cursor-pointer s-yQgMqWykCNDs",
                   active ? "active" : ""
                 ].join(" ").trim()}">${escape($showQueries ? "Hide " : "Show ")} Queries
 								</div>`;
               }
             })}
-							${``}</div>`;
+							${`<hr class="${"my-1"}">
+								${validate_component(MenuItem, "MenuItem").$$render($$result, {}, {}, {
+              default: ({ active }) => {
+                return `<a href="${"/settings"}" class="${[
+                  "w-full block text-left py-1 px-2 hover:bg-gray-100 rounded-[0.25rem] s-yQgMqWykCNDs",
+                  active ? "active" : ""
+                ].join(" ").trim()}"><div class="${"flex items-center justify-between"}"><span>Settings </span>
+											${validate_component(Icon, "Icon").$$render(
+                  $$result,
+                  {
+                    src: Settings,
+                    class: "text-gray-300 w-4 h-4"
+                  },
+                  {},
+                  {}
+                )}</div></a>`;
+              }
+            })}
+								${validate_component(MenuItem, "MenuItem").$$render($$result, {}, {}, {
+              default: ({ active }) => {
+                return `<a href="${"/settings/#deploy"}" target="${"_self"}" class="${[
+                  "w-full block text-left py-1 px-2 hover:bg-gray-100 rounded-[0.25rem] s-yQgMqWykCNDs",
+                  active ? "active" : ""
+                ].join(" ").trim()}"><div class="${"flex items-center justify-between"}"><span>Deploy </span>
+											${validate_component(Icon, "Icon").$$render(
+                  $$result,
+                  {
+                    src: _3dCubeSphere,
+                    class: "text-gray-300 h-4 w-4"
+                  },
+                  {},
+                  {}
+                )}</div></a>`;
+              }
+            })}
+								
+								${validate_component(MenuItem, "MenuItem").$$render($$result, {}, {}, {
+              default: ({ active }) => {
+                return `<a href="${"/explore/schema"}" target="${"_self"}" class="${[
+                  "w-full block text-left py-1 px-2 hover:bg-gray-100 rounded-[0.25rem] s-yQgMqWykCNDs",
+                  active ? "active" : ""
+                ].join(" ").trim()}"><div class="${"flex items-center justify-between"}"><span>Schema Explorer </span>
+											${validate_component(Icon, "Icon").$$render(
+                  $$result,
+                  {
+                    src: Table,
+                    class: "text-gray-300 h-4 w-4"
+                  },
+                  {},
+                  {}
+                )}</div></a>`;
+              }
+            })}
+
+								${validate_component(MenuItem, "MenuItem").$$render($$result, {}, {}, {
+              default: ({ active }) => {
+                return `<a href="${"https://docs.evidence.dev"}" target="${"_blank"}" rel="${"noreferrer"}" class="${[
+                  "w-full block text-left py-1 px-2 hover:bg-gray-100 rounded-[0.25rem] s-yQgMqWykCNDs",
+                  active ? "active" : ""
+                ].join(" ").trim()}"><div class="${"flex items-center justify-between"}"><span>Documentation </span>
+											${validate_component(Icon, "Icon").$$render(
+                  $$result,
+                  {
+                    src: Link,
+                    class: "text-gray-300 h-4 w-4"
+                  },
+                  {},
+                  {}
+                )}</div></a>`;
+              }
+            })}`}</div>`;
           }
         }
       )}`;
@@ -514,11 +593,12 @@ const LoadingSkeleton = create_ssr_component(($$result, $$props, $$bindings, slo
 	<div class="${"h-56 bg-gray-200 rounded-md dark:bg-gray-400 max-w-[100%] mb-3"}"></div></div>`;
 });
 const css = {
-  code: ".selected.svelte-1e9i1c1{--tw-text-opacity:1;color:rgb(37 99 235 / var(--tw-text-opacity))\n}.selected.svelte-1e9i1c1:hover{--tw-text-opacity:1;color:rgb(37 99 235 / var(--tw-text-opacity))\n}",
+  code: ".selected.s-2ztAOH3lUdGF{--tw-text-opacity:1;color:rgb(37 99 235 / var(--tw-text-opacity))\n}.selected.s-2ztAOH3lUdGF:hover{--tw-text-opacity:1;color:rgb(37 99 235 / var(--tw-text-opacity))\n}",
   map: null
 };
 const Sidebar = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let $page, $$unsubscribe_page;
+  validate_store(page, "page");
   $$unsubscribe_page = subscribe(page, (value) => $page = value);
   let { fileTree: fileTree2 } = $$props;
   let firstLevelFiles = fileTree2?.children;
@@ -538,7 +618,7 @@ const Sidebar = create_ssr_component(($$result, $$props, $$bindings, slots) => {
 					</a>
 					${each(firstLevelFiles, (file) => {
     return `${file.children.length === 0 && file.href ? `<a class="${[
-      "hover:text-gray-950 group inline-block py-1 capitalize transition-colors duration-100 svelte-1e9i1c1",
+      "hover:text-gray-950 group inline-block py-1 capitalize transition-colors duration-100 s-2ztAOH3lUdGF",
       $page.url.pathname.toUpperCase() === file.href.toUpperCase() + "/" ? "selected" : ""
     ].join(" ").trim()}"${add_attribute("href", file.href, 0)}>${escape(file.label)}
 							</a>` : ``}`;
@@ -549,7 +629,7 @@ const Sidebar = create_ssr_component(($$result, $$props, $$bindings, slots) => {
 								</span>`}
 							${each(file.children, (file2) => {
       return `${file2.href ? `<a class="${[
-        "hover:text-gray-950 group inline-block py-1 capitalize transition-colors duration-100 svelte-1e9i1c1",
+        "hover:text-gray-950 group inline-block py-1 capitalize transition-colors duration-100 s-2ztAOH3lUdGF",
         $page.url.pathname.toUpperCase() === file2.href.toUpperCase() + "/" ? "selected" : ""
       ].join(" ").trim()}"${add_attribute("href", file2.href, 0)}>${escape(file2.label)}
 									</a>` : ``}`;
@@ -562,7 +642,7 @@ const Sidebar = create_ssr_component(($$result, $$props, $$bindings, slots) => {
 				</a>
 				${each(firstLevelFiles, (file) => {
     return `${file.children.length === 0 && file.href ? `<a class="${[
-      "hover:text-gray-950 group inline-block py-1 capitalize transition-all duration-100 svelte-1e9i1c1",
+      "hover:text-gray-950 group inline-block py-1 capitalize transition-all duration-100 s-2ztAOH3lUdGF",
       $page.url.pathname.toUpperCase() === file.href.toUpperCase() + "/" ? "selected" : ""
     ].join(" ").trim()}"${add_attribute("href", file.href, 0)}>${escape(file.label)}
 						</a>` : ``}`;
@@ -573,7 +653,7 @@ const Sidebar = create_ssr_component(($$result, $$props, $$bindings, slots) => {
 							</span>`}
 						${each(file.children, (file2) => {
       return `${file2.href ? `<a class="${[
-        "hover:text-gray-950 group inline-block py-1 capitalize transition-all duration-100 truncate svelte-1e9i1c1",
+        "hover:text-gray-950 group inline-block py-1 capitalize transition-all duration-100 truncate s-2ztAOH3lUdGF",
         $page.url.pathname.toUpperCase() === file2.href.toUpperCase() + "/" ? "selected" : ""
       ].join(" ").trim()}"${add_attribute("href", file2.href, 0)}>${escape(file2.label)}
 								</a>` : ``}`;
@@ -635,9 +715,11 @@ convertChildrenToArray(fileTree);
 const Layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let $navigating, $$unsubscribe_navigating;
   let $page, $$unsubscribe_page;
+  validate_store(navigating, "navigating");
   $$unsubscribe_navigating = subscribe(navigating, (value) => $navigating = value);
+  validate_store(page, "page");
   $$unsubscribe_page = subscribe(page, (value) => $page = value);
-  const prefetchStrategy = "hover";
+  const prefetchStrategy = "tap";
   let mobileSidebarOpen = false;
   let $$settled;
   let $$rendered;

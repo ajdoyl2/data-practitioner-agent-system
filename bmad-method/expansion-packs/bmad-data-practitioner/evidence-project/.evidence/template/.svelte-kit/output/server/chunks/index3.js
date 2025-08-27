@@ -15,6 +15,11 @@ function run_all(fns) {
 function safe_not_equal(a, b) {
   return a != a ? b == b : a !== b || (a && typeof a === "object" || typeof a === "function");
 }
+function validate_store(store, name) {
+  if (store != null && typeof store.subscribe !== "function") {
+    throw new Error(`'${name}' is not a store with a 'subscribe' method`);
+  }
+}
 function subscribe(store, ...callbacks) {
   if (store == null) {
     return noop;
@@ -283,6 +288,9 @@ function add_attribute(name, value, boolean) {
   const assignment = boolean && value === true ? "" : `="${escape(value, true)}"`;
   return ` ${name}${assignment}`;
 }
+function add_classes(classes) {
+  return classes ? ` class="${classes}"` : "";
+}
 function style_object_to_string(style_object) {
   return Object.keys(style_object).filter((key) => style_object[key]).map((key) => `${key}: ${escape_attribute_value(style_object[key])};`).join(" ");
 }
@@ -290,35 +298,50 @@ function add_styles(style_object) {
   const styles = style_object_to_string(style_object);
   return styles ? ` style="${styles}"` : "";
 }
+function validate_dynamic_element(tag) {
+  const is_string = typeof tag === "string";
+  if (tag && !is_string) {
+    throw new Error('<svelte:element> expects "this" attribute to be a string.');
+  }
+}
+function validate_void_dynamic_element(tag) {
+  if (tag && is_void(tag)) {
+    console.warn(`<svelte:element this="${tag}"> is self-closing and cannot have content.`);
+  }
+}
 export {
-  prevent_default as A,
-  stop_propagation as B,
-  is_void as C,
-  safe_not_equal as D,
+  listen as A,
+  bubble as B,
+  prevent_default as C,
+  stop_propagation as D,
+  validate_dynamic_element as E,
+  validate_void_dynamic_element as F,
+  is_void as G,
+  safe_not_equal as H,
   createEventDispatcher as a,
-  subscribe as b,
+  validate_store as b,
   create_ssr_component as c,
-  each as d,
+  subscribe as d,
   escape as e,
-  add_attribute as f,
-  compute_rest_props as g,
-  get_current_component as h,
-  noop as i,
-  getContext as j,
-  compute_slots as k,
-  set_store_value as l,
+  each as f,
+  add_attribute as g,
+  compute_rest_props as h,
+  get_current_component as i,
+  noop as j,
+  set_store_value as k,
+  add_styles as l,
   missing_component as m,
   null_to_empty as n,
   onDestroy as o,
-  add_styles as p,
-  merge_ssr_styles as q,
-  globals as r,
+  merge_ssr_styles as p,
+  globals as q,
+  is_promise as r,
   setContext as s,
-  is_promise as t,
+  getContext as t,
   spread as u,
   validate_component as v,
   escape_object as w,
-  escape_attribute_value as x,
-  listen as y,
-  bubble as z
+  add_classes as x,
+  compute_slots as y,
+  escape_attribute_value as z
 };

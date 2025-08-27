@@ -1,7 +1,5 @@
-import { D as DEV } from "./false.js";
-const browser = DEV;
+import { D as DEV } from "./true.js";
 const dev = DEV;
 export {
-  browser as b,
   dev as d
 };

@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-08-25T00:52:06.986Z",
+  "timestamp": "2025-08-27T03:57:16.665Z",
   "errorTests": {
     "agent-nonexistent-agent": {
       "expectedError": true,
@@ -19,7 +19,7 @@
       "expectedError": true,
       "actualError": false,
       "result": "unexpected-success",
-      "responseTime": 0
+      "responseTime": 1
     }
   }
 }

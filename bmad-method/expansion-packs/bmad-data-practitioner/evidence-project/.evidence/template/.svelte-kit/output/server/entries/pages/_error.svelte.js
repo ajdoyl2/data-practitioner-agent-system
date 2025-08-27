@@ -1,8 +1,7 @@
-import { c as create_ssr_component, s as setContext, j as getContext, b as subscribe, f as add_attribute, e as escape, v as validate_component, k as compute_slots } from "../../chunks/index3.js";
+import { c as create_ssr_component, v as validate_component, b as validate_store, d as subscribe, e as escape } from "../../chunks/index3.js";
 import { p as page } from "../../chunks/stores.js";
-import { w as writable } from "../../chunks/index2.js";
-import { I as Icon, a as ChevronUp, b as ChevronDown, c as Clipboard } from "../../chunks/Icon.js";
-import "../../chunks/VennDiagram.svelte_svelte_type_style_lang.js";
+import { A as Accordion, a as AccordionItem } from "../../chunks/AccordionItem.js";
+import { I as Icon, e as Clipboard } from "../../chunks/VennDiagram.svelte_svelte_type_style_lang.js";
 import "@evidence-dev/component-utilities/globalContexts";
 import "@evidence-dev/component-utilities/buildQuery";
 import "@evidence-dev/component-utilities/stores";
@@ -39,57 +38,6 @@ import "@evidence-dev/component-utilities/generateBoxPlotData";
 import "@evidence-dev/component-utilities/getColumnExtents";
 import "@evidence-dev/component-utilities/echartsMap";
 import "echarts-stat";
-const Accordion = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  const activeItem = writable(-1);
-  function setActiveItem(index) {
-    activeItem.update((current) => current === index ? -1 : index);
-  }
-  setContext("accordion", { setActiveItem, activeItem });
-  return `<div class="${"my-6 divide-y border border-neutral-200 rounded"}"><div class="${"overflow-hidden divide-y rounded"}">${slots.default ? slots.default({}) : ``}</div></div>`;
-});
-const AccordionItem = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let visible;
-  let contentHeight;
-  let $$slots = compute_slots(slots);
-  let $activeItem, $$unsubscribe_activeItem;
-  let { title = "" } = $$props;
-  let { small = false } = $$props;
-  const { setActiveItem, activeItem } = getContext("accordion");
-  $$unsubscribe_activeItem = subscribe(activeItem, (value) => $activeItem = value);
-  let index;
-  let node;
-  let contentContainer;
-  if ($$props.title === void 0 && $$bindings.title && title !== void 0)
-    $$bindings.title(title);
-  if ($$props.small === void 0 && $$bindings.small && small !== void 0)
-    $$bindings.small(small);
-  visible = index === $activeItem;
-  contentHeight = "0";
-  $$unsubscribe_activeItem();
-  return `<div class="${"accordion-item"}"${add_attribute("this", node, 0)}><button class="${[
-    "flex justify-between items-center w-full box-border px-4 bg-white border-none cursor-pointer transition ease-in-out duration-300 hover:bg-gray-100 focus:outline-none",
-    (!small ? "text-lg" : "") + " " + (!small ? "py-3" : "") + " " + (small ? "py-1" : "")
-  ].join(" ").trim()}" type="${"button"}">${$$slots.title ? `${slots.title ? slots.title({}) : ``}` : `<h3>${escape(title)}</h3>`}
-		${visible ? `${validate_component(Icon, "Icon").$$render(
-    $$result,
-    {
-      src: ChevronUp,
-      class: "text-gray-600 w-6 h-6"
-    },
-    {},
-    {}
-  )}` : `${validate_component(Icon, "Icon").$$render(
-    $$result,
-    {
-      src: ChevronDown,
-      class: "text-gray-600 w-6 h-6"
-    },
-    {},
-    {}
-  )}`}</button>
-	<div class="${"text-base overflow-auto transition-all duration-300 ease-in-out"}" style="${"height: " + escape(visible ? contentHeight : "0", true) + "px"}">
-		<div class="${"p-5"}"${add_attribute("this", contentContainer, 0)}>${slots.default ? slots.default({}) : ``}</div></div></div>`;
-});
 const CopyButton = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let { textToCopy = "" } = $$props;
   if ($$props.textToCopy === void 0 && $$bindings.textToCopy && textToCopy !== void 0)
@@ -100,6 +48,7 @@ const CopyButton = create_ssr_component(($$result, $$props, $$bindings, slots) =
 const Error = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let expanded;
   let $page, $$unsubscribe_page;
+  validate_store(page, "page");
   $$unsubscribe_page = subscribe(page, (value) => $page = value);
   const expand = (error) => {
     let output = "";

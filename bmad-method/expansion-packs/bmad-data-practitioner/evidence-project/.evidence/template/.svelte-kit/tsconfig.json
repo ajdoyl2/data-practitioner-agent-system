@@ -1,6 +1,13 @@
 {
 	"compilerOptions": {
-		"paths": {},
+		"paths": {
+			"$lib": [
+				"../src/components"
+			],
+			"$lib/*": [
+				"../src/components/*"
+			]
+		},
 		"rootDirs": [
 			"..",
 			"./types"

@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-08-25T00:52:06.993Z",
+  "timestamp": "2025-08-27T03:57:16.673Z",
   "directories": {
     "agents": {
       "exists": false,
@@ -83,8 +83,8 @@
     "package.json": {
       "exists": true,
       "path": "/Users/ajdoyle/data-practitioner-agent-system/bmad-method/package.json",
-      "size": 3630,
-      "modified": "2025-08-16T21:44:56.586Z"
+      "size": 3972,
+      "modified": "2025-08-25T00:58:34.199Z"
     },
     "jest.config.js": {
       "exists": true,

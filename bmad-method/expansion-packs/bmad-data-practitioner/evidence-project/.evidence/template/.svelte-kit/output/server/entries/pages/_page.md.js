@@ -1,4 +1,4 @@
-import { c as create_ssr_component, b as subscribe, l as set_store_value, s as setContext, o as onDestroy } from "../../chunks/index3.js";
+import { c as create_ssr_component, b as validate_store, d as subscribe, k as set_store_value, s as setContext, o as onDestroy } from "../../chunks/index3.js";
 import { p as page } from "../../chunks/stores.js";
 import { pageHasQueries, routeHash } from "@evidence-dev/component-utilities/stores";
 import { w as writable } from "../../chunks/index2.js";
@@ -11,7 +11,9 @@ import { setQueryFunction } from "@evidence-dev/component-utilities/buildQuery";
 const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let $page, $$unsubscribe_page;
   let $routeHash, $$unsubscribe_routeHash;
+  validate_store(page, "page");
   $$unsubscribe_page = subscribe(page, (value) => $page = value);
+  validate_store(routeHash, "routeHash");
   $$unsubscribe_routeHash = subscribe(routeHash, (value) => $routeHash = value);
   let { data: props } = $$props;
   let { data = {}, customFormattingSettings, __db, inputs } = props;

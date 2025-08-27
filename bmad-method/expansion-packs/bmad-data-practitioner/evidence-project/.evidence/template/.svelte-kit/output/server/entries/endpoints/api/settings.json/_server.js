@@ -1,13 +1,31 @@
 import fs from "fs";
-import "path";
-import "git-remote-origin-url";
+import $4S4dR$path1__default from "path";
+import gitRemoteOriginUrl from "git-remote-origin-url";
 import { d as dev } from "../../../../chunks/environment2.js";
 import { logEvent } from "@evidence-dev/telemetry";
 import { j as json } from "../../../../chunks/index.js";
 const prerender = false;
+function getLocalGitRepo() {
+  if (fs.existsSync($4S4dR$path1__default.join($4S4dR$path1__default.resolve("../../"), ".git"))) {
+    return $4S4dR$path1__default.resolve("../../");
+  }
+}
 async function GET() {
   {
-    return new Response(void 0, { status: 404 });
+    let settings = {};
+    let gitIgnore;
+    if (fs.existsSync("evidence.settings.json")) {
+      settings = JSON.parse(fs.readFileSync("evidence.settings.json", "utf8"));
+    }
+    if (fs.existsSync("../../.gitignore")) {
+      gitIgnore = fs.readFileSync("../../.gitignore", "utf8");
+    }
+    try {
+      settings.localGitRepo = getLocalGitRepo();
+      settings.gitRepo = await gitRemoteOriginUrl();
+    } catch {
+    }
+    return json({ settings, gitIgnore });
   }
 }
 function removeFromGitignore(extensions, hasGitIgnore, gitIgnore) {

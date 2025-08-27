@@ -1,8 +1,7 @@
-import { b as browser } from "../../chunks/environment2.js";
+import { b as building } from "../../chunks/environment.js";
 import { initDB, setParquetURLs, updateSearchPath, query } from "@evidence-dev/universal-sql/client-duckdb";
 import { profile } from "@evidence-dev/component-utilities/profile";
 import { toasts } from "@evidence-dev/component-utilities/stores";
-import { b as building } from "../../chunks/environment.js";
 const loadDB = async () => {
   let renderedFiles = {};
   {
@@ -39,12 +38,13 @@ const load = async (event) => {
   let data = {};
   const { inputs = {} } = dummy_pages.get(url.pathname) ?? {};
   const is_dummy_page = dummy_pages.has(url.pathname);
-  if (building && !browser && !is_dummy_page) {
+  if (!is_dummy_page) {
     dummy_pages.set(url.pathname, { inputs });
     await fetch(url);
     dummy_pages.delete(url.pathname);
   }
   await database_initialization;
+  await initDB();
   return (
     /** @type {App.PageData} */
     {

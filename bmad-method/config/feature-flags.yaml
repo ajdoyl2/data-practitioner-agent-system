@@ -56,7 +56,7 @@ features:
       - duckdb_analytics
 metadata:
   version: 1.0.0
-  last_modified: '2025-08-24T23:53:06.210Z'
+  last_modified: '2025-08-27T03:57:17.699Z'
   environment: development
 safety:
   require_explicit_enable: true
