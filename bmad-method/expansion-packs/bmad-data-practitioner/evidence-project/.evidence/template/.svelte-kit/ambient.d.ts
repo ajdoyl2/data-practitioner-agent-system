@@ -92,6 +92,7 @@ declare module '$env/static/private' {
 	export const VSCODE_GIT_IPC_HANDLE: string;
 	export const COREPACK_ENABLE_AUTO_PIN: string;
 	export const npm_config_user_agent: string;
+	export const DISABLE_AUTOUPDATER: string;
 	export const INFOPATH: string;
 	export const HOMEBREW_CELLAR: string;
 	export const VSCODE_GIT_ASKPASS_NODE: string;
@@ -197,6 +198,7 @@ declare module '$env/dynamic/private' {
 		VSCODE_GIT_IPC_HANDLE: string;
 		COREPACK_ENABLE_AUTO_PIN: string;
 		npm_config_user_agent: string;
+		DISABLE_AUTOUPDATER: string;
 		INFOPATH: string;
 		HOMEBREW_CELLAR: string;
 		VSCODE_GIT_ASKPASS_NODE: string;

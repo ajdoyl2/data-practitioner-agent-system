@@ -25,13 +25,30 @@ theme:
         - "#fed7aa"  # Light orange for dark mode
 
 datasources:
-  duckdb:
+  analytics:
+    type: "duckdb"
     filename: ".duckdb/analytics.db"
+    # WASM Configuration for client-side processing
     extensions:
-      - httpfs
-      - parquet
-      - json
+      - httpfs     # HTTP file system for remote data access
+      - parquet    # Parquet format support
+      - json       # JSON data processing  
+      - fts        # Full-text search
+      - spatial    # Geospatial data support
     options:
       memory_limit: "2GB"
       threads: 4
       enable_external_access: true
+      # Optimization settings for analytical workloads
+      enable_progress_bar: false
+      enable_print_progress: false  
+      enable_profiling: false
+      max_memory: "1.5GB"
+      temp_directory: ".duckdb/temp"
+      # Performance tuning
+      worker_threads: 2
+      preserve_insertion_order: false
+      enable_optimizer: true
+      # Client-side processing optimization
+      streaming_buffer_size: "64MB"
+      checkpoint_threshold: "1GB"

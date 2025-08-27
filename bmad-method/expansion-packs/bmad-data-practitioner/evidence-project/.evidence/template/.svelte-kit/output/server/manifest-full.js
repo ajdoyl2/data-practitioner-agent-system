@@ -7,8 +7,8 @@ function __memo(fn) {
 return {
 	appDir: "_app",
 	appPath: "_app",
-	assets: new Set(["apple-touch-icon.png","favicon.ico","icon-192.png","icon-512.png","icon.svg","manifest.webmanifest"]),
-	mimeTypes: {".png":"image/png",".ico":"image/vnd.microsoft.icon",".svg":"image/svg+xml",".webmanifest":"application/manifest+json"},
+	assets: new Set(["apple-touch-icon.png","data/manifest.json","favicon.ico","icon-192.png","icon-512.png","icon.svg","manifest.webmanifest"]),
+	mimeTypes: {".png":"image/png",".json":"application/json",".ico":"image/vnd.microsoft.icon",".svg":"image/svg+xml",".webmanifest":"application/manifest+json"},
 	_: {
 		client: null,
 		nodes: [
