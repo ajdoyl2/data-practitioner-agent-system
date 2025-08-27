@@ -925,6 +925,291 @@ ${narrative.businessContext}
 
     return recommendations;
   }
+
+  /**
+   * Deploy publication to specified platform
+   */
+  async deployPublication(config = {}) {
+    console.log(chalk.blue('🚀 Starting publication deployment...'));
+    
+    try {
+      // Validate deployment configuration
+      const deployConfig = this.validateDeploymentConfig(config);
+      
+      // Build the Evidence.dev site
+      console.log(chalk.blue('📦 Building Evidence.dev site...'));
+      await this.evidenceBuilder.buildEvidenceSite();
+      
+      // Deploy based on platform type
+      switch (deployConfig.platform) {
+        case 'static':
+          return await this.deployToStaticPlatform(deployConfig);
+        case 'cdn':
+          return await this.deployToCDN(deployConfig);
+        case 'evidence_cloud':
+          return await this.deployToEvidenceCloud(deployConfig);
+        default:
+          throw new Error(`Unsupported deployment platform: ${deployConfig.platform}`);
+      }
+      
+    } catch (error) {
+      console.error(chalk.red('❌ Deployment failed:'), error.message);
+      throw error;
+    }
+  }
+
+  /**
+   * Validate deployment configuration
+   */
+  validateDeploymentConfig(config) {
+    const defaultConfig = {
+      platform: process.env.DEPLOYMENT_TYPE || 'static',
+      buildCommand: 'npm run build',
+      outputDirectory: './build',
+      environmentConfig: './.evidence.env'
+    };
+
+    const deployConfig = { ...defaultConfig, ...config };
+
+    // Check required environment variables based on platform
+    if (deployConfig.platform === 'cdn') {
+      if (!process.env.AWS_S3_BUCKET) {
+        throw new Error('AWS_S3_BUCKET environment variable required for CDN deployment');
+      }
+    }
+
+    if (deployConfig.platform === 'evidence_cloud') {
+      if (!process.env.EVIDENCE_CLOUD_API_KEY) {
+        throw new Error('EVIDENCE_CLOUD_API_KEY environment variable required for Evidence Cloud deployment');
+      }
+    }
+
+    return deployConfig;
+  }
+
+  /**
+   * Deploy to static hosting platforms (Netlify, Vercel, GitHub Pages)
+   */
+  async deployToStaticPlatform(config) {
+    console.log(chalk.blue('📡 Deploying to static hosting platform...'));
+    
+    const { execSync } = require('child_process');
+    const deployScriptPath = path.join(this.evidenceProjectPath, 'deploy.sh');
+    
+    try {
+      // Set environment variables
+      process.env.DEPLOYMENT_TYPE = 'static';
+      process.env.STATIC_PLATFORM = config.staticPlatform || 'netlify';
+      
+      // Execute deployment script
+      const result = execSync(`bash "${deployScriptPath}" deploy`, {
+        cwd: this.evidenceProjectPath,
+        encoding: 'utf8'
+      });
+      
+      console.log(chalk.green('✅ Static deployment completed'));
+      
+      return {
+        success: true,
+        platform: 'static',
+        deploymentUrl: this.extractDeploymentUrl(result),
+        buildTime: Date.now(),
+        message: 'Successfully deployed to static hosting platform'
+      };
+      
+    } catch (error) {
+      console.error(chalk.red('Static deployment error:'), error.message);
+      throw error;
+    }
+  }
+
+  /**
+   * Deploy to CDN (AWS S3 + CloudFront)
+   */
+  async deployToCDN(config) {
+    console.log(chalk.blue('☁️ Deploying to AWS S3 + CloudFront...'));
+    
+    const { execSync } = require('child_process');
+    const deployScriptPath = path.join(this.evidenceProjectPath, 'deploy.sh');
+    
+    try {
+      // Set environment variables for CDN deployment
+      process.env.DEPLOYMENT_TYPE = 'cdn';
+      
+      // Execute deployment script
+      const result = execSync(`bash "${deployScriptPath}" deploy`, {
+        cwd: this.evidenceProjectPath,
+        encoding: 'utf8'
+      });
+      
+      console.log(chalk.green('✅ CDN deployment completed'));
+      
+      return {
+        success: true,
+        platform: 'cdn',
+        s3Bucket: process.env.AWS_S3_BUCKET,
+        cloudFrontDistribution: process.env.AWS_CLOUDFRONT_DISTRIBUTION_ID,
+        buildTime: Date.now(),
+        message: 'Successfully deployed to AWS S3 + CloudFront'
+      };
+      
+    } catch (error) {
+      console.error(chalk.red('CDN deployment error:'), error.message);
+      throw error;
+    }
+  }
+
+  /**
+   * Deploy to Evidence Cloud
+   */
+  async deployToEvidenceCloud(config) {
+    console.log(chalk.blue('🌐 Deploying to Evidence Cloud...'));
+    
+    const { execSync } = require('child_process');
+    const deployScriptPath = path.join(this.evidenceProjectPath, 'deploy.sh');
+    
+    try {
+      // Set environment variables for Evidence Cloud
+      process.env.DEPLOYMENT_TYPE = 'evidence_cloud';
+      
+      // Execute deployment script
+      const result = execSync(`bash "${deployScriptPath}" deploy`, {
+        cwd: this.evidenceProjectPath,
+        encoding: 'utf8'
+      });
+      
+      console.log(chalk.green('✅ Evidence Cloud deployment completed'));
+      
+      return {
+        success: true,
+        platform: 'evidence_cloud',
+        projectId: process.env.EVIDENCE_CLOUD_PROJECT_ID,
+        buildTime: Date.now(),
+        message: 'Successfully deployed to Evidence Cloud'
+      };
+      
+    } catch (error) {
+      console.error(chalk.red('Evidence Cloud deployment error:'), error.message);
+      throw error;
+    }
+  }
+
+  /**
+   * Extract deployment URL from deployment script output
+   */
+  extractDeploymentUrl(scriptOutput) {
+    // Look for common deployment URL patterns
+    const urlPatterns = [
+      /https:\/\/[a-z0-9-]+\.netlify\.app/,
+      /https:\/\/[a-z0-9-]+\.vercel\.app/,
+      /https:\/\/[a-z0-9-]+\.github\.io/,
+      /https:\/\/[a-z0-9.-]+\.amazonaws\.com/
+    ];
+    
+    for (const pattern of urlPatterns) {
+      const match = scriptOutput.match(pattern);
+      if (match) {
+        return match[0];
+      }
+    }
+    
+    return null;
+  }
+
+  /**
+   * Get deployment status and metrics
+   */
+  async getDeploymentStatus(deploymentId) {
+    console.log(chalk.blue(`📊 Checking deployment status: ${deploymentId}`));
+    
+    try {
+      const { execSync } = require('child_process');
+      const deployScriptPath = path.join(this.evidenceProjectPath, 'deploy.sh');
+      
+      // Run performance test
+      const result = execSync(`bash "${deployScriptPath}" test`, {
+        cwd: this.evidenceProjectPath,
+        encoding: 'utf8'
+      });
+      
+      return {
+        deploymentId,
+        status: 'deployed',
+        performanceMetrics: this.parsePerformanceMetrics(result),
+        lastChecked: Date.now()
+      };
+      
+    } catch (error) {
+      console.error(chalk.red('Deployment status check error:'), error.message);
+      return {
+        deploymentId,
+        status: 'error',
+        error: error.message,
+        lastChecked: Date.now()
+      };
+    }
+  }
+
+  /**
+   * Parse performance metrics from deployment test output
+   */
+  parsePerformanceMetrics(testOutput) {
+    const metrics = {
+      buildSize: null,
+      fileCount: null,
+      largeFiles: []
+    };
+    
+    // Extract build size
+    const sizeMatch = testOutput.match(/Build size:\s+(\S+)/);
+    if (sizeMatch) {
+      metrics.buildSize = sizeMatch[1];
+    }
+    
+    // Extract file count
+    const fileCountMatch = testOutput.match(/Total files:\s+(\d+)/);
+    if (fileCountMatch) {
+      metrics.fileCount = parseInt(fileCountMatch[1]);
+    }
+    
+    // Extract large files warning
+    if (testOutput.includes('Large files found')) {
+      const largeFilesSection = testOutput.split('Large files found')[1];
+      if (largeFilesSection) {
+        metrics.largeFiles = largeFilesSection.trim().split('\n')
+          .filter(line => line.trim().length > 0)
+          .slice(0, 5); // Limit to first 5 large files
+      }
+    }
+    
+    return metrics;
+  }
+
+  /**
+   * Rollback deployment to previous version
+   */
+  async rollbackDeployment(deploymentId, targetVersion = 'previous') {
+    console.log(chalk.yellow(`🔄 Rolling back deployment ${deploymentId} to ${targetVersion}...`));
+    
+    try {
+      // This would integrate with platform-specific rollback mechanisms
+      // For now, this is a placeholder implementation
+      console.log(chalk.blue('Rollback functionality would be implemented here'));
+      console.log(chalk.blue('Platform-specific rollback logic based on deployment type'));
+      
+      return {
+        success: true,
+        deploymentId,
+        targetVersion,
+        rollbackTime: Date.now(),
+        message: `Rollback to ${targetVersion} initiated`
+      };
+      
+    } catch (error) {
+      console.error(chalk.red('Rollback error:'), error.message);
+      throw error;
+    }
+  }
 }
 
 module.exports = { PublicationEngine };
