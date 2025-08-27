@@ -1,0 +1,401 @@
+# Template Branding and Customization System
+# Comprehensive branding and visual customization options for publication templates
+
+branding_system:
+  version: "1.0"
+  last_updated: "2025-08-27"
+  
+  # Core branding elements
+  brand_identity:
+    organization:
+      name: "{{organization_name}}"
+      full_name: "{{organization_full_name}}"
+      tagline: "{{organization_tagline}}"
+      website: "{{organization_website}}"
+      
+    logo:
+      primary_logo: "{{logo_primary_url}}"
+      secondary_logo: "{{logo_secondary_url}}"
+      favicon: "{{favicon_url}}"
+      watermark: "{{watermark_url}}"
+      
+    contact_information:
+      email: "{{contact_email}}"
+      phone: "{{contact_phone}}"
+      address: "{{contact_address}}"
+      social_media: "{{social_media_links}}"
+
+  # Color palette system
+  color_schemes:
+    corporate_blue:
+      name: "Corporate Blue"
+      description: "Professional blue-based color scheme"
+      colors:
+        primary: "#1e40af"      # Deep blue
+        secondary: "#3b82f6"    # Medium blue  
+        accent: "#60a5fa"       # Light blue
+        success: "#10b981"      # Green
+        warning: "#f59e0b"      # Orange
+        error: "#ef4444"        # Red
+        text_primary: "#111827" # Dark gray
+        text_secondary: "#6b7280" # Medium gray
+        background: "#ffffff"   # White
+        surface: "#f9fafb"      # Light gray
+        
+    research_academic:
+      name: "Academic Research"
+      description: "Scholarly publication color scheme"
+      colors:
+        primary: "#374151"      # Dark gray
+        secondary: "#6b7280"    # Medium gray
+        accent: "#059669"       # Forest green
+        success: "#10b981"      # Green
+        warning: "#d97706"      # Orange
+        error: "#dc2626"        # Red
+        text_primary: "#111827" # Black
+        text_secondary: "#4b5563" # Dark gray
+        background: "#ffffff"   # White
+        surface: "#f3f4f6"      # Light gray
+        
+    executive_minimal:
+      name: "Executive Minimal"
+      description: "Clean minimal design for executive consumption"
+      colors:
+        primary: "#000000"      # Black
+        secondary: "#404040"    # Dark gray
+        accent: "#6366f1"       # Indigo
+        success: "#059669"      # Green
+        warning: "#dc2626"      # Red
+        error: "#dc2626"        # Red
+        text_primary: "#000000" # Black
+        text_secondary: "#525252" # Medium gray
+        background: "#ffffff"   # White
+        surface: "#fafafa"      # Off-white
+
+    pew_research:
+      name: "Pew Research Style"
+      description: "Colors matching Pew Research Center publications"
+      colors:
+        primary: "#2c5aa0"      # Pew blue
+        secondary: "#5c7cfa"    # Light blue
+        accent: "#f08c00"       # Orange
+        success: "#20c933"      # Green
+        warning: "#fcb900"      # Yellow
+        error: "#f5455c"        # Red
+        text_primary: "#2c2c2c" # Dark gray
+        text_secondary: "#757575" # Medium gray
+        background: "#ffffff"   # White
+        surface: "#f7f9fc"      # Light blue-gray
+
+  # Typography system
+  typography:
+    font_families:
+      professional:
+        primary: "Arial, Helvetica, sans-serif"
+        secondary: "Georgia, Times, serif"
+        monospace: "Consolas, Monaco, monospace"
+        
+      academic:
+        primary: "Times New Roman, serif"
+        secondary: "Arial, sans-serif"
+        monospace: "Courier New, monospace"
+        
+      modern:
+        primary: "Inter, system-ui, sans-serif"
+        secondary: "Charter, Georgia, serif"
+        monospace: "Fira Code, Consolas, monospace"
+
+    font_sizes:
+      h1: "2.5rem"    # 40px
+      h2: "2rem"      # 32px
+      h3: "1.5rem"    # 24px
+      h4: "1.25rem"   # 20px
+      h5: "1.125rem"  # 18px
+      h6: "1rem"      # 16px
+      body: "1rem"    # 16px
+      small: "0.875rem" # 14px
+      caption: "0.75rem" # 12px
+
+    line_heights:
+      tight: 1.25
+      normal: 1.5
+      relaxed: 1.75
+
+  # Layout and spacing system
+  layout:
+    page_layouts:
+      standard:
+        max_width: "1200px"
+        margins: "2rem"
+        column_gap: "2rem"
+        section_spacing: "3rem"
+        
+      compact:
+        max_width: "800px"
+        margins: "1rem"
+        column_gap: "1rem"
+        section_spacing: "2rem"
+        
+      wide:
+        max_width: "1400px"
+        margins: "3rem"
+        column_gap: "3rem"
+        section_spacing: "4rem"
+
+    spacing_scale:
+      xs: "0.25rem"   # 4px
+      sm: "0.5rem"    # 8px
+      md: "1rem"      # 16px
+      lg: "1.5rem"    # 24px
+      xl: "2rem"      # 32px
+      xxl: "3rem"     # 48px
+
+  # Component styling
+  component_styles:
+    data_tables:
+      header_background: "{{color_scheme.surface}}"
+      header_text_color: "{{color_scheme.text_primary}}"
+      row_hover_color: "{{color_scheme.surface}}"
+      border_color: "{{color_scheme.text_secondary}}"
+      font_size: "{{typography.body}}"
+      
+    charts:
+      color_palette: 
+        - "{{color_scheme.primary}}"
+        - "{{color_scheme.secondary}}"
+        - "{{color_scheme.accent}}"
+        - "{{color_scheme.success}}"
+        - "{{color_scheme.warning}}"
+      background_color: "{{color_scheme.background}}"
+      grid_color: "{{color_scheme.surface}}"
+      text_color: "{{color_scheme.text_primary}}"
+      
+    headings:
+      h1:
+        color: "{{color_scheme.primary}}"
+        font_weight: "700"
+        margin_bottom: "{{spacing.lg}}"
+      h2:
+        color: "{{color_scheme.text_primary}}"
+        font_weight: "600"
+        margin_bottom: "{{spacing.md}}"
+      h3:
+        color: "{{color_scheme.text_primary}}"
+        font_weight: "500"
+        margin_bottom: "{{spacing.sm}}"
+
+    blockquotes:
+      border_left_color: "{{color_scheme.accent}}"
+      border_left_width: "4px"
+      background_color: "{{color_scheme.surface}}"
+      padding: "{{spacing.md}}"
+      font_style: "italic"
+
+# Template-specific branding configurations
+template_branding:
+  insight_document:
+    recommended_scheme: "corporate_blue"
+    layout: "standard"
+    typography: "professional"
+    header_style: "business"
+    
+    customizations:
+      executive_summary:
+        highlight_color: "{{color_scheme.accent}}"
+        background: "{{color_scheme.surface}}"
+        border: "1px solid {{color_scheme.secondary}}"
+        
+      key_findings:
+        numbering_style: "decimal"
+        highlight_important: true
+        use_icons: true
+        
+      statistical_sections:
+        table_striping: true
+        chart_animations: false
+        significance_highlighting: true
+
+  pew_research_style:
+    recommended_scheme: "pew_research"
+    layout: "wide"
+    typography: "academic"
+    header_style: "research"
+    
+    customizations:
+      methodology_section:
+        detailed_formatting: true
+        citation_style: "academic"
+        footnote_numbering: true
+        
+      demographic_tables:
+        zebra_striping: true
+        margin_of_error_display: true
+        confidence_intervals: true
+        
+      survey_questions:
+        question_numbering: "Q1, Q2, etc."
+        response_formatting: "percentage"
+        sample_size_display: true
+
+  executive_briefing:
+    recommended_scheme: "executive_minimal"
+    layout: "compact"
+    typography: "professional"
+    header_style: "minimal"
+    
+    customizations:
+      bluf_section:
+        emphasize: true
+        border_left: "4px solid {{color_scheme.primary}}"
+        background: "{{color_scheme.surface}}"
+        
+      kpi_displays:
+        large_numbers: true
+        trend_arrows: true
+        color_coding: true
+        
+      action_items:
+        checkbox_style: true
+        priority_coding: true
+        owner_highlighting: true
+
+# Dynamic branding system
+dynamic_branding:
+  audience_based_styling:
+    executives:
+      emphasize: ["executive_summary", "key_findings", "recommendations"]
+      minimize: ["methodology", "technical_appendix"]
+      color_intensity: "high"
+      
+    analysts:
+      emphasize: ["statistical_analysis", "methodology", "data_quality"]
+      minimize: ["executive_summary"]
+      color_intensity: "medium"
+      
+    public:
+      emphasize: ["key_findings", "implications", "methodology"]
+      minimize: ["technical_appendix", "statistical_details"]
+      color_intensity: "low"
+
+  data_driven_styling:
+    high_confidence_results:
+      success_highlighting: true
+      emphasis_color: "{{color_scheme.success}}"
+      
+    low_confidence_results:
+      warning_styling: true
+      emphasis_color: "{{color_scheme.warning}}"
+      
+    statistical_significance:
+      p_value_color_coding: true
+      significance_badges: true
+
+# CSS generation templates
+css_templates:
+  evidence_dev_theme:
+    template: |
+      :root {
+        --color-primary: {{color_scheme.primary}};
+        --color-secondary: {{color_scheme.secondary}};
+        --color-accent: {{color_scheme.accent}};
+        --color-success: {{color_scheme.success}};
+        --color-warning: {{color_scheme.warning}};
+        --color-error: {{color_scheme.error}};
+        --color-text-primary: {{color_scheme.text_primary}};
+        --color-text-secondary: {{color_scheme.text_secondary}};
+        --color-background: {{color_scheme.background}};
+        --color-surface: {{color_scheme.surface}};
+        
+        --font-family-primary: {{typography.primary}};
+        --font-family-secondary: {{typography.secondary}};
+        --font-family-monospace: {{typography.monospace}};
+        
+        --spacing-xs: {{spacing.xs}};
+        --spacing-sm: {{spacing.sm}};
+        --spacing-md: {{spacing.md}};
+        --spacing-lg: {{spacing.lg}};
+        --spacing-xl: {{spacing.xl}};
+      }
+      
+      .publication-header {
+        background: var(--color-primary);
+        color: white;
+        padding: var(--spacing-lg);
+        margin-bottom: var(--spacing-xl);
+      }
+      
+      .key-finding {
+        border-left: 4px solid var(--color-accent);
+        padding-left: var(--spacing-md);
+        background: var(--color-surface);
+        margin: var(--spacing-md) 0;
+      }
+      
+      .statistical-significant {
+        background: rgba(var(--color-success), 0.1);
+        border: 1px solid var(--color-success);
+        padding: var(--spacing-sm);
+        border-radius: 4px;
+      }
+
+# Customization presets
+customization_presets:
+  corporate_standard:
+    name: "Corporate Standard"
+    description: "Professional corporate branding"
+    color_scheme: "corporate_blue"
+    typography: "professional"
+    layout: "standard"
+    emphasis: "business_impact"
+    
+  research_publication:
+    name: "Research Publication"
+    description: "Academic research publication styling"
+    color_scheme: "research_academic"
+    typography: "academic"
+    layout: "wide"
+    emphasis: "methodology_rigor"
+    
+  executive_dashboard:
+    name: "Executive Dashboard"
+    description: "Executive-focused minimal design"
+    color_scheme: "executive_minimal"
+    typography: "modern"
+    layout: "compact"
+    emphasis: "key_metrics"
+
+# Branding validation rules
+validation_rules:
+  color_contrast:
+    minimum_ratio: 4.5
+    check_pairs:
+      - ["text_primary", "background"]
+      - ["text_secondary", "background"]
+      - ["primary", "background"]
+      
+  font_loading:
+    web_fonts: "optional"
+    fallback_required: true
+    max_font_files: 3
+    
+  accessibility:
+    alt_text_required: true
+    focus_indicators: true
+    keyboard_navigation: true
+    screen_reader_friendly: true
+
+# Implementation guidelines
+implementation:
+  css_variable_prefix: "--bmad-"
+  class_name_prefix: "bmad-publication-"
+  component_prefix: "BmadPub"
+  
+  file_structure:
+    themes_directory: "static/themes/"
+    custom_css: "static/custom/"
+    fonts_directory: "static/fonts/"
+    
+  build_integration:
+    evidence_config: "evidence.config.js"
+    css_injection: "automatic"
+    theme_switching: "supported"
