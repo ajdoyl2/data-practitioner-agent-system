@@ -1,0 +1,43 @@
+{
+  "summary": {
+    "total": 27,
+    "passed": 23,
+    "failed": 3,
+    "skipped": 1,
+    "duration": "30.00s",
+    "success": false
+  },
+  "categories": {
+    "unit": {
+      "passed": 10,
+      "failed": 1,
+      "skipped": 0,
+      "tests": [
+        {
+          "name": "test1",
+          "status": "failed",
+          "error": "Mock error"
+        }
+      ]
+    },
+    "integration": {
+      "passed": 8,
+      "failed": 0,
+      "skipped": 1,
+      "tests": []
+    },
+    "performance": {
+      "passed": 5,
+      "failed": 2,
+      "skipped": 0,
+      "tests": [
+        {
+          "name": "test2",
+          "status": "failed",
+          "error": "Mock error"
+        }
+      ]
+    }
+  },
+  "timestamp": "2025-08-27T06:23:26.990Z"
+}

@@ -1,0 +1,122 @@
+quality_gates:
+  # Data Ingestion Quality Gates
+  ingestion:
+    thresholds:
+      data_completeness: 95              # Minimum percentage of complete records
+      schema_compliance: 100             # All records must match expected schema
+      source_availability: 99            # Source system availability percentage
+      data_freshness: 24                 # Maximum hours since last update
+      record_count_variance: 10          # Maximum percentage change from baseline
+    required_checks:
+      - data_completeness
+      - schema_compliance
+    optional_checks:
+      - source_availability
+      - data_freshness
+      - record_count_variance
+    failure_action: block               # block | warn | log
+    bypass_conditions:
+      - emergency_override
+      - maintenance_window
+    enabled: true
+
+  # Data Transformation Quality Gates
+  transformation:
+    thresholds:
+      test_success_rate: 100             # All tests must pass
+      data_quality_score: 85             # Minimum data quality score
+      cost_optimization_active: true     # Cost optimization must be enabled
+      model_execution_time: 300          # Maximum seconds for model execution
+      memory_usage_mb: 2048              # Maximum memory usage in MB
+      sql_complexity_score: 75           # Maximum SQL complexity score
+    required_checks:
+      - test_success_rate
+      - data_quality_score
+      - cost_optimization_active
+    optional_checks:
+      - model_execution_time
+      - memory_usage_mb
+      - sql_complexity_score
+    failure_action: block
+    bypass_conditions:
+      - performance_testing_mode
+      - development_environment
+    enabled: true
+
+  # Data Publication Quality Gates
+  publication:
+    thresholds:
+      site_load_time: 3                  # Maximum seconds for site load
+      accessibility_score: 90            # Minimum accessibility score (WCAG AA)
+      content_accuracy: 95               # Minimum content accuracy percentage
+      seo_score: 85                      # Minimum SEO optimization score
+      mobile_performance: 80             # Minimum mobile performance score
+      uptime_percentage: 99.5            # Required uptime percentage
+    required_checks:
+      - site_load_time
+      - accessibility_score
+      - uptime_percentage
+    optional_checks:
+      - content_accuracy
+      - seo_score
+      - mobile_performance
+    failure_action: warn                # More lenient for publication issues
+    bypass_conditions:
+      - content_preview_mode
+      - staging_environment
+    enabled: true
+
+  # Cross-Component Integration Quality Gates
+  integration:
+    thresholds:
+      end_to_end_success_rate: 95        # Pipeline success rate
+      data_lineage_completeness: 100     # All data lineage must be tracked
+      security_scan_score: 90            # Minimum security scan score
+      backup_completion_rate: 100        # All backups must complete
+      disaster_recovery_rto: 60          # Maximum recovery time in minutes
+      system_resource_usage: 80          # Maximum system resource usage %
+    required_checks:
+      - end_to_end_success_rate
+      - data_lineage_completeness
+      - security_scan_score
+    optional_checks:
+      - backup_completion_rate
+      - disaster_recovery_rto
+      - system_resource_usage
+    failure_action: block
+    bypass_conditions:
+      - disaster_recovery_test
+      - planned_maintenance
+    enabled: true
+
+  # Performance and Monitoring Quality Gates
+  performance:
+    thresholds:
+      response_time_p95: 500             # 95th percentile response time in ms
+      throughput_records_per_minute: 1000 # Minimum processing throughput
+      error_rate: 0.1                    # Maximum error rate percentage
+      cpu_utilization: 70                # Maximum CPU utilization percentage
+      memory_utilization: 80             # Maximum memory utilization percentage
+      disk_usage: 85                     # Maximum disk usage percentage
+    required_checks:
+      - response_time_p95
+      - throughput_records_per_minute
+      - error_rate
+    optional_checks:
+      - cpu_utilization
+      - memory_utilization
+      - disk_usage
+    failure_action: warn
+    bypass_conditions:
+      - load_testing_mode
+      - capacity_planning
+    enabled: true
+
+# Global Quality Gate Settings
+global_settings:
+  enforcement_mode: strict              # strict | permissive | advisory
+  parallel_validation: true            # Run validations in parallel
+  timeout_seconds: 300                 # Maximum time for all validations
+  retry_attempts: 3                    # Number of retry attempts for failed checks
+  escalation_threshold: 2              # Number of failures before escalation
+  emergency_bypass_enabled: false      # Allow emergency bypass of all gates

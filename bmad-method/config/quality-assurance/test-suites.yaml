@@ -1,0 +1,178 @@
+test_suites:
+  # Comprehensive Test Suite - Full validation
+  comprehensive:
+    enabled: true
+    parallel: false                     # Sequential execution for comprehensive testing
+    coverage: true                      # Enable code coverage reporting
+    timeout: 600000                     # 10 minutes timeout
+    retry_attempts: 2
+    categories:
+      - unit
+      - integration
+      - end_to_end
+      - performance
+      - security
+      - chaos_engineering
+      - quality_validation
+    reports:
+      - junit
+      - coverage
+      - performance_metrics
+    environment_variables:
+      NODE_ENV: test
+      LOG_LEVEL: warn
+      TEST_DATABASE_URL: sqlite://test.db
+
+  # Quick Test Suite - Fast feedback
+  quick:
+    enabled: true
+    parallel: true                      # Parallel execution for speed
+    coverage: false                     # Skip coverage for speed
+    timeout: 120000                     # 2 minutes timeout
+    retry_attempts: 1
+    categories:
+      - unit
+      - integration
+    reports:
+      - junit
+    environment_variables:
+      NODE_ENV: test
+      LOG_LEVEL: error
+
+  # Smoke Test Suite - Basic functionality check
+  smoke:
+    enabled: true
+    parallel: true
+    coverage: false
+    timeout: 60000                      # 1 minute timeout
+    retry_attempts: 1
+    categories:
+      - smoke
+    test_patterns:
+      - "**/smoke/*.test.js"
+      - "**/*.smoke.test.js"
+    environment_variables:
+      NODE_ENV: test
+      LOG_LEVEL: error
+
+  # Performance Test Suite - Performance regression testing
+  performance:
+    enabled: true
+    parallel: false                     # Sequential for accurate measurements
+    coverage: false
+    timeout: 900000                     # 15 minutes timeout
+    retry_attempts: 1
+    categories:
+      - performance
+      - load
+      - stress
+    test_patterns:
+      - "**/performance/*.test.js"
+      - "**/*.perf.test.js"
+    baseline_comparison: true
+    performance_budgets:
+      memory_usage_mb: 512
+      execution_time_ms: 5000
+      cpu_usage_percentage: 50
+
+  # Security Test Suite - Security validation
+  security:
+    enabled: true
+    parallel: false
+    coverage: false
+    timeout: 300000                     # 5 minutes timeout
+    retry_attempts: 1
+    categories:
+      - security
+      - vulnerability
+      - compliance
+    test_patterns:
+      - "**/security/*.test.js"
+      - "**/*.security.test.js"
+    security_scans:
+      - dependency_vulnerabilities
+      - code_analysis
+      - secrets_detection
+
+  # Chaos Engineering Test Suite - Resilience testing
+  chaos:
+    enabled: false                      # Disabled by default for safety
+    parallel: false
+    coverage: false
+    timeout: 1200000                    # 20 minutes timeout
+    retry_attempts: 0                   # No retries for chaos tests
+    categories:
+      - chaos_engineering
+      - fault_injection
+      - disaster_recovery
+    test_patterns:
+      - "**/chaos/*.test.js"
+      - "**/*.chaos.test.js"
+    failure_scenarios:
+      - database_failure
+      - network_timeout
+      - memory_pressure
+      - disk_full
+      - service_dependency_failure
+
+# Test Execution Settings
+execution_settings:
+  # Jest Configuration
+  jest:
+    max_workers: 4                      # Number of worker processes
+    bail: false                         # Continue after first failure
+    verbose: false                      # Verbose output
+    collect_coverage_from:
+      - "tools/**/*.js"
+      - "!tools/**/*.test.js"
+      - "!tools/**/node_modules/**"
+    coverage_thresholds:
+      global:
+        branches: 80
+        functions: 80
+        lines: 80
+        statements: 80
+    test_environment: node
+    setup_files:
+      - "<rootDir>/tests/setup.js"
+    test_timeout: 30000                 # Default test timeout
+
+  # Test Data Management
+  test_data:
+    auto_cleanup: true                  # Clean up test data after runs
+    seed_data_enabled: true            # Use seed data for consistent testing
+    mock_external_services: true       # Mock external API calls
+    database_reset: true               # Reset test database between suites
+
+  # Reporting Configuration
+  reporting:
+    output_directory: "test-results"
+    formats:
+      - json
+      - html
+      - xml
+    include_metrics:
+      - execution_time
+      - memory_usage
+      - coverage_details
+      - failure_analysis
+    notification_webhooks: []          # Webhook URLs for test notifications
+
+# Quality Validation Integration
+quality_validation:
+  enabled: true
+  validation_checkpoints:
+    pre_test: true                      # Validate environment before testing
+    post_test: true                     # Validate results after testing
+    on_failure: true                    # Enhanced validation on test failures
+  metrics_collection:
+    performance_metrics: true
+    resource_usage: true
+    error_patterns: true
+    test_stability: true
+  trend_analysis:
+    enabled: true
+    comparison_periods: 7               # Compare against last 7 runs
+    regression_thresholds:
+      performance_degradation: 10      # Percentage degradation threshold
+      flaky_test_rate: 5               # Maximum flaky test percentage
