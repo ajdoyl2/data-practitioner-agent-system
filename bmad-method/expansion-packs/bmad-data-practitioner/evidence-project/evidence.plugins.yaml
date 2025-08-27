@@ -1,0 +1,10 @@
+# Minimal Evidence.dev plugins configuration
+# This is a compatibility file for Evidence.dev v25.0.0
+
+components: {}
+
+databases: {}
+
+theme: {}
+
+plugins: []
