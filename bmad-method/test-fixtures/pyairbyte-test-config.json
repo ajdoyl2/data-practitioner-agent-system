@@ -1,0 +1,13 @@
+{
+  "sources": [
+    {
+      "name": "test-csv-source",
+      "connector": "source-file",
+      "config": {
+        "dataset_name": "test_data",
+        "format": "csv",
+        "url": "./test-fixtures/sample-data.csv"
+      }
+    }
+  ]
+}

@@ -46,7 +46,6 @@ declare module '$env/static/private' {
 	export const npm_config_local_prefix: string;
 	export const GIT_EDITOR: string;
 	export const USER: string;
-	export const VITE_BUILD_STRICT: string;
 	export const COMMAND_MODE: string;
 	export const npm_config_globalconfig: string;
 	export const SSH_AUTH_SOCK: string;
@@ -154,7 +153,6 @@ declare module '$env/dynamic/private' {
 		npm_config_local_prefix: string;
 		GIT_EDITOR: string;
 		USER: string;
-		VITE_BUILD_STRICT: string;
 		COMMAND_MODE: string;
 		npm_config_globalconfig: string;
 		SSH_AUTH_SOCK: string;

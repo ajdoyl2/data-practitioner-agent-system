@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-08-27T03:57:16.673Z",
+  "timestamp": "2025-08-28T09:26:55.624Z",
   "directories": {
     "agents": {
       "exists": false,
@@ -61,10 +61,11 @@
     "tests": {
       "exists": true,
       "path": "/Users/ajdoyle/data-practitioner-agent-system/bmad-method/tests",
-      "fileCount": 13,
+      "fileCount": 14,
       "contents": [
         "README.md",
         "agents",
+        "comprehensive",
         "data-services",
         "fixtures",
         "helpers",
@@ -84,7 +85,7 @@
       "exists": true,
       "path": "/Users/ajdoyle/data-practitioner-agent-system/bmad-method/package.json",
       "size": 3972,
-      "modified": "2025-08-25T00:58:34.199Z"
+      "modified": "2025-08-27T06:01:22.993Z"
     },
     "jest.config.js": {
       "exists": true,

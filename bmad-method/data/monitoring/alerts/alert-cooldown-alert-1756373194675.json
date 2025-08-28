@@ -1,0 +1,9 @@
+{
+  "id": "cooldown-alert-1756373194675",
+  "ruleId": "cooldown-alert",
+  "ruleName": "Cooldown Alert",
+  "severity": "info",
+  "timestamp": "2025-08-28T09:26:34.675Z",
+  "triggeringMetrics": [],
+  "status": "active"
+}

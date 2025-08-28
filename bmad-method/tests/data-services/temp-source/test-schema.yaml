@@ -1,0 +1,16 @@
+description: Test schema for documentation generation
+tables:
+  - name: users
+    description: User account information
+  - name: orders
+    description: Customer orders
+fields:
+  - name: user_id
+    type: string
+    description: Unique user identifier
+  - name: email
+    type: string
+    description: User email address
+  - name: created_at
+    type: timestamp
+    description: Account creation timestamp

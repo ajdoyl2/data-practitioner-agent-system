@@ -1,0 +1,17 @@
+{
+  "id": "test-alert-1756373194648",
+  "ruleId": "test-alert",
+  "ruleName": "Test Alert",
+  "severity": "critical",
+  "timestamp": "2025-08-28T09:26:34.648Z",
+  "triggeringMetrics": [
+    {
+      "name": "error_rate",
+      "value": 0.1,
+      "type": "error",
+      "timestamp": "2025-08-28T09:26:34.637Z",
+      "tags": {}
+    }
+  ],
+  "status": "active"
+}

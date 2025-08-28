@@ -130,6 +130,7 @@ const SortIcon = create_ssr_component(($$result, $$props, $$bindings, slots) => 
   )}`}`;
 });
 const propKey = Symbol();
+const strictBuild = {}.VITE_BUILD_STRICT === "true";
 const css$2 = {
   code: ".credentials-link.s-bDSO5QIBxjkD{color:var(--blue-500);text-decoration:none}.credentials-link.s-bDSO5QIBxjkD:hover{color:var(--blue-700)}",
   map: null
@@ -239,9 +240,11 @@ const DataTable = create_ssr_component(($$result, $$props, $$bindings, slots) =>
     const foundCols = columnSummary.filter((d) => d.id === column.id);
     if (foundCols === void 0 || foundCols.length !== 1) {
       error = column.id === void 0 ? new Error(`please add an "id" property to all the <Column ... />`) : new Error(`column with id: "${column.id}" not found`);
-      {
+      if (strictBuild) {
         throw error;
       }
+      console.warn(error.message);
+      return "";
     }
     return foundCols[0];
   }
@@ -296,7 +299,7 @@ const DataTable = create_ssr_component(($$result, $$props, $$bindings, slots) =>
         }
       } catch (e) {
         error = e.message;
-        {
+        if (strictBuild) {
           throw error;
         }
       }

@@ -1,0 +1,111 @@
+{
+  "id": "component_failure-1756373194563",
+  "ruleId": "component_failure",
+  "ruleName": "Component Failure",
+  "severity": "critical",
+  "timestamp": "2025-08-28T09:26:34.563Z",
+  "triggeringMetrics": [
+    {
+      "name": "response_time",
+      "value": 80.93145800000002,
+      "type": "performance",
+      "timestamp": "2025-08-28T09:26:34.387Z",
+      "tags": {}
+    },
+    {
+      "name": "health_check",
+      "value": {
+        "checkId": "evidence",
+        "name": "Evidence.dev Build System",
+        "timestamp": "2025-08-28T09:26:34.560Z",
+        "healthy": true,
+        "responseTime": 172.21237500000007,
+        "details": {
+          "build": "ready"
+        }
+      },
+      "type": "health",
+      "timestamp": "2025-08-28T09:26:34.560Z",
+      "tags": {}
+    },
+    {
+      "name": "response_time",
+      "value": 172.21237500000007,
+      "type": "performance",
+      "timestamp": "2025-08-28T09:26:34.560Z",
+      "tags": {}
+    },
+    {
+      "name": "health_check",
+      "value": {
+        "checkId": "filesystem",
+        "name": "File System Access",
+        "timestamp": "2025-08-28T09:26:34.562Z",
+        "healthy": true,
+        "responseTime": 1.1542919999999413,
+        "details": {
+          "access": "read-write"
+        }
+      },
+      "type": "health",
+      "timestamp": "2025-08-28T09:26:34.562Z",
+      "tags": {}
+    },
+    {
+      "name": "response_time",
+      "value": 1.1542919999999413,
+      "type": "performance",
+      "timestamp": "2025-08-28T09:26:34.562Z",
+      "tags": {}
+    },
+    {
+      "name": "health_check",
+      "value": {
+        "checkId": "check1",
+        "name": "check1",
+        "timestamp": "2025-08-28T09:26:34.562Z",
+        "healthy": true,
+        "responseTime": 100
+      },
+      "type": "health",
+      "timestamp": "2025-08-28T09:26:34.562Z",
+      "tags": {}
+    },
+    {
+      "name": "response_time",
+      "value": 100,
+      "type": "performance",
+      "timestamp": "2025-08-28T09:26:34.562Z",
+      "tags": {}
+    },
+    {
+      "name": "health_check",
+      "value": {
+        "checkId": "check2",
+        "name": "check2",
+        "timestamp": "2025-08-28T09:26:34.562Z",
+        "healthy": false,
+        "responseTime": 0.01308300000005147,
+        "error": "Failed"
+      },
+      "type": "health",
+      "timestamp": "2025-08-28T09:26:34.562Z",
+      "tags": {}
+    },
+    {
+      "name": "response_time",
+      "value": 0.01308300000005147,
+      "type": "performance",
+      "timestamp": "2025-08-28T09:26:34.562Z",
+      "tags": {}
+    },
+    {
+      "name": "health_check_duration",
+      "value": 286.72720900000013,
+      "type": "performance",
+      "timestamp": "2025-08-28T09:26:34.563Z",
+      "tags": {}
+    }
+  ],
+  "status": "active"
+}

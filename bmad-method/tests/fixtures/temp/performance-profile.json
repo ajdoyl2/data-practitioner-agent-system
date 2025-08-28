@@ -1,0 +1,42 @@
+{
+  "timestamp": "2025-08-28T09:26:34.051Z",
+  "system_info": {
+    "node_version": "v24.3.0",
+    "platform": "darwin",
+    "arch": "arm64",
+    "memory_total": 17179869184,
+    "cpu_count": 8
+  },
+  "performance_metrics": {
+    "duckdb": {
+      "initialization_time": 450.083625,
+      "query_times": [
+        102.68900000000002,
+        102.06499999999994,
+        101.24654200000009,
+        101.17212499999994
+      ],
+      "total_analytics_time": 458.981083,
+      "records_processed": 100000
+    }
+  },
+  "benchmarks": {
+    "cpu_intensive": {
+      "duration": 302.36908300000005,
+      "operations": 1000000,
+      "result": true
+    },
+    "io_intensive": {
+      "duration": 0.7754999999999654,
+      "bytes_written": 29781,
+      "records_processed": 1000
+    },
+    "memory_intensive": {
+      "duration": 107.71366699999999,
+      "initial_heap": 27232408,
+      "peak_heap": 99492112,
+      "heap_increase": 72259704,
+      "items_processed": 100000
+    }
+  }
+}

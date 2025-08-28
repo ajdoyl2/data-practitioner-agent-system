@@ -1,0 +1,51 @@
+{
+  "startTime": "2025-08-28T09:26:33.680Z",
+  "stories": {
+    "1.1": {
+      "agentDiscovery": "pass",
+      "directoryStructure": "pass"
+    },
+    "1.5": {
+      "dbtIntegration": "pass",
+      "sqlmeshIntegration": "pass",
+      "engineCoordination": "pass"
+    },
+    "1.6": {
+      "edaEngine": "pass",
+      "hypothesisGeneration": "pass",
+      "patternDetection": "pass"
+    },
+    "1.7": {
+      "evidenceProject": "pass",
+      "siteGeneration": "pass",
+      "componentIntegration": "pass"
+    }
+  },
+  "integrationPoints": {
+    "data_flow": "pass",
+    "orchestration": "pass",
+    "quality_assurance": "pass"
+  },
+  "qualityMetrics": {
+    "performance": {
+      "responseTime": 150,
+      "throughput": 1000,
+      "memoryUsage": 75,
+      "cpuUsage": 60
+    },
+    "scalability": {
+      "smallDataset": 50,
+      "mediumDataset": 200,
+      "largeDataset": 1000
+    },
+    "resourceUtilization": {
+      "memoryEfficiency": 0.92,
+      "cpuEfficiency": 0.88,
+      "storageEfficiency": 0.85
+    }
+  },
+  "overallResult": "pass",
+  "endTime": "2025-08-28T09:26:35.974Z",
+  "duration": 2294,
+  "successRate": 1
+}

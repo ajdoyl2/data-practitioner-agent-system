@@ -1,0 +1,282 @@
+monitoring:
+  # Metrics Collection and Retention
+  metrics_retention_days: 90            # Keep metrics for 90 days
+  trend_analysis: true                  # Enable trend analysis
+  auto_remediation: false               # Disable automatic remediation by default
+  collection_interval_seconds: 60      # Collect metrics every minute
+  aggregation_window_minutes: 5        # Aggregate metrics over 5-minute windows
+  
+  # Quality Metrics Categories
+  quality_metrics:
+    # Data Quality Metrics
+    data_quality:
+      completeness_score: true
+      accuracy_score: true
+      consistency_score: true
+      validity_score: true
+      uniqueness_score: true
+      timeliness_score: true
+    
+    # Performance Metrics
+    performance:
+      response_time: true
+      throughput: true
+      latency_p50: true
+      latency_p95: true
+      latency_p99: true
+      error_rate: true
+      success_rate: true
+    
+    # System Resource Metrics
+    system_resources:
+      cpu_utilization: true
+      memory_usage: true
+      disk_usage: true
+      network_io: true
+      database_connections: true
+      active_queries: true
+    
+    # Business Metrics
+    business:
+      pipeline_success_rate: true
+      data_freshness: true
+      user_satisfaction_score: true
+      cost_per_transaction: true
+      sla_compliance: true
+
+  # Monitoring Dashboards
+  dashboards:
+    # Real-time Operations Dashboard
+    operations:
+      enabled: true
+      refresh_interval_seconds: 30
+      panels:
+        - pipeline_status
+        - quality_gates_status
+        - active_alerts
+        - system_health
+        - performance_metrics
+    
+    # Quality Trends Dashboard
+    quality_trends:
+      enabled: true
+      refresh_interval_seconds: 300     # 5 minutes
+      time_range_hours: 24
+      panels:
+        - data_quality_trends
+        - test_success_rates
+        - quality_gate_failures
+        - performance_regression
+    
+    # Executive Summary Dashboard
+    executive:
+      enabled: true
+      refresh_interval_seconds: 3600    # 1 hour
+      time_range_days: 7
+      panels:
+        - sla_compliance
+        - cost_metrics
+        - quality_scores
+        - system_availability
+
+# Alerting Configuration
+alerting:
+  enabled: true
+  global_cooldown_minutes: 5           # Minimum time between duplicate alerts
+  escalation_enabled: true
+  max_alerts_per_hour: 50             # Rate limiting
+  
+  # Alert Channels
+  channels:
+    # Console Output (always enabled for development)
+    - type: console
+      level: error
+      format: detailed
+      enabled: true
+    
+    # Slack Integration (disabled by default)
+    - type: slack
+      webhook_url: null                 # Set via environment variable
+      channel: "#data-alerts"
+      level: warning
+      enabled: false
+    
+    # Email Notifications (disabled by default)
+    - type: email
+      smtp_config: null                 # Set via environment variable
+      recipients: []
+      level: critical
+      enabled: false
+    
+    # PagerDuty Integration (disabled by default)
+    - type: pagerduty
+      service_key: null                 # Set via environment variable
+      level: critical
+      enabled: false
+  
+  # Alert Rules
+  rules:
+    # Quality Gate Failures
+    - name: quality_gate_failure
+      description: "Quality gate has failed"
+      condition: "quality_gate.failed == true"
+      severity: critical
+      cooldown: 15m
+      channels: [console, slack]
+      actions:
+        - block_deployment
+        - notify_team
+    
+    # Performance Degradation
+    - name: performance_degradation
+      description: "Performance has degraded beyond acceptable thresholds"
+      condition: "response_time_p95 > 1000"
+      severity: warning
+      cooldown: 10m
+      channels: [console]
+      actions:
+        - trigger_investigation
+    
+    # System Resource Alerts
+    - name: high_memory_usage
+      description: "Memory usage is critically high"
+      condition: "memory_usage_percentage > 90"
+      severity: critical
+      cooldown: 5m
+      channels: [console, slack]
+      actions:
+        - scale_resources
+        - alert_ops_team
+    
+    - name: high_cpu_usage
+      description: "CPU usage is consistently high"
+      condition: "cpu_usage_percentage > 80"
+      severity: warning
+      cooldown: 10m
+      channels: [console]
+    
+    - name: disk_space_low
+      description: "Disk space is running low"
+      condition: "disk_usage_percentage > 85"
+      severity: warning
+      cooldown: 30m
+      channels: [console, slack]
+    
+    # Data Quality Alerts
+    - name: data_quality_degradation
+      description: "Data quality score has dropped significantly"
+      condition: "data_quality_score < 75"
+      severity: warning
+      cooldown: 30m
+      channels: [console]
+      actions:
+        - trigger_data_validation
+    
+    - name: test_suite_failure
+      description: "Test suite has failed"
+      condition: "test_success_rate < 95"
+      severity: critical
+      cooldown: 0m                     # No cooldown for test failures
+      channels: [console, slack]
+      actions:
+        - block_deployment
+        - notify_developers
+    
+    # Business Continuity Alerts
+    - name: sla_breach
+      description: "SLA has been breached"
+      condition: "sla_compliance < 99.5"
+      severity: critical
+      cooldown: 60m
+      channels: [console, slack, email]
+      actions:
+        - escalate_to_management
+        - trigger_incident_response
+    
+    # Security Alerts
+    - name: security_scan_failure
+      description: "Security scan has detected vulnerabilities"
+      condition: "security_scan_score < 85"
+      severity: critical
+      cooldown: 0m
+      channels: [console, slack]
+      actions:
+        - block_deployment
+        - notify_security_team
+
+# Health Checks Configuration
+health_checks:
+  enabled: true
+  check_interval_seconds: 30
+  timeout_seconds: 10
+  
+  # System Health Checks
+  checks:
+    # Database Connectivity
+    - name: database_connectivity
+      type: database
+      connection_string: env:DATABASE_URL
+      query: "SELECT 1"
+      timeout_seconds: 5
+      critical: true
+    
+    # External Service Dependencies
+    - name: external_api_health
+      type: http
+      url: env:EXTERNAL_API_URL
+      method: GET
+      expected_status: 200
+      timeout_seconds: 10
+      critical: false
+    
+    # File System Access
+    - name: file_system_access
+      type: filesystem
+      path: "/tmp"
+      operation: write
+      critical: true
+    
+    # Memory Availability
+    - name: memory_availability
+      type: system
+      metric: memory_free_percentage
+      threshold: 20
+      critical: true
+
+# Logging Configuration
+logging:
+  level: info                          # debug, info, warn, error
+  structured: true                     # Use structured JSON logging
+  correlation_id: true                 # Include correlation IDs
+  
+  # Log Retention
+  retention:
+    application_logs_days: 30
+    audit_logs_days: 365
+    performance_logs_days: 90
+    security_logs_days: 180
+  
+  # Log Categories
+  categories:
+    quality_gates: info
+    test_execution: info
+    performance_metrics: info
+    security_events: warn
+    system_health: info
+    user_actions: info
+  
+  # Log Destinations
+  destinations:
+    - type: console
+      enabled: true
+      level: info
+    - type: file
+      enabled: true
+      level: debug
+      path: logs/bmad-quality.log
+      rotation: daily
+      max_size: 100MB
+    - type: elasticsearch
+      enabled: false
+      url: env:ELASTICSEARCH_URL
+      index: bmad-logs

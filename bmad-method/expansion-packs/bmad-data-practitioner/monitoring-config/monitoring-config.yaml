@@ -1,0 +1,21 @@
+monitoring:
+  healthCheckInterval: 30000
+  alertCooldownMs: 900000
+  dataRetentionDays: 30
+  metricsBufferSize: 1000
+integrations:
+  dagster:
+    enabled: true
+    webUrl: http://localhost:3000
+    apiUrl: http://localhost:4000
+  bmad:
+    enabled: true
+    progressTracking: true
+notifications:
+  channels:
+    - console
+    - file
+  cooldown: 900000
+dataRetention:
+  days: 30
+  cleanupInterval: 3600000

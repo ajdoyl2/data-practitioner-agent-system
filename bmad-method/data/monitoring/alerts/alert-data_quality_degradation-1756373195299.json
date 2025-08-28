@@ -1,0 +1,24 @@
+{
+  "id": "data_quality_degradation-1756373195299",
+  "ruleId": "data_quality_degradation",
+  "ruleName": "Data Quality Degradation",
+  "severity": "warning",
+  "timestamp": "2025-08-28T09:26:35.299Z",
+  "triggeringMetrics": [
+    {
+      "name": "data_quality",
+      "value": 0.7,
+      "type": "data_quality_score",
+      "timestamp": "2025-08-28T09:26:35.299Z",
+      "tags": {}
+    },
+    {
+      "name": "data_quality",
+      "value": 0.6,
+      "type": "data_quality_score",
+      "timestamp": "2025-08-28T09:26:35.299Z",
+      "tags": {}
+    }
+  ],
+  "status": "active"
+}

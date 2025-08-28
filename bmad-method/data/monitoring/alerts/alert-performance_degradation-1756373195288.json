@@ -1,0 +1,24 @@
+{
+  "id": "performance_degradation-1756373195288",
+  "ruleId": "performance_degradation",
+  "ruleName": "Performance Degradation",
+  "severity": "warning",
+  "timestamp": "2025-08-28T09:26:35.288Z",
+  "triggeringMetrics": [
+    {
+      "name": "response_time",
+      "value": 6000,
+      "type": "response_time",
+      "timestamp": "2025-08-28T09:26:35.287Z",
+      "tags": {}
+    },
+    {
+      "name": "response_time",
+      "value": 7000,
+      "type": "response_time",
+      "timestamp": "2025-08-28T09:26:35.287Z",
+      "tags": {}
+    }
+  ],
+  "status": "active"
+}

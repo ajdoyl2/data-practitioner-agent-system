@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-08-27T03:57:16.649Z",
+  "timestamp": "2025-08-28T09:26:55.607Z",
   "error": "expect(received).toBeInstanceOf(expected)\n\nExpected constructor: Array\nReceived constructor: Array\n",
   "agentCount": 0,
   "expectedError": false

@@ -1,0 +1,20 @@
+{
+  "id": "component_failure-1756373195264",
+  "ruleId": "component_failure",
+  "ruleName": "Component Failure",
+  "severity": "critical",
+  "timestamp": "2025-08-28T09:26:35.264Z",
+  "triggeringMetrics": [
+    {
+      "name": "health_check",
+      "value": {
+        "healthy": false,
+        "error": "Component down"
+      },
+      "type": "health",
+      "timestamp": "2025-08-28T09:26:35.264Z",
+      "tags": {}
+    }
+  ],
+  "status": "active"
+}
