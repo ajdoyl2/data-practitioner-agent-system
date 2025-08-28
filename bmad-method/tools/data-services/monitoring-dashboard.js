@@ -1,6 +1,7 @@
 /**
- * DuckDB Monitoring Dashboard
- * Real-time monitoring interface for DuckDB resource usage and performance
+ * Data Pipeline Monitoring Dashboard
+ * Real-time monitoring interface for entire data pipeline including DuckDB, quality, and performance
+ * Enhanced version supporting comprehensive pipeline monitoring
  */
 
 const EventEmitter = require('events');
@@ -8,23 +9,29 @@ const fs = require('fs-extra');
 const path = require('path');
 const DuckDBResourceMonitor = require('./resource-monitor');
 const { securityLogger } = require('../lib/security-logger');
+const { generateDashboardData } = require('./metrics-collector');
+const { system } = require('./monitoring-logger');
 
-class DuckDBMonitoringDashboard extends EventEmitter {
+class DataPipelineMonitoringDashboard extends EventEmitter {
   constructor(duckdb, options = {}) {
     super();
     
     this.duckdb = duckdb;
-    this.monitor = new DuckDBResourceMonitor({ duckdb });
+    this.monitor = duckdb ? new DuckDBResourceMonitor({ duckdb }) : null;
     this.config = {
       updateInterval: options.updateInterval || 5000, // 5 seconds
       historyRetention: options.historyRetention || 1000, // Keep 1000 data points
       alertThresholds: options.alertThresholds || {
         memory: 85,
         cpu: 80,
-        queryTime: 10000
+        queryTime: 10000,
+        dataQuality: 75,
+        errorRate: 0.05,
+        slaCompliance: 99.5
       },
       dashboardPort: options.dashboardPort || 3001,
-      enableWebDashboard: options.enableWebDashboard || false
+      enableWebDashboard: options.enableWebDashboard || false,
+      enablePipelineMonitoring: options.enablePipelineMonitoring !== false // Default true
     };
     
     this.state = {
@@ -38,7 +45,16 @@ class DuckDBMonitoringDashboard extends EventEmitter {
       performance: {
         queries: [],
         operations: []
-      }
+      },
+      // Enhanced pipeline monitoring state
+      pipelineDashboards: new Map(),
+      pipelineMetrics: {
+        dataQuality: new Map(),
+        performance: new Map(),
+        systemResources: new Map(),
+        business: new Map()
+      },
+      healthChecks: new Map()
     };
     
     this.setupMonitoringHandlers();
@@ -48,17 +64,33 @@ class DuckDBMonitoringDashboard extends EventEmitter {
    * Setup event handlers for monitoring
    */
   setupMonitoringHandlers() {
-    this.monitor.on('alert', (alert) => {
-      this.handleAlert(alert);
+    // DuckDB monitoring handlers (existing)
+    if (this.monitor) {
+      this.monitor.on('alert', (alert) => {
+        this.handleAlert(alert);
+      });
+      
+      this.monitor.on('monitoring:check', (metrics) => {
+        this.updateMetrics(metrics);
+      });
+      
+      this.monitor.on('monitoring:error', (error) => {
+        console.error('Monitoring error:', error);
+        this.emit('dashboard:error', error);
+      });
+    }
+    
+    // Pipeline monitoring handlers (new)
+    this.on('pipeline:metric', (metric) => {
+      this.handlePipelineMetric(metric);
     });
     
-    this.monitor.on('monitoring:check', (metrics) => {
-      this.updateMetrics(metrics);
+    this.on('pipeline:alert', (alert) => {
+      this.handlePipelineAlert(alert);
     });
     
-    this.monitor.on('monitoring:error', (error) => {
-      console.error('Monitoring error:', error);
-      this.emit('dashboard:error', error);
+    this.on('pipeline:health_check', (healthCheck) => {
+      this.handleHealthCheck(healthCheck);
     });
   }
 
@@ -71,10 +103,25 @@ class DuckDBMonitoringDashboard extends EventEmitter {
       return;
     }
 
-    console.log('Starting DuckDB monitoring dashboard...');
+    console.log('🚀 Starting Data Pipeline monitoring dashboard...');
     
-    // Start the resource monitor
-    await this.monitor.startMonitoring();
+    // Log dashboard startup
+    await system.monitoringStarted({
+      component: 'data-pipeline-dashboard',
+      timestamp: new Date().toISOString(),
+      duckdbEnabled: !!this.monitor,
+      pipelineEnabled: this.config.enablePipelineMonitoring
+    });
+    
+    // Start the DuckDB resource monitor if available
+    if (this.monitor) {
+      await this.monitor.startMonitoring();
+    }
+    
+    // Load pipeline dashboards if enabled
+    if (this.config.enablePipelineMonitoring) {
+      await this.loadPipelineDashboards();
+    }
     
     // Start dashboard updates
     this.state.updateTimer = setInterval(
@@ -83,14 +130,93 @@ class DuckDBMonitoringDashboard extends EventEmitter {
     );
     
     this.state.isRunning = true;
+    this.startTime = Date.now();
     
     // Start web dashboard if enabled
     if (this.config.enableWebDashboard) {
       await this.startWebDashboard();
     }
     
-    console.log(`✅ Monitoring dashboard started (update interval: ${this.config.updateInterval}ms)`);
+    console.log(`✅ Data Pipeline monitoring dashboard started (update interval: ${this.config.updateInterval}ms)`);
     this.emit('dashboard:started');
+  }
+
+  /**
+   * Load pipeline dashboards from metrics collector
+   */
+  async loadPipelineDashboards() {
+    try {
+      const dashboardData = await generateDashboardData();
+      
+      for (const [name, config] of Object.entries(dashboardData)) {
+        this.state.pipelineDashboards.set(name, config);
+        console.log(`📊 Loaded pipeline dashboard: ${name}`);
+      }
+      
+    } catch (error) {
+      console.error('Failed to load pipeline dashboards:', error.message);
+    }
+  }
+
+  /**
+   * Handle pipeline metric updates
+   */
+  handlePipelineMetric(metric) {
+    const category = metric.category || 'general';
+    
+    if (!this.state.pipelineMetrics[category]) {
+      this.state.pipelineMetrics[category] = new Map();
+    }
+    
+    this.state.pipelineMetrics[category].set(metric.name, {
+      value: metric.value,
+      timestamp: metric.timestamp || Date.now(),
+      metadata: metric.metadata || {}
+    });
+  }
+
+  /**
+   * Handle pipeline alerts
+   */
+  handlePipelineAlert(alert) {
+    console.log(`🚨 Pipeline Alert: ${alert.level.toUpperCase()} - ${alert.message}`);
+    
+    // Add to alerts history with pipeline context
+    this.state.alerts.push({
+      ...alert,
+      id: `pipeline_alert_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      source: 'pipeline'
+    });
+    
+    // Trim alerts history
+    if (this.state.alerts.length > 200) {
+      this.state.alerts.shift();
+    }
+    
+    this.emit('dashboard:pipeline_alert', alert);
+    
+    // Log critical pipeline alerts
+    if (alert.level === 'critical' || alert.level === 'emergency') {
+      securityLogger.logSecurityEvent('ERROR', 'PIPELINE_CRITICAL_ALERT', {
+        alert_name: alert.name,
+        alert_level: alert.level,
+        message: alert.message,
+        component: alert.component || 'unknown',
+        timestamp: alert.timestamp
+      });
+    }
+  }
+
+  /**
+   * Handle health check results
+   */
+  handleHealthCheck(healthCheck) {
+    this.state.healthChecks.set(healthCheck.name, {
+      status: healthCheck.status,
+      timestamp: healthCheck.timestamp || Date.now(),
+      message: healthCheck.message,
+      details: healthCheck.details || {}
+    });
   }
 
   /**
@@ -101,7 +227,7 @@ class DuckDBMonitoringDashboard extends EventEmitter {
       return;
     }
 
-    console.log('Stopping DuckDB monitoring dashboard...');
+    console.log('⏹️ Stopping Data Pipeline monitoring dashboard...');
     
     this.state.isRunning = false;
     
@@ -110,7 +236,15 @@ class DuckDBMonitoringDashboard extends EventEmitter {
       this.state.updateTimer = null;
     }
     
-    await this.monitor.stopMonitoring();
+    if (this.monitor) {
+      await this.monitor.stopMonitoring();
+    }
+    
+    // Log dashboard shutdown
+    await system.monitoringStopped({
+      component: 'data-pipeline-dashboard',
+      timestamp: new Date().toISOString()
+    });
     
     if (this.webServer) {
       this.webServer.close();
@@ -125,21 +259,53 @@ class DuckDBMonitoringDashboard extends EventEmitter {
    */
   async updateDashboard() {
     try {
-      const currentMetrics = await this.monitor.collectMetrics();
-      this.updateMetrics(currentMetrics);
+      let currentMetrics = null;
       
-      // Check for performance issues
-      await this.checkPerformanceIssues(currentMetrics);
+      // Collect DuckDB metrics if available
+      if (this.monitor) {
+        currentMetrics = await this.monitor.collectMetrics();
+        this.updateMetrics(currentMetrics);
+        
+        // Check for DuckDB performance issues
+        await this.checkPerformanceIssues(currentMetrics);
+      }
+      
+      // Update pipeline dashboards if enabled
+      if (this.config.enablePipelineMonitoring) {
+        await this.updatePipelineDashboards();
+      }
       
       this.emit('dashboard:updated', {
         metrics: currentMetrics,
+        pipelineMetrics: this.state.pipelineMetrics,
         alerts: this.state.alerts.slice(-10), // Last 10 alerts
-        summary: this.generateSummary()
+        summary: this.generateSummary(),
+        healthChecks: Array.from(this.state.healthChecks.values())
       });
       
     } catch (error) {
       console.error('Dashboard update failed:', error);
       this.emit('dashboard:error', error);
+    }
+  }
+
+  /**
+   * Update pipeline dashboards with latest data
+   */
+  async updatePipelineDashboards() {
+    try {
+      const dashboardData = await generateDashboardData();
+      
+      for (const [name, config] of Object.entries(dashboardData)) {
+        this.state.pipelineDashboards.set(name, config);
+        
+        // Save to file for persistence
+        const dashboardFile = path.join(__dirname, '../../logs', `pipeline-dashboard-${name}.json`);
+        await fs.writeFile(dashboardFile, JSON.stringify(config, null, 2));
+      }
+      
+    } catch (error) {
+      console.error('Failed to update pipeline dashboards:', error.message);
     }
   }
 
