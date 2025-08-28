@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-08-27T03:57:16.665Z",
+  "timestamp": "2025-08-28T09:26:55.616Z",
   "errorTests": {
     "agent-nonexistent-agent": {
       "expectedError": true,
@@ -13,13 +13,13 @@
       "actualError": true,
       "errorMessage": "ENOENT: no such file or directory, open '/PROJECT_ROOT/bmad-method/bmad-core/agent-teams/nonexistent-team.yaml'",
       "errorType": "Error",
-      "responseTime": 0
+      "responseTime": 2
     },
     "resource-nonexistent-resource": {
       "expectedError": true,
       "actualError": false,
       "result": "unexpected-success",
-      "responseTime": 1
+      "responseTime": 0
     }
   }
 }

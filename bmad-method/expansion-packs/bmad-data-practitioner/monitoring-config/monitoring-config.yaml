@@ -1,171 +1,21 @@
-# MonitoringEngine Configuration
-# Unified monitoring and observability settings for data pipeline components
-
 monitoring:
-  # Health check configuration
-  healthCheckInterval: 30000  # 30 seconds
-  alertCooldownMs: 900000     # 15 minutes
-  dataRetentionDays: 30       # 30 days
-  metricsBufferSize: 1000     # Max metrics in memory
-
-  # Quality thresholds
-  thresholds:
-    errorRate: 0.05           # 5% maximum error rate
-    responseTime: 5000        # 5 seconds maximum response time
-    dataQuality: 0.85         # 85% minimum data quality score
-    uptime: 0.999             # 99.9% minimum uptime
-
-# Integration settings
+  healthCheckInterval: 30000
+  alertCooldownMs: 900000
+  dataRetentionDays: 30
+  metricsBufferSize: 1000
 integrations:
   dagster:
     enabled: true
-    webUrl: "http://localhost:3000"
-    apiUrl: "http://localhost:4000"
-    healthCheckInterval: 180000  # 3 minutes
-  
+    webUrl: http://localhost:3000
+    apiUrl: http://localhost:4000
   bmad:
     enabled: true
     progressTracking: true
-    correlationIds: true
-
-  evidence:
-    enabled: true
-    buildSystemMonitoring: true
-    healthCheckInterval: 300000  # 5 minutes
-
-  pyairbyte:
-    enabled: true
-    connectorMonitoring: true
-    healthCheckInterval: 120000  # 2 minutes
-
-  duckdb:
-    enabled: true
-    connectionPooling: true
-    healthCheckInterval: 60000   # 1 minute
-
-# Notification configuration
 notifications:
   channels:
     - console
     - file
-  
-  escalation:
-    critical:
-      cooldown: 300000      # 5 minutes
-      channels: ["console", "file"]
-    warning:
-      cooldown: 900000      # 15 minutes  
-      channels: ["console"]
-    info:
-      cooldown: 1800000     # 30 minutes
-      channels: ["console"]
-
-# Data retention and archival policies
+  cooldown: 900000
 dataRetention:
   days: 30
-  cleanupInterval: 3600000    # 1 hour
-  archiveOldAlerts: true
-  compressMetrics: true
-  
-  # Retention by data type
-  metrics:
-    performance: 7           # 7 days
-    health: 14              # 14 days
-    quality: 30             # 30 days
-    alerts: 90              # 90 days
-
-# Performance monitoring settings
-performance:
-  enableDistributedTracing: true
-  traceRetentionHours: 24
-  spanBufferSize: 500
-  correlationIdTracking: true
-
-# Health check definitions
-healthChecks:
-  filesystem:
-    enabled: true
-    interval: 30000
-    timeout: 3000
-    
-  duckdb:
-    enabled: true
-    interval: 60000
-    timeout: 5000
-    
-  pyairbyte:
-    enabled: true
-    interval: 120000
-    timeout: 10000
-    
-  evidence:
-    enabled: true
-    interval: 300000
-    timeout: 15000
-    
-  dagster:
-    enabled: true
-    interval: 180000
-    timeout: 10000
-
-# Alert rule configuration
-alertRules:
-  componentFailure:
-    enabled: true
-    severity: critical
-    cooldown: 300000
-    
-  highErrorRate:
-    enabled: true
-    severity: warning
-    threshold: 0.05
-    cooldown: 900000
-    
-  performanceDegradation:
-    enabled: true
-    severity: warning
-    threshold: 5000
-    cooldown: 1800000
-    
-  dataQualityDegradation:
-    enabled: true
-    severity: warning
-    threshold: 0.85
-    cooldown: 600000
-    
-  dagsterPipelineFailure:
-    enabled: true
-    severity: critical
-    cooldown: 300000
-
-# Component-specific monitoring
-components:
-  dataIngestion:
-    monitoring: true
-    healthChecks: ["pyairbyte", "filesystem"]
-    qualityThresholds:
-      completeness: 0.95
-      accuracy: 0.98
-      freshness: 3600000    # 1 hour
-  
-  dataAnalytics:
-    monitoring: true
-    healthChecks: ["duckdb", "filesystem"]
-    qualityThresholds:
-      queryPerformance: 30000  # 30 seconds
-      accuracy: 0.95
-      
-  dataTransformation:
-    monitoring: true
-    healthChecks: ["dagster", "filesystem"]
-    qualityThresholds:
-      testCoverage: 0.80
-      lineageAccuracy: 1.0
-      
-  dataPublication:
-    monitoring: true
-    healthChecks: ["evidence", "filesystem"]
-    qualityThresholds:
-      buildTime: 300000     # 5 minutes
-      accessibility: 0.90
-      loadTime: 3000        # 3 seconds
+  cleanupInterval: 3600000

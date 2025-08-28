@@ -1,8 +1,8 @@
 {
-  "timestamp": "2025-08-27T03:57:16.654Z",
+  "timestamp": "2025-08-28T09:26:55.610Z",
   "resourceTypes": {
     "tasks": {
-      "loadingTime": 5,
+      "loadingTime": 1,
       "success": false,
       "hasContent": false
     },
@@ -12,7 +12,7 @@
       "hasContent": false
     },
     "checklists": {
-      "loadingTime": 1,
+      "loadingTime": 0,
       "success": false,
       "hasContent": false
     },

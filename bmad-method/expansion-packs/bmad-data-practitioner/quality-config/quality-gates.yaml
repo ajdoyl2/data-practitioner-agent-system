@@ -1,0 +1,38 @@
+quality_gates:
+  ingestion:
+    thresholds:
+      data_completeness: 95
+      schema_compliance: 100
+      source_availability: 99
+    required_checks:
+      - data_completeness
+      - schema_compliance
+    optional_checks:
+      - source_availability
+    failure_action: block
+    enabled: true
+  transformation:
+    thresholds:
+      test_success_rate: 100
+      data_quality_score: 85
+      cost_optimization_active: true
+      model_execution_time: 300
+    required_checks:
+      - test_success_rate
+      - data_quality_score
+    optional_checks:
+      - model_execution_time
+    failure_action: block
+    enabled: true
+  publication:
+    thresholds:
+      site_load_time: 3
+      accessibility_score: 90
+      content_accuracy: 95
+    required_checks:
+      - site_load_time
+      - accessibility_score
+    optional_checks:
+      - content_accuracy
+    failure_action: warn
+    enabled: true

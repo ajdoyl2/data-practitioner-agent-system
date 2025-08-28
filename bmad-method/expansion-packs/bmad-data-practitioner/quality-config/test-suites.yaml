@@ -1,0 +1,11 @@
+test_suites:
+  comprehensive:
+    enabled: true
+    parallel: false
+    coverage: true
+    timeout: 300000
+  quick:
+    enabled: true
+    parallel: true
+    coverage: false
+    timeout: 60000

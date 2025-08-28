@@ -1,0 +1,14 @@
+monitoring:
+  metrics_retention_days: 30
+  trend_analysis: true
+  auto_remediation: false
+alerting:
+  enabled: true
+  channels:
+    - type: console
+      level: error
+  rules:
+    - name: quality_gate_failure
+      condition: quality_gate.failed = true
+      severity: critical
+      cooldown: 15m

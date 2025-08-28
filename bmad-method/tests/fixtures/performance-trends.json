@@ -1,0 +1,22 @@
+[
+  {
+    "timestamp": "2025-08-27T06:20:47.971Z",
+    "metrics": {}
+  },
+  {
+    "timestamp": "2025-08-28T09:26:34.048Z",
+    "metrics": {
+      "duckdb": {
+        "initialization_time": 450.083625,
+        "query_times": [
+          102.68900000000002,
+          102.06499999999994,
+          101.24654200000009,
+          101.17212499999994
+        ],
+        "total_analytics_time": 458.981083,
+        "records_processed": 100000
+      }
+    }
+  }
+]

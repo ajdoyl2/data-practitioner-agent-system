@@ -1,0 +1,9 @@
+{
+  "id": "event-alert-1756373194716",
+  "ruleId": "event-alert",
+  "ruleName": "Event Alert",
+  "severity": "info",
+  "timestamp": "2025-08-28T09:26:34.716Z",
+  "triggeringMetrics": [],
+  "status": "active"
+}

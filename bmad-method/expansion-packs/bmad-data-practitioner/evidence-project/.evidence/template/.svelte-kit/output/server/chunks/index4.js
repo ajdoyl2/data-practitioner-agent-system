@@ -82828,7 +82828,7 @@ const $bb8aaf4d81463a1b$var$createDefaultProps = function(filename, componentDev
 						} catch (e) {
 							if (!browser) {
 								// If building in strict mode; we should fail, this query broke
-								if ("true") throw e;
+								if (({}).VITE_BUILD_STRICT) throw e;
 							}
 							initialData = []
 							initialError = e

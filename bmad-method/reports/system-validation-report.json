@@ -1,0 +1,123 @@
+{
+  "startTime": 1756373193608,
+  "components": {
+    "bmadCore": {
+      "status": "warning",
+      "details": "Some tests may not be available in current environment"
+    },
+    "agentSystem": {
+      "status": "warning",
+      "details": "Agent system may not be fully configured"
+    },
+    "configuration": {
+      "status": "warning",
+      "details": "main-config.yaml missing; quality-gates.yaml missing;"
+    },
+    "documentationGeneration": {
+      "status": "warning",
+      "details": "Documentation engine may not be fully configured"
+    },
+    "qualityGateBypass": {
+      "status": "warning",
+      "details": "Bypass mechanism may not be fully configured"
+    },
+    "monitoring": {
+      "status": "warning",
+      "error": "monitoring.performHealthCheck is not a function"
+    }
+  },
+  "performance": {
+    "documentationWorkflow": {
+      "status": "warning",
+      "error": "docEngine.initialize is not a function"
+    },
+    "qualityGates": {
+      "status": "warning",
+      "error": "qaEngine.runQualityAssessment is not a function"
+    },
+    "developmentWorkflow": {
+      "totalTime": 7106,
+      "stepTimes": {
+        "code_change": 101,
+        "quality_validation": 2001,
+        "automated_tests": 3001,
+        "integration_check": 1501,
+        "deployment_ready": 502
+      },
+      "bottlenecks": [],
+      "status": "pass"
+    },
+    "systemStartup": {
+      "totalTime": 281,
+      "componentTimes": {
+        "duckdb-wrapper": {
+          "status": "initialized",
+          "time": 16
+        },
+        "quality-assurance-engine": {
+          "status": "initialized",
+          "time": 256
+        },
+        "monitoring-engine": {
+          "status": "initialized",
+          "time": 9
+        }
+      },
+      "status": "pass"
+    },
+    "memoryManagement": {
+      "initialHeap": 39,
+      "peakHeap": 41,
+      "finalHeap": 41,
+      "memoryIncrease": 0.05,
+      "status": "pass"
+    }
+  },
+  "integration": {},
+  "quality": {
+    "errorHandling": {
+      "scenarios": {
+        "invalid_configuration": {
+          "handled": true,
+          "recovery": true,
+          "graceful": true
+        },
+        "missing_dependency": {
+          "handled": true,
+          "recovery": true,
+          "graceful": false
+        },
+        "network_failure": {
+          "handled": true,
+          "recovery": true,
+          "graceful": true
+        },
+        "permission_denied": {
+          "handled": true,
+          "recovery": false,
+          "graceful": true
+        }
+      },
+      "recoveryRate": 1,
+      "status": "pass"
+    },
+    "dataIntegrity": {
+      "results": {
+        "ingestion": true,
+        "storage": true,
+        "processing": true,
+        "output": true
+      },
+      "integrityScore": 1,
+      "status": "pass"
+    }
+  },
+  "setupTime": 26,
+  "endTime": 1756373202932,
+  "totalDuration": 9324,
+  "overallHealth": {
+    "score": 0.38,
+    "grade": "D",
+    "status": "needs_attention"
+  }
+}
