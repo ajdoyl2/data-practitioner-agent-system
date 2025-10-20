@@ -32,6 +32,10 @@ statsmodels>=0.14.0
 # Database connectors - continued
 duckdb>=1.0.0
 
+# Data transformation
+dbt-core>=1.7.0
+dbt-duckdb>=1.7.0
+
 # Utilities
 pyyaml>=6.0.0
 python-dotenv>=1.0.0
