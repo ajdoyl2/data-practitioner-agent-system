@@ -51,6 +51,29 @@ npm install git+https://github.com/your-org/bmad-data-practitioner
 
 ---
 
+## 🚧 Project Status
+
+### Production Ready ✅
+- All 6 specialized AI agents with comprehensive capabilities
+- Evidence.dev BI platform with sample dashboards and components
+- Dagster orchestration framework with assets, schedules, and sensors
+- Python analysis modules (EDA automation, statistical testing, pattern detection, hypothesis generation)
+- DuckDB integration with optimized configurations
+- PyAirbyte integration for data ingestion
+- Comprehensive documentation and user guides
+
+### In Development ⚠️
+- dbt transformation asset integration in Dagster (marked as placeholder)
+- Evidence.dev publication integration in Dagster (marked as placeholder)
+- Additional workflow task templates beyond current 2 tasks
+- Expanded SQLMesh implementation (currently minimal)
+
+### Configuration Required 📝
+- **dbt-core** must be added to `requirements.txt` before using dbt transformation features
+- See [troubleshooting section](#-support--troubleshooting) for setup instructions
+
+---
+
 ## 🎭 Specialized Agents
 
 Our 6 AI specialists cover the complete data lifecycle:
@@ -67,7 +90,7 @@ Our 6 AI specialists cover the complete data lifecycle:
 - Interactive data visualization and storytelling
 - Statistical modeling (predictive & descriptive)
 
-### 🏗️ **Alex - Data Architect**  
+### 🏗️ **Marcus - Data Architect**
 **When to use:** System design, data modeling, infrastructure planning
 ```bash
 *agent data-architect
@@ -79,7 +102,7 @@ Our 6 AI specialists cover the complete data lifecycle:
 - Scalability and performance planning
 - Governance and compliance frameworks
 
-### ⚙️ **Jordan - Data Engineer**
+### ⚙️ **Alex - Data Engineer**
 **When to use:** ETL/ELT pipelines, data integration, processing workflows
 ```bash
 *agent data-engineer
@@ -91,11 +114,11 @@ Our 6 AI specialists cover the complete data lifecycle:
 - Performance optimization and monitoring
 - Data quality implementation
 
-### 🎯 **Morgan - Data Product Manager**
+### 🎯 **Sophia - Data Product Manager**
 **When to use:** Requirements gathering, stakeholder alignment, strategy
 ```bash
 *agent data-product-manager
-```  
+```
 **Key capabilities:**
 - Business requirements elicitation and documentation
 - Data product strategy and roadmap development
@@ -103,24 +126,24 @@ Our 6 AI specialists cover the complete data lifecycle:
 - Success metrics definition and tracking
 - Cross-functional team coordination
 
-### ✅ **Casey - Data QA Engineer**
+### ✅ **Riley - Data QA Engineer**
 **When to use:** Data quality, testing, validation, monitoring
 ```bash
 *agent data-qa-engineer
 ```
 **Key capabilities:**
 - Automated data quality testing frameworks
-- Data validation and profiling workflows  
+- Data validation and profiling workflows
 - Monitoring and alerting system design
 - Data lineage tracking and documentation
 - Quality gate implementation
 
-### 🤖 **Sam - ML Engineer**
+### 🤖 **Jordan - ML Engineer**
 **When to use:** Machine learning, model development, ML operations
 ```bash
 *agent ml-engineer
 ```
-**Key capabilities:**  
+**Key capabilities:**
 - ML model development and training pipelines
 - Feature engineering and selection
 - Model deployment and monitoring
@@ -199,13 +222,18 @@ sequenceDiagram
 
 This expansion pack seamlessly integrates with modern data stack tools:
 
-| Tool | Purpose | Agent Integration |
-|------|---------|-------------------|
-| **PyAirbyte** | Data ingestion | Jordan (Data Engineer) |
-| **DuckDB** | Fast analytics | Emma (Data Analyst) |  
-| **dbt-core** | Data transformation | Jordan (Data Engineer) |
-| **Dagster** | Workflow orchestration | Jordan (Data Engineer) |
-| **Evidence.dev** | BI & visualization | Emma (Data Analyst) |
+| Tool | Purpose | Agent Integration | Status |
+|------|---------|-------------------|--------|
+| **PyAirbyte** | Data ingestion | Alex (Data Engineer) | ✅ Ready |
+| **DuckDB** | Fast analytics | Emma (Data Analyst) | ✅ Ready |
+| **dbt-core** | Data transformation | Alex (Data Engineer) | ⚠️ Add to requirements |
+| **SQLMesh** | Alternative transformation | Alex (Data Engineer) | ⚠️ Minimal |
+| **Dagster** | Workflow orchestration | Alex (Data Engineer) | ✅ Ready |
+| **Evidence.dev** | BI & visualization | Emma (Data Analyst) | ✅ Ready |
+
+**Additional Tools:**
+- **ydata-profiling, Sweetviz, AutoViz** - Automated EDA (Emma - Data Analyst)
+- **scikit-learn, scipy, statsmodels** - Statistical analysis and ML (Emma, Jordan)
 
 ---
 
@@ -288,12 +316,12 @@ bmad-data-practitioner/
 
 Agents work together seamlessly:
 
-- **Morgan** (Product Manager) → defines requirements → **Alex** (Architect)
-- **Alex** (Architect) → creates design → **Jordan** (Engineer)  
-- **Jordan** (Engineer) → builds pipeline → **Casey** (QA Engineer)
-- **Casey** (QA Engineer) → validates data → **Emma** (Analyst)
-- **Emma** (Analyst) → finds insights → **Sam** (ML Engineer)
-- **Sam** (ML Engineer) → deploys models → **Morgan** (Product Manager)
+- **Sophia** (Product Manager) → defines requirements → **Marcus** (Architect)
+- **Marcus** (Architect) → creates design → **Alex** (Engineer)
+- **Alex** (Engineer) → builds pipeline → **Riley** (QA Engineer)
+- **Riley** (QA Engineer) → validates data → **Emma** (Analyst)
+- **Emma** (Analyst) → finds insights → **Jordan** (ML Engineer)
+- **Jordan** (ML Engineer) → deploys models → **Sophia** (Product Manager)
 
 ---
 
@@ -350,14 +378,60 @@ All agents integrate with BMad Orchestrator:
 ## 🆘 Support & Troubleshooting
 
 ### Common Issues
-- **Agent not found**: Verify installation with `*agent` command
-- **Task failures**: Check dependencies in agent help
-- **Template errors**: Validate YAML formatting
+
+#### Agent Names Don't Match Documentation
+**Issue:** Agents introduce themselves with different names than expected
+**Resolution:** This is expected behavior. The agents use these actual names:
+- **Marcus** (Data Architect) - not "Alex"
+- **Alex** (Data Engineer) - not "Jordan"
+- **Sophia** (Data Product Manager) - not "Morgan"
+- **Riley** (Data QA Engineer) - not "Casey"
+- **Emma** (Data Analyst) - correct ✅
+- **Jordan** (ML Engineer) - not "Sam"
+
+#### dbt Commands Fail
+**Issue:** `dbt run` or other dbt commands result in "command not found" or import errors
+**Resolution:** Add dbt-core to your Python environment:
+```bash
+# Add to requirements.txt
+echo "dbt-core>=1.7.0" >> requirements.txt
+echo "dbt-duckdb>=1.7.0" >> requirements.txt
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Verify installation
+dbt --version
+```
+
+#### Dagster Transformation Assets Show as Placeholder
+**Issue:** Transformation and publication assets in Dagster are marked as "placeholder" or "future integration"
+**Resolution:** This is expected - the dbt and Evidence.dev integrations within Dagster are marked for future development. Current workarounds:
+- Use dbt CLI directly for transformations: `dbt run --project-dir ./bmad-data-practitioner/dbt-project`
+- Use the `*agent data-engineer` for guided transformation workflows
+- Evidence.dev runs independently - see `/bmad-method/expansion-packs/bmad-data-practitioner/evidence-project/`
+
+#### PyAirbyte Connection Issues
+**Issue:** Cannot connect to data sources via PyAirbyte
+**Resolution:**
+1. Verify PyAirbyte installation: `pip show airbyte`
+2. Check connector availability: `python -c "import airbyte; print(airbyte.__version__)"`
+3. Review PyAirbyte documentation for source-specific configuration
+4. Use `*agent data-engineer` for guided setup
+
+#### Limited Task Templates
+**Issue:** Expected more workflow task templates
+**Resolution:** Currently, only 2 task templates are implemented:
+- `hypothesis-testing.md` - Statistical hypothesis testing workflow
+- `data-source-discovery.md` - Data source discovery workflow
+
+For additional workflows, use agent `*help` commands or create custom tasks following the existing template patterns.
 
 ### Getting Help
-1. Use `*help` command in any agent
-2. Check agent-specific documentation
-3. Review troubleshooting guides in `/docs`
+1. **Agent Help**: Use `*help` command in any agent for agent-specific assistance
+2. **Agent Documentation**: Review agent `.md` files in `/bmad-method/expansion-packs/bmad-data-practitioner/agents/`
+3. **Project Documentation**: Check comprehensive guides in `/docs/`
+4. **BMad Orchestrator**: Ask `/BMad:agents:bmad-orchestrator` for workflow guidance
 
 ---
 
